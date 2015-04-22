@@ -1,0 +1,23 @@
+{
+  "name": "CostcoInternshipJS",
+  "version": "0.0.0",
+  "description": "Boilerplate JavaScript project for interns",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "*",
+    "request": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/kurtlocker/CostcoInternshipJS.git"
+  },
+  "author": "Kurt Medley",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kurtlocker/CostcoInternshipJS/issues"
+  },
+  "homepage": "https://github.com/kurtlocker/CostcoInternshipJS"
+}
