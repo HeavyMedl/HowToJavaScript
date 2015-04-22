@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Costco Intership Modules</title>
+    
+    
+    <link rel="stylesheet" href="https://stackedit.io/res-min/themes/base.css" />
+    <link href="css/blog-home.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Costco Internship JavaScript Modules</a>
+        </div>
+    </div>
+</nav>
+
+<div class=''>
+    <h4>Need to know stuff..</h4>
+    <p id='kurt'>Waiting for interesting fact about Kurt..</p>    
+</div>
+<div class="container"><p>JavaScript has no relation to Java, it simply piggy backed off the popularity of Java during the 90’s. The great thing about JavaScript (and most object oriented languages) is that the language skills you develop while writing code end up transcending language barriers. You can use the object-oriented abstraction and apply it to other languages such as Java, JavaScript, C#, C++, Python, PHP, Ruby and Objective-C for example.</p>
+
+<p>In JavaScript, functions are the primary work horses of the language. They are roughly equivalent to <strong>methods</strong> in Java. Functions in JS are actually <strong>Function Objects</strong>. When you declare a function like this: </p>
+
+
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-comment">// a. function declaration</span>
+<span class="hljs-keyword">var</span> sum = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(a,b)</span> {</span>
+    <span class="hljs-keyword">return</span> a+b;
+};
+<span class="hljs-comment">// b. function expression (equivalent to a.)</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">sum</span><span class="hljs-params">(a,b)</span> {</span>
+    <span class="hljs-keyword">return</span> a+b;
+}</code></pre>
+
+<p>You’re actually creating an object of type Function. Your new function,  <code>sum</code>, is a Function Object. All Objects in JS have what is called a <strong>prototype</strong> object. Formally, JS implements <strong>prototypical inheritance</strong>; meaning when you create a Object, you inherit all of the functions and properties defined in the <strong>protoypical chain</strong> describing that Object. </p>
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-comment">// sum --&gt; Function.prototype --&gt; Object.prototype --&gt; null</span>
+<span class="hljs-comment">// null represents the end of the prototypical chain.</span></code></pre>
+
+<p>Because you’ve created <code>sum</code>, which has the type <em>Function</em>, you now inherit all of the methods and properties defined on Function’s prototypical chain. This includes Object.prototype because Function inherits from Object.  For example:</p>
+
+
+
+<pre class="prettyprint"><code class="language-js hljs ">sum.length 
+<span class="hljs-comment">// outputs 2 - The length property specifies the number of arguments expected by the function. Its defined on Function.prototype</span>
+sum.hasOwnProperty()
+<span class="hljs-comment">// outputs false - hasOwnProperty is defined in Object.prototype. You have access to it because sum inherits from Object.prototype</span></code></pre>
+
+<p>We won’t be dealing with the prototypes because they require some experience to leverage.</p>
+
+<h3 id="task-1-write-a-couple-functions">Task 1: write a couple functions</h3>
+
+<hr>
+
+<ol>
+<li><p>Open a new tab in your browser and navigate to the URL <code>http://127.0.0.1:3000/intern</code>. You should land on the page that says, “Hello, Costco Intern!”</p></li>
+<li><p>Go into the folder structure <strong>CostcoInternshipJS</strong> and find <code>intern.js</code> here: <code>~\Desktop\CostcoInternshipJS\js\intern.js</code>. Also, find  <code>intern.html</code> here: <code>~\Desktop\CostcoInternshipJS\views\intern.html</code>. Open these in your favorite text editor. I love <em>Sublime Text</em> and <em>Notepad++</em>. You can easily google and get one of these editors.</p></li>
+<li><p>Below the comments in <code>intern.js</code>, define a couple functions that</p>
+
+<p><strong>a.</strong> Sum a series. Write a function that takes a single argument, an integer <strong>n</strong>, and successively sums the series of numbers (beginning with 0) up until <strong>n</strong>. </p>
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-comment">// example output: sum(5) = 0+1+2+3+4+5 = 15</span></code></pre>
+
+<p><strong>b.</strong> Sum only odd numbers. Write a function that takes a single argument, an integer <strong>n</strong>, and successively sums the odd series of numbers (beginnign with 0) up until <strong>n</strong>.</p>
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-comment">// example output: sum(5) = 0+1+2+3+4+5 = 9</span></code></pre></li>
+<li><p>Test your functions by refreshing the page in your browser (url is <code>http://127.0.0.1:3000/intern</code>). Hit F12 in Google Chrome. This opens the Chrome Developer Tools. Now press <code>Ctrl+P</code> and type <code>intern.js</code>. Select this file and see your new functions defined in the interpreter. If the <code>console</code> (a place to type and call code) isn’t open, in the top right, click <code>open drawer</code> and the <code>console</code> should appear. Type the name of your function and a give it a parameter:</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">kurtsSum(<span class="hljs-number">5</span>) <span class="hljs-comment">// = 15</span></code></pre></li>
+</ol>
+
+<h3 id="task-2-move-your-functions-into-their-own-namespace">Task 2: move your functions into their own namespace</h3>
+
+<hr>
+
+<p>A namespace collision happens when a script happens to have the same name for an Object that a different script that you’ve loaded has.</p>
+
+
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-comment">// from script1.js</span>
+<span class="hljs-keyword">var</span> work = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span> 
+    <span class="hljs-comment">// do some work</span>
+}
+
+<span class="hljs-comment">// from script2.js</span>
+<span class="hljs-keyword">var</span> work = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-comment">// do some work</span>
+}
+
+<span class="hljs-comment">// namespace collision of the Function Object work between script1.js and script2.js. The interpreter may pick the wrong function when you call work();</span></code></pre>
+
+<p>Namespace collisions are a real hazard in a modern web application. We can limit these potential hazards by giving a unique namespace to a cohesive body of work. This effectively becomes a <strong>module</strong>. Costco’s implementation of a modular pattern in its mobile project not only stops namespace collision but increases portability, readability, and gives a logical structure to a body of work.</p>
+
+
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-keyword">var</span> SumModule = {
+    sumOfSeries : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(n)</span> {</span>
+        <span class="hljs-comment">// sum the series 0..n</span>
+    },
+    sumOddNumbers : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(n)</span> {</span>
+        <span class="hljs-comment">// sum the odd series 0..n</span>
+    }
+}</code></pre>
+
+<p>This represents a <strong>object literal</strong> module pattern. We can now call our functions like this:</p>
+
+
+
+<pre class="prettyprint"><code class="language-js hljs ">SumModule.sumOfSeries(<span class="hljs-number">5</span>) <span class="hljs-comment">// outputs 15</span></code></pre>
+
+<p>This is a logical structure for a module that has the functionality of summing a series of numbers in different ways.  The <code>{}</code> defines an Object. You can define properties on this Object. You can access these properties by using the reference <code>SumModule</code> and period <code>.</code>, followed by the name of the property you’d like to access.</p>
+
+<ol>
+<li><p>Move your functions into a object literal module with a unique namespace.</p></li>
+<li><p>In the Chrome Dev Tools, call your functions using the module that you made.</p></li>
+</ol></div>
+
+
+<footer>
+    <div class="row">
+        <div class="col-lg-12">
+            <blockquote>
+                <p>Without requirements or design, programming is the art of adding bugs to an empty text file.</p>
+                <footer><cite title="Source Title">Louis Srygley</cite></footer>
+            </blockquote>
+        </div>
+    </div>
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+<script src="js/kurt.js"></script>
+</body>
+</html>
