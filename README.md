@@ -1,2 +1,3 @@
 # Costco Internship - JavaScript and Web Development
-A simple web server and javascript tasks for incoming interns
+
+Boilerplate repository containing a web server and tasks for Costco interns.
