@@ -29,7 +29,7 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Modules <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
                 <li><a href="#module-0-javascript-functions">Module 0</a></li>
-                <li><a href="#">Module 1</a></li>
+                <li><a href="#module-1-get-your-ass-ets-over-here">Module 1</a></li>
                 <li><a href="#">Module 2</a></li>
               </ul>
             </li>
@@ -37,9 +37,9 @@
         </div>
     </div>
 </nav>
-<blockquote class='text-center kurtquote'>
+<blockquote class='text-center chuckquote'>
     Remember,
-    <p id='kurt'>Waiting for interesting fact about Kurt..</p>
+    <p id='chuck'>Waiting for interesting fact about Chuck Norris..</p>
 </blockquote>    
 
 <div class="container">
@@ -149,13 +149,169 @@ sum.hasOwnProperty()
 <li><p>In the Chrome Dev Tools, call your functions using the module that you made.</p></li>
 </ol>
 
+<h1 class='text-center' id="module-1-get-your-ass-ets-over-here">Module 1: Get your ass-ets over here.</h1>
+
+<hr>
+
+<p>“A <strong>content delivery network</strong> (<strong>CDN</strong>) is a system of distributed servers (network) that deliver webpages and other Web content to a user based on the geographic locations of the user, the origin of the webpage and a content delivery server.” -Google</p>
+
+<p>Google is sweet. We all know this. Google provides their own CDN for delivering commonly used assets to web developers. The above quote explains what a CDN is in a nutshell. Typically a server that is part of a CDN is <em>specialized</em> in delivering static assets. </p>
+
+<p>Why would I want a file from somebody elses server? Simply put, requesting a resource from somebody else’s web server means less work for your own web server. We’re all about saving bandwidth in the web application business. It means less CPU usage, less third party’s charge for caching, and ultimately, faster web applications. </p>
+
+<p>Lets look at some common assets (CSS and JavaScript files) provided by Google:</p>
+
+<p>Everybody and their mother uses this CDN asset: jQuery. <br>
+<a href="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js</a></p>
+
+<p>If you click on the above link, you’ll make a request to Google’s ajax subdomain ajax.googleapis.com asking for the script <code>jquery.min.js</code>. Google will return the minified script as the response and you can then leverage a really nifty library known as jQuery. </p>
+
+<p>For good measure, here is a CSS file (Cascading Style Sheet) from a different CDN provider: <br>
+<a href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css</a></p>
+
+<p>Similarly, when you click on this link, maxcdn returns you the CSS file you requested as a minified CSS file.</p>
+
+<p>What happens when you can’t reach a remote file like the above two? Well, its good practice to keep a local copy that your own web server can serve to the user in case Google’s URL breaks.  Typically a static file’s relative path look something like this: <code>CostcoInternshipJS/js/intern.js</code>. <code>/js/</code> designates the JavaScript directory that we keep all of our JavaScript organized in.</p>
+
+
+
+<h3 id="task-1-dynamically-retrieving-css-from-a-cdn-using-javascript">Task 1: dynamically retrieving CSS from a CDN using JavaScript.</h3>
+
+<hr>
+
+<p>So our <code>intern.html</code> page looks pretty ugly, right? We need to fetch the styles sheet (CSS) to support the front end framework we’re leveraging named <em>Twitter Bootstrap</em>. Twitter Bootstrap was developed by.. Twitter developers and it offers a beautiful user interface (UI) for stylistically challenged developers like me. We have the proper HTML attributes in place, we just need the CSS and JavaScript. First the CSS, though.</p>
+
+<p>There are a couple of ways of doing this. Typically people like to include CSS directly in the <code>&lt;head&gt;</code> element of their HTML like this:</p>
+
+<pre class="prettyprint"><code class="language-html hljs "><span class="hljs-tag">&lt;<span class="hljs-title">link</span> <span class="hljs-attribute">rel</span>=<span class="hljs-value">"stylesheet"</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"</span>&gt;</span></code></pre>
+
+<p>This is totally fine to do. When the HTML gets rendered by the browser, the styles will be included and things will look pretty. One small problem. This is a sort of speed bump that the browser has to get over before getting to the point where it tells our scripts: “Hey, I’m ready for you to manipulate me.” (That’s not weird, right?). The faster we can produce the document object model (the interpreted tree generated by the browser reading the HTML) to our scripts, the faster the speed of our web application. On top of the speed, Google will score your page higher based on this concept alone.</p>
+
+<p>Although we don’t do this on Costco.com/.ca, we’re going to do it for our project. I’ll go through using native JavaScript to dynamically fetch a file that doesn’t block the rendering process.</p>
+
+<ol>
+<li><p>We need a function.</p>
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-comment">// write this intern.js</span>
+<span class="hljs-comment">// boilerplate empty function declaration with two parameters: source and type</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getFile</span><span class="hljs-params">(source, type)</span> {</span>
+
+}</code></pre></li>
+<li><p>We need the endpoint URL to the CDN asset that we want. In this case, its the bootstrap CSS file. The endpoint is <code>https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css</code>.</p></li>
+<li><p>Define the body of the function.</p>
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getFile</span><span class="hljs-params">(source, type)</span> {</span>
+    <span class="hljs-comment">// document.createElement creates a element of a specific tag</span>
+    <span class="hljs-comment">// In this case, we need a `link`.</span>
+    <span class="hljs-keyword">var</span> element = document.createElement(<span class="hljs-string">'link'</span>);
+
+    <span class="hljs-comment">// Head is a reference to the &lt;head&gt; tag in the DOM.</span>
+    <span class="hljs-keyword">var</span> head = document.getElementsByTagName(<span class="hljs-string">'head'</span>)[<span class="hljs-number">0</span>];
+
+    <span class="hljs-comment">// Set the link element's type attribute to 'text/css' </span>
+    element.type = <span class="hljs-string">'text/css'</span>;
+
+    <span class="hljs-comment">// Set the link element's rel attribute to 'stylesheet'</span>
+    element.rel = <span class="hljs-string">'stylesheet'</span>;
+
+    <span class="hljs-comment">// Set the link element's href attribute to `source` argument</span>
+    <span class="hljs-comment">// which is a dynamic parameter set when calling our function.</span>
+    element.href = source;
+
+    <span class="hljs-comment">// Append (or insert) this element into the &lt;head&gt;</span>
+    head.appendChild(element);  
+}</code></pre>
+
+<p>Sweet. You’ve essentially created a dynamic way of retrieving a CSS file from a <code>source</code> without blocking the rendering of the page</p></li>
+<li><p>Now we need to call our function using the CDN resource from step 2. Go to your workspace: <code>http://127.0.0.1:3000/intern</code> and refresh. Find our function by typing <code>CTRL+P</code> and then <code>intern.js</code>. You should see it defined. Now call the function from the <code>console</code>:</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">getFile(<span class="hljs-string">'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css'</span>);</code></pre>
+
+<p>Now that’s a little better! The page doesn’t look so newb anymore but its not perfect. If you <code>Right Click</code> and <code>Inspect Element</code>, find the <code>&lt;head&gt;</code> element and look closely you’ll see that you’ve successfully allocated a style sheet. You should see this in the head:</p>
+
+<pre class="prettyprint"><code class="language-html hljs "><span class="hljs-tag">&lt;<span class="hljs-title">link</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/css"</span> <span class="hljs-attribute">rel</span>=<span class="hljs-value">"stylesheet"</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"</span>&gt;</span></code></pre>
+
+<p>This bootstrap template requires some more CSS not located in the CDN resource. The local file is located at: <code>CostcoInternshipJS/css/cover.css</code>. We need the file <code>cover.css</code> as well. Lets use our function</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">getFile(<span class="hljs-string">'/css/cover.css'</span>);</code></pre>
+
+<p>Damn, that’s pretty.</p></li>
+</ol>
+
+<h3 id="task-2-dynamically-retrieving-javascript-from-a-cdn-using-javascript">Task 2: dynamically retrieving JavaScript from a CDN using JavaScript.</h3>
+
+<hr>
+
+<p>Now that we have a pattern for retrieving CSS using our <code>getFile</code> function, lets reuse the same function to retrieve some JavaScript from a CDN.  Let’s just go ahead and get jQuery. jQuery is a framework for <em>querying</em> the DOM using less characters in our code. For example:</p>
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-comment">// Native JavaScript</span>
+<span class="hljs-keyword">var</span> element = document.getElementById(<span class="hljs-string">'someElementId'</span>);</code></pre>
+
+<p>Compare this to:</p>
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-comment">// Using the jQuery framework</span>
+<span class="hljs-keyword">var</span> element = $(<span class="hljs-string">'#someElementId'</span>);</code></pre>
+
+<p>The jQuery <strong>selector</strong> <code>$('')</code> is a powerful abstraction that can significantly reduce the amount of code a developer has to write to achieve something. The above example is trivial, however, because it doesn’t really demonstrate the power of jQuery. Here’s some HTML:</p>
+
+
+
+<pre class="prettyprint"><code class="language-html hljs "><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">'list'</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span>Chuck Norris<span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span>Bruce Lee<span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span></code></pre>
+
+<p>The above data structure represents an unordered list of the names “Chuck Norris” and “Bruce Lee”. Say I want to do something dumb like create a function that retrieves the names. I’ll demonstrate this using native JavaScript and jQuery.</p>
+
+
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-comment">// Native JavaScript function to return the names as an array that can be used later</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getNames</span><span class="hljs-params">(className)</span> {</span>
+    <span class="hljs-keyword">var</span> classList = document.getElementsByClassName(className);
+    <span class="hljs-keyword">var</span> names = [];
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; classList.length; i++) {
+        <span class="hljs-keyword">var</span> listItems = classList[i].children;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> j = <span class="hljs-number">0</span>; j &lt; listItems.length; j++) {
+            names.push(listItems[j].innerHTML);
+        }
+    }
+    <span class="hljs-keyword">return</span> names;
+}
+getNames(<span class="hljs-string">'list'</span>); <span class="hljs-comment">// returns an array of strings ["Chuck Norris", "Bruce Lee"]</span></code></pre>
+
+<p>Here you have a loop and a nested loop to do the simple task of retrieving those values. Compare that with the jQuery equivalent:</p>
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-comment">// jQuery implementation of the same function</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getNames</span><span class="hljs-params">(className)</span> {</span>
+    <span class="hljs-keyword">var</span> names = [];
+    $(<span class="hljs-string">'.'</span>+className+<span class="hljs-string">' li'</span>).each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(i, elem)</span> {</span>
+        names.push(elem.innerHTML);
+    });
+    <span class="hljs-keyword">return</span> names;
+}
+</code></pre>
+
+<p>The jQuery selector allows you to select put the <code>li</code> element (the descendent of <code>&lt;ul class='list'&gt;</code>) directly in the selector aka <code>$('.list li')</code>. So you immediately have access to the list items. There is no need for the nested loop to retrieve the <code>li</code> elements.</p>
+
+<p>So why would you ever want to write native JavaScript? Because it executes <strong>MUCH</strong> faster! Fan boys will always argue readability of code and the expressivity jQuery offers over writing native JavaScript. They’re right and wrong. Readability and expressivity are important, but so is performance. The end user is not a developer.</p>
+
+<p>I’m one of those weird elitists who likes performance, however, I’ll admit that learning JavaScript can more easily be learned by learning jQuery. So lets get it.</p>
+
+<ol>
+<li><p>Refactor your <code>getFile(source, type)</code> function from the previous file to accept a type of either <code>'css'</code> or <code>'script'</code>. You’ll need to use a Boolean conditional operator to check the value of the parameter <code>type</code> and adjust your code accordingly.</p></li>
+<li><p>Now that your function is ready to append a script to the <code>&lt;head&gt;</code>, include jQuery using this CDN endpoint <a href="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js</a>.</p></li>
+<li><p>Write a function, <code>changeLead(text)</code> using the jQuery selector to change the lead text inside <code>intern.html</code> from <code>Will you please style me? I feel so naked without my styles.</code> to <code>I have my styles now, I'm so comfy and warm</code>.</p></li>
+<li><p>Create a Object Literal Module to encapsulate your <code>getFile</code> and <code>changeLead</code> functions. Call the Object <code>DOMUtils</code>. Experiment calling your <code>changeLead</code> function from the <code>DOMUtils</code> module.</p></li>
+</ol>
+
 <footer>
     <div class="row">
         <div class="col-lg-12 text-center">
             <img alt='error' src='http://i.imgur.com/smyj0.jpg'><br><br>
             <div class='text-center'>
                 <p>Lovely accent you have there. New Jersey?</p>
-                <p>-Lloyd Christmas</p>
             </div>
         </div>
     </div>

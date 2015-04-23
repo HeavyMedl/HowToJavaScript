@@ -2,15 +2,15 @@ document.addEventListener('DOMContentLoaded', init, false);
 
 function init() {
     var d = document,
-    getKurtQuote = function() {
+    getChuckQuote = function() {
         var request = new XMLHttpRequest();
-        request.open('GET', 'http://api.icndb.com/jokes/random?firstName=Kurt&lastName=Medley', true);
+        request.open('GET', 'http://api.icndb.com/jokes/random', true);
         
         request.onload = function() {
           if (request.status >= 200 && request.status < 400) {
             var data = JSON.parse(request.responseText);
             if (data.type=='success') {
-                var p = d.getElementById('kurt');
+                var p = d.getElementById('chuck');
                 p.innerHTML = data.value.joke;
             }
           } else {
@@ -23,5 +23,5 @@ function init() {
         };
         request.send();
     };
-    getKurtQuote();
+    getChuckQuote();
 }
