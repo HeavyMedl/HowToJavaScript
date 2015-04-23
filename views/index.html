@@ -28,7 +28,7 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Modules <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#module-0">Module 0</a></li>
+                <li><a href="#module-0-javascript-functions">Module 0</a></li>
                 <li><a href="#">Module 1</a></li>
                 <li><a href="#">Module 2</a></li>
               </ul>
@@ -43,18 +43,13 @@
 </blockquote>    
 
 <div class="container">
-<div id='module-0'>
-<h2>
-    <a href="javascript:void(0);">Module 0: JavaScript Functions</a>
-</h2>
-<p class="lead">
-    by <a href="javascript:void(0)">The Kurt Locker</a>
-</p>
+<h1 class='text-center' id="module-0-javascript-functions">Module 0: Javascript Functions</h1>
+
+<hr>
+
 <p>JavaScript has no relation to Java, it simply piggy backed off the popularity of Java during the 90’s. The great thing about JavaScript (and most object oriented languages) is that the language skills you develop while writing code end up transcending language barriers. You can use the object-oriented abstraction and apply it to other languages such as Java, JavaScript, C#, C++, Python, PHP, Ruby and Objective-C for example.</p>
 
 <p>In JavaScript, functions are the primary work horses of the language. They are roughly equivalent to <strong>methods</strong> in Java. Functions in JS are actually <strong>Function Objects</strong>. When you declare a function like this: </p>
-
-
 
 <pre class="prettyprint"><code class="language-js hljs "><span class="hljs-comment">// a. function declaration</span>
 <span class="hljs-keyword">var</span> sum = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(a,b)</span> {</span>
@@ -66,6 +61,8 @@
 }</code></pre>
 
 <p>You’re actually creating an object of type Function. Your new function,  <code>sum</code>, is a Function Object. All Objects in JS have what is called a <strong>prototype</strong> object. Formally, JS implements <strong>prototypical inheritance</strong>; meaning when you create a Object, you inherit all of the functions and properties defined in the <strong>protoypical chain</strong> describing that Object. </p>
+
+
 
 <pre class="prettyprint"><code class="language-js hljs "><span class="hljs-comment">// sum --&gt; Function.prototype --&gt; Object.prototype --&gt; null</span>
 <span class="hljs-comment">// null represents the end of the prototypical chain.</span></code></pre>
@@ -80,6 +77,8 @@ sum.hasOwnProperty()
 <span class="hljs-comment">// outputs false - hasOwnProperty is defined in Object.prototype. You have access to it because sum inherits from Object.prototype</span></code></pre>
 
 <p>We won’t be dealing with the prototypes because they require some experience to leverage.</p>
+
+
 
 <h3 id="task-1-write-a-couple-functions">Task 1: write a couple functions</h3>
 
@@ -101,6 +100,8 @@ sum.hasOwnProperty()
 
 <pre class="prettyprint"><code class="language-js hljs ">kurtsSum(<span class="hljs-number">5</span>) <span class="hljs-comment">// = 15</span></code></pre></li>
 </ol>
+
+
 
 <h3 id="task-2-move-your-functions-into-their-own-namespace">Task 2: move your functions into their own namespace</h3>
 
@@ -147,17 +148,15 @@ sum.hasOwnProperty()
 <li><p>Move your functions into a object literal module with a unique namespace.</p></li>
 <li><p>In the Chrome Dev Tools, call your functions using the module that you made.</p></li>
 </ol>
-</div>
-</div>
 
 <footer>
     <div class="row">
         <div class="col-lg-12 text-center">
-            <img alt='error' src='http://i.imgur.com/smyj0.jpg'>
-            <blockquote class='text-center'>
+            <img alt='error' src='http://i.imgur.com/smyj0.jpg'><br><br>
+            <div class='text-center'>
                 <p>Lovely accent you have there. New Jersey?</p>
-                <footer><cite title="Source Title">-Lloyd Christmas</cite></footer>
-            </blockquote>
+                <p>-Lloyd Christmas</p>
+            </div>
         </div>
     </div>
 </footer>
