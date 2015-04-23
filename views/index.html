@@ -24,13 +24,13 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Modules <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
                 <li><a href="#module-0-javascript-functions">Module 0</a></li>
                 <li><a href="#module-1-get-your-ass-ets-over-here">Module 1</a></li>
-                <li><a href="#">Module 2</a></li>
+                <li><a href="#module-2-dependencies-and-load-order">Module 2</a></li>
+                <li><a href="#module-3-synchronous-vs-asynchronous">Module 3</a></li>
               </ul>
             </li>
           </ul>
@@ -305,6 +305,258 @@ getNames(<span class="hljs-string">'list'</span>); <span class="hljs-comment">//
 <li><p>Write a function, <code>changeLead(text)</code> using the jQuery selector to change the lead text inside <code>intern.html</code> from <code>Will you please style me? I feel so naked without my styles.</code> to <code>I have my styles now, I'm so comfy and warm</code>.</p></li>
 <li><p>Create a Object Literal Module to encapsulate your <code>getFile</code> and <code>changeLead</code> functions. Call the Object <code>DOMUtils</code>. Experiment calling your <code>changeLead</code> function from the <code>DOMUtils</code> module.</p></li>
 </ol>
+
+<h1 id="module-2-dependencies-and-load-order">Module 2: Dependencies and Load Order</h1>
+
+<hr>
+
+<p>This module will discuss the importance of loading JavaScript assets in the right order based on their dependencies. A JavaScript dependency means that your script is <em>dependent</em> on a particular JavaScript asset to be loaded before running correctly. This is an important thought to keep in your mind while you develop your application as having access to your dependencies is essential.</p>
+
+<p>So far our <code>intern.js</code> file should look something like this:</p>
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-keyword">var</span> SumModule = {
+    sumSeries : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(n)</span> {</span>
+        <span class="hljs-keyword">var</span> total = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt;= n; i++) {
+            total += i;
+        }
+        <span class="hljs-keyword">return</span> total;
+    },
+    sumOddSeries : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(n)</span> {</span>
+        <span class="hljs-keyword">var</span> total = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt;= n; i++) {
+            <span class="hljs-keyword">if</span> (i % <span class="hljs-number">2</span> == <span class="hljs-number">1</span>) {
+                total += i;
+            }
+        }
+        <span class="hljs-keyword">return</span> total;
+    }
+}
+<span class="hljs-keyword">var</span> DOMUtils = {
+    getFile : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(source, type)</span> {</span>
+        <span class="hljs-keyword">var</span> head = document.getElementsByTagName(<span class="hljs-string">'head'</span>)[<span class="hljs-number">0</span>],
+            element = <span class="hljs-literal">null</span>;
+        <span class="hljs-keyword">if</span> (type == <span class="hljs-string">'css'</span>) {
+            element = document.createElement(<span class="hljs-string">'link'</span>); 
+            element.type = <span class="hljs-string">'text/css'</span>;
+            element.rel = <span class="hljs-string">'stylesheet'</span>;
+            element.href = source;
+        } <span class="hljs-keyword">else</span> {
+            element = document.createElement(<span class="hljs-string">'script'</span>);
+            element.src = source; 
+        }
+        head.appendChild(element);  
+    },
+    changeLead : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(text)</span> {</span>
+        $(<span class="hljs-string">'#lead-text'</span>).html(text);
+    }
+}</code></pre>
+
+<p>Can you spot the dependency? Because the <code>changeLead</code> function leverages jQuery, it is <em>dependent</em> on jQuery being loaded to your page before it can be executed. So what do we do? The simple answer is to <em>not</em> use jQuery but that’s slightly naive to assume you’ll not need to use it. Especially if you’re coming onto Costco (or some other company) that does leverage jQuery. Lets make a small loader function that can load all of our assets in the proper order.</p>
+
+<h3 id="task-1-create-a-loader-for-loading-our-dependencies">Task 1: Create a loader for loading our dependencies</h3>
+
+<hr>
+
+<p>An <strong>Array</strong> in JavaScript is a data structure that can hold a series of multi-value elements. We make arrays in a couple of different ways.</p>
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-comment">// Using the Array constructor - looks similar to Java</span>
+<span class="hljs-keyword">var</span> coolDudes = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Array</span>(<span class="hljs-string">"Chuck Norris"</span>, <span class="hljs-string">"Bruce Lee"</span>);
+
+<span class="hljs-comment">// Using Array literal notation - equivalent to the above; just short hand</span>
+<span class="hljs-keyword">var</span> coolDudes = [<span class="hljs-string">"Chuck Norris"</span>, <span class="hljs-string">"Bruce Lee"</span>];
+
+<span class="hljs-comment">// Implicitly creating an array - the function `split` returns an array.</span>
+<span class="hljs-keyword">var</span> stringOfDudes = <span class="hljs-string">"Chuck Norris-Bruce Lee"</span>;
+<span class="hljs-keyword">var</span> coolDudes = stringOfDudes.split(<span class="hljs-string">'-'</span>);</code></pre>
+
+<p>We need to define a new function that we can call when we arrive at our web application (<code>intern.html</code>). I’m sick of having to call our function <code>getFile</code> every time I want to look at our pretty version of <code>intern.html</code>. </p>
+
+<ol>
+<li><p>Define a function on <code>DOMUtils</code> called <code>loadAssets(assets)</code> that accepts an array of objects that will represent our list of  assets that we need to load.</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">loadAssets : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(assets)</span> {</span>
+    <span class="hljs-comment">// get our assets</span>
+}</code></pre></li>
+</ol>
+
+<p>We need to once again refactor our <code>getFile</code> function so that it accepts an <strong>Event Listener</strong>. <em>Events</em> are “things” that happen to HTML elements. When JavaScript is used in HTML pages, JavaScript can “react” on these events. We’re going to leveraging the native function, <code>document.addEventListener</code> to attach a “onload” event to the assets we dynamically fetch with our <code>getFile</code> function.</p>
+
+<p>In this context, we need to make sure that jQuery is loaded before we do anything that involves calling the <code>changeLead</code> function as part of our script.  Refactor your <code>getFile</code> function to accept a <strong>callback</strong> function and to use <code>document.addEventListener</code>.</p>
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-comment">// Delta (change) to parameters list</span>
+getFile : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(source, type, callback)</span> {</span> 
+    <span class="hljs-keyword">var</span> head = document.getElementsByTagName(<span class="hljs-string">'head'</span>)[<span class="hljs-number">0</span>],
+        element = <span class="hljs-literal">null</span>;
+    <span class="hljs-keyword">if</span> (type == <span class="hljs-string">'css'</span>) {
+        element = document.createElement(<span class="hljs-string">'link'</span>); 
+        element.type = <span class="hljs-string">'text/css'</span>;
+        element.rel = <span class="hljs-string">'stylesheet'</span>;
+        element.href = source;
+    } <span class="hljs-keyword">else</span> {
+        element = document.createElement(<span class="hljs-string">'script'</span>);
+        <span class="hljs-comment">// Delta - adding load event if the callback gets passed.</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> callback !== <span class="hljs-string">'undefined'</span>) {
+            element.addEventListener(<span class="hljs-string">'load'</span>, callback); 
+        }
+        element.src = source; 
+    }
+    head.appendChild(element);  
+}</code></pre>
+
+<p>“A callback function, also known as a higher-order function, is a function that is passed to another function (let’s call this other function “otherFunction”) as a parameter, and the callback function is called (or executed) inside the otherFunction. A callback function is essentially a pattern (an established solution to a common problem), and therefore, the use of a callback function is also known as a callback pattern.” -javascriptissexy.com</p>
+
+<p>So this essentially sums up what we’re doing with the <em>callback function</em>. We’re literally calling our function <code>getFile</code> with three parameters: <code>source</code>, a string, <code>type</code>, a string, and <code>callback</code>, which is a function. The callback function will get executed when the asset we’ve allocated into the <code>&lt;head&gt;</code> tells us, “Hey I’m done loading”.</p>
+
+<p>Naturally we’ll have to define the callback. Define it on the <code>DOMUtils</code> module.</p>
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-comment">// We execute this function on the load event of an asset</span>
+<span class="hljs-comment">// We it fires, we're safe to execute our jQuery dependent function.</span>
+jQueryLoaded : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    DOMUtils.changeLead(<span class="hljs-string">"I have my styles now, I'm so comfy and warm"</span>);
+}</code></pre>
+
+<p>Now lets go back to our <code>loadAssets</code> function. We’re going to pass an array of objects representing our assets to this guy. We know the parameter <code>assets</code> is an Array because we’re defining it that way. We can then use functions on the <code>Array.prototype</code> Object to help us. In this instance, we’ll use a <strong><code>forEach</code></strong> function on the <code>asset</code> array. Its really just shorthand for using a <strong>for loop</strong>.</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">loadAssets : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(assets)</span> {</span>
+    assets.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(assetObj)</span> {</span> 
+        DOMUtils.getFile(assetObj.source, assetObj.type, assetObj.callback);
+    });
+}</code></pre>
+
+<p>So how do we use this function? Well, remember <code>loadAssets</code> is going to take an <em>Array of Objects</em> which means it’ll have a structure like this:</p>
+
+
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-keyword">var</span> assets = 
+    [
+        {source: <span class="hljs-string">'cdn endpoint'</span>, type: <span class="hljs-string">'script or css'</span>, callback: DOMUtils.jQueryLoaded},
+        {source: <span class="hljs-string">'cdn endpoint'</span>, type: <span class="hljs-string">'script or css'</span>, callback: <span class="hljs-literal">undefined</span>},
+        ... <span class="hljs-comment">// more objects if we need them</span>
+    ]</code></pre>
+
+<p>We can create a variable called <code>assets</code> like the above or we can just call our function with the above data structure straight in our function’s parameter. Finally.. lets load our assets. As a rule of thumb, I like to load my CSS assets vendor first. Meaning I load the Twitter Bootstrap CSS and then followed by my own CSS. This ensures that any customization in the styles of my application get rendered correctly.</p>
+
+<p>We wont apply a callback to any other resource aside from the jQuery one, which is the only one we really care about. Its the only dependency. Call this function at the bottom of your last line in <code>intern.js</code>. </p>
+
+<pre class="prettyprint"><code class="language-js hljs ">DOMUtils.loadAssets([
+    { 
+        source : <span class="hljs-string">"http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"</span>,
+        type : <span class="hljs-string">"css"</span>,
+        callback: <span class="hljs-literal">undefined</span>
+    },
+    {
+        source : <span class="hljs-string">"/css/cover.css"</span>,
+        type : <span class="hljs-string">"css"</span>,
+        callback: <span class="hljs-literal">undefined</span>
+    },
+    {
+        source : <span class="hljs-string">"https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"</span>,
+        type : <span class="hljs-string">"script"</span>,
+        callback : DOMUtils.jQueryLoaded
+    }
+]);</code></pre>
+
+<p>Now every time you refresh, you should see your pretty <code>intern.html</code> page without having to call <code>getFile</code> manually for each asset.</p>
+
+<h1 id="module-3-synchronous-vs-asynchronous">Module 3: Synchronous vs. Asynchronous</h1>
+
+<hr>
+
+<p><strong>Asynchronous</strong>: not going at the same rate and exactly together with something else, in particular.</p>
+
+<p>Well, that’s ambiguous. Up until now, we’ve been loading our jQuery synchronously. The following example will demonstrate loading scripts synchronously. We need the Twitter Bootstrap JavaScript that comes with the framework to proceed further, so lets go ahead and pull that asset from a CDN. Our <code>DOMUtils</code> module is becoming more useful, right? I need to simply include it in my <em>array of objects</em> that is the parameter to our function <code>loadAssets</code>.</p>
+
+
+
+<pre class="prettyprint"><code class="language-js hljs ">DOMUtils.loadAssets([
+    { 
+        source : <span class="hljs-string">"http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"</span>,
+        type : <span class="hljs-string">"css"</span>,
+        callback: <span class="hljs-literal">undefined</span>
+    },
+    {
+        source : <span class="hljs-string">"/css/cover.css"</span>,
+        type : <span class="hljs-string">"css"</span>,
+        callback: <span class="hljs-literal">undefined</span>
+    },
+    {
+        source : <span class="hljs-string">"https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"</span>,
+        type : <span class="hljs-string">"script"</span>,
+        callback : DOMUtils.jQueryLoaded
+    },
+    {
+        source : <span class="hljs-string">"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"</span>,
+        type : <span class="hljs-string">"script"</span>,
+        callback : <span class="hljs-literal">undefined</span>
+    }
+]);</code></pre>
+
+<p>Cool. So this successfully loads the Twitter Bootstrap script and we now can take advantage of the numerous features that they offer. Lets switch the positions of the objects that represent jQuery and Bootstrap.</p>
+
+
+
+<pre class="prettyprint"><code class="language-js hljs ">    {
+        source : <span class="hljs-string">"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"</span>,
+        type : <span class="hljs-string">"script"</span>,
+        callback : <span class="hljs-literal">undefined</span>
+    },
+    {
+        source : <span class="hljs-string">"https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"</span>,
+        type : <span class="hljs-string">"script"</span>,
+        callback : DOMUtils.jQueryLoaded
+    }</code></pre>
+
+<p>Open your Google Dev Tools using <code>F12</code> and selecting <code>open drawer</code> at the top right of the tools. Now refresh a couple times. Eventually you’ll notice a JavaScript error thrown by Bootstrap that says:</p>
+
+<p><code>Uncaught Error: Bootstrap's JavaScript requires jQuery</code></p>
+
+<p>We have a dependency issue. The easy solution is to keep your files in order starting vendor first. This isn’t preferable, however. </p>
+
+<p>What happens if we want to load <em>everything</em> asynchronously? Why would you want to load everything asynchronously? Well if a third party vendor (like Google) goes down or is slow, your page won’t be held up trying to load that resource. Loading your scripts asynchronously increases the speed in which your application loads by preventing <strong>resource blocking</strong>. </p>
+
+<p>The solution is to attach a <code>async</code> attribute to the script element that you’re dynamically allocating in <code>getFile</code>. The inherent problem with this method is that if we have two resources that are being fetched in parallel with no order associated, how do we guarantee that the dependency loads <em>before</em> the dependee? Here is one strategy:</p>
+
+<h3 id="task-1-load-your-assets-asynchronously">Task 1: Load your assets asynchronously</h3>
+
+<hr>
+
+<ol>
+<li><p>Revisit <code>DOMUtils.getFile(source, type, callback)</code> and for the condition where we’re creating a <code>&lt;script&gt;</code> element, give the element an async attribute with value <code>true</code>.</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">element.async = <span class="hljs-literal">true</span>;</code></pre></li>
+<li><p>Run the same <code>DOMUtils.loadAssets(...)</code>function a couple times by refreshing the page. This time, the order of the script objects don’t matter, as we’re running everything in parallel. You should eventually get the same error thrown by Twitter Bootstrap:</p>
+
+<p><code>Uncaught Error: Bootstrap's JavaScript requires jQuery</code></p>
+
+<p>The solution to this problem is to create a sort of synchronous load order of the asynchronous script assets. We need to first load jQuery, test to see if jQuery has indeed loaded, and then load Twitter Bootstrap’s JavaScript.</p></li>
+<li><p>Remove the Twitter Bootstrap JavaScript object from your <em>array of objects</em> as part of the parameter to <code>loadAssets</code>. Modify the <code>jQueryLoaded</code> callback in the <code>DOMUtils</code> module so that we can test for jQuery’s existence before we make a call to get the Twitter Bootstrap JavaScript.</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">jQueryLoaded : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> jQuery !== <span class="hljs-string">'undefined'</span>) {
+        DOMUtils.changeLead(<span class="hljs-string">"I have my styles now, I'm so comfy and warm"</span>);
+        DOMUtils.loadAssets([{
+            source : <span class="hljs-string">"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"</span>,
+            type : <span class="hljs-string">"script"</span>,
+            callback : <span class="hljs-literal">undefined</span>
+        }]);
+    }
+}</code></pre>
+
+<p>Notice here that we’re making an additional call to <code>loadAssets</code> as part of the callback function to the jQuery asset of the initially call to <code>loadAssets</code>:</p>
+
+<pre class="prettyprint"><code class="language-js hljs "> {
+    source : <span class="hljs-string">"https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"</span>,
+    type : <span class="hljs-string">"script"</span>,
+    callback : DOMUtils.jQueryLoaded
+}</code></pre>
+
+<p>We append the script (which has the asynchronous attribute) and when it loads,  jQuery as a module <em>exports</em> a <strong>global variable</strong> called <code>jQuery</code> and the short hand version, <code>$</code>. The <code>&lt;script&gt;</code>’s <em>event listener</em> <code>onload</code> calls our function, <code>jQueryLoaded</code>. We’ve modified our callback function <code>jQueryLoaded</code> to test for the existence of the global variable <code>jQuery</code>. If the object, <code>jQuery</code> exists, we’re safe to load our dependent scripts! Thus we make another call to <code>loadAssets</code> to bring in our Twitter Bootstrap JavaScript. You should no longer get any dependency errors stemming from Bootstrap in the console. Our scripts are ready to rock.</p></li>
+</ol>
+
+<p>A quick note about global variables from w3schools: A variable declared outside a function, becomes GLOBAL. A global variable has global scope: All scripts and functions on a web page can access it.</p>
+
+<p>Be careful of what you define as <em>global</em>. Namespace collisions happen when you have too many definitions in the global space. The best practice is to leverage the module pattern we’ve discussed.</p>
 
 <footer>
     <div class="row">
