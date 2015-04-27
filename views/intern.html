@@ -30,6 +30,9 @@
             <h1 class="cover-heading">Hello, Costco Intern!</h1>
             <p id='lead-text' class="lead">Will you please style me? I feel so naked without my styles.</p>
           </div>
+          <div class='col-lg-12'>
+              <ul id='employee-list'></ul>
+          </div>
           <div class="mastfoot">
             <div class="inner">
             </div>
@@ -41,5 +44,23 @@
     <!--<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>-->
     <script src='/js/intern.js' async></script>
     <script src='/js/complete.js' async></script>
+    <script type='text/template' id='employee-template'>
+        <% _.each(employees, function(employee) { %>
+            <li class='person-list-item'>
+                <h4><%= employee.name %></h4>
+                <hr>
+                <ul>
+                    <li>
+                        <label>Title</label>
+                        <p><%= employee.title %></p>
+                    </li>
+                    <li>
+                        <label>Salary</label>
+                        <p><%= employee.salary %> gbh</p>
+                    </li>
+                </ul>
+            </li>
+        <% }); %>
+    </script>
   </body>
 </html>
