@@ -15,13 +15,13 @@
 //         }
 //         return total;
 //     }
-// }
+// };
 // var DOMUtils = {
-//     getFile : function(source, type, callback) { 
+//     getFile : function(source, type, callback) {
 //         var head = document.getElementsByTagName('head')[0],
 //             element = null;
 //         if (type == 'css') {
-//             element = document.createElement('link'); 
+//             element = document.createElement('link');
 //             element.type = 'text/css';
 //             element.rel = 'stylesheet';
 //             element.href = source;
@@ -29,14 +29,14 @@
 //             element = document.createElement('script');
 //             element.async = true;
 //             if (typeof callback !== 'undefined') {
-//                 element.addEventListener('load', callback); 
+//                 element.addEventListener('load', callback);
 //             }
-//             element.src = source; 
+//             element.src = source;
 //         }
-//         head.appendChild(element);  
+//         head.appendChild(element);
 //     },
 //     loadAssets : function(assets) {
-//         assets.forEach(function(assetObj) { 
+//         assets.forEach(function(assetObj) {
 //             DOMUtils.getFile(assetObj.source, assetObj.type, assetObj.callback);
 //         });
 //     },
@@ -49,6 +49,7 @@
 //                 callback : undefined
 //             }]);
 //             DOMUtils.insertPics(['chuck','arnold','steven','jean']);
+//             DOMUtils.bindNavigation();
 //         }
 //     },
 //     changeLead : function(text) {
@@ -57,13 +58,48 @@
 //     insertPics : function(arrayOfNames) {
 //         var html = "";
 //         for (var i = 0; i < arrayOfNames.length; i++) {
-//             html += '<img height="140" width="140" src="/imgs/'+arrayOfNames[i]+'.jpg" class="img-thumbnail">'
+//             html += '<img height="140" width="140" src="/imgs/'+arrayOfNames[i]+'.jpg" class="img-thumbnail">';
 //         }
 //         $(html).insertAfter('.inner.cover');
-//     }
+//     },
+//     ajaxRequest : function(method, path, callback) {
+// 		var request = new XMLHttpRequest();
+// 		request.open(method, path);
+// 		request.onload = callback;
+// 		request.send();
+// 	},
+// 	getPartial : function(partial) {
+// 		DOMUtils.ajaxRequest('GET', '/views/partials/'+partial, function(event) {
+// 			if (this.status >= 200 && this.status < 400) {
+// 				var partialHtmlString = this.responseText;
+// 				var meat = document.getElementsByClassName('inner cover')[0];
+// 				meat.innerHTML = partialHtmlString;
+// 			} else {
+// 				console.log('Error retrieving partial');
+// 			}
+// 		});
+// 	},
+// 	bindNavigation : function() {
+// 		var tabs = document.getElementsByClassName('masthead-nav')[0].children;
+// 		var getPartial = function() {
+// 			DOMUtils.getPartial(this.id);
+// 			DOMUtils.makeActive(this);
+// 			history.replaceState( {} , '', '/'+this.id );
+// 		};
+// 		for (var i = 0; i < tabs.length; i++){
+// 			tabs[i].addEventListener('click', getPartial);
+// 		}
+// 	},
+// 	makeActive : function(element) {
+// 		var tabs = element.parentElement.children;
+// 		for (var i = 0; i < tabs.length; i++) {
+// 			tabs[i].classList.remove('active');
+// 		}
+// 		element.classList.add('active');
+// 	}
 // };
 // DOMUtils.loadAssets([
-//     { 
+//     {
 //         source : "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css",
 //         type : "css",
 //         callback: undefined

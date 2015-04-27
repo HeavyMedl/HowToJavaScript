@@ -32,6 +32,7 @@
                 <li><a href="#module-2-dependencies-and-load-order">Module 2</a></li>
                 <li><a href="#module-3-synchronous-vs-asynchronous">Module 3</a></li>
                 <li><a href="#module-4-the-art-of-debugging">Module 4</a></li>
+                <li><a href="#module-5-asynchronous-javascript-and-xml-ajax">Module 5</a></li>
               </ul>
             </li>
           </ul>
@@ -661,6 +662,229 @@ insertPics : <span class="hljs-function"><span class="hljs-keyword">function</sp
     </video>    
 </div>
 
+<h1 id="module-5-asynchronous-javascript-and-xml-ajax">Module 5: Asynchronous JavaScript and XML (AJAX)</h1>
+
+<hr>
+
+<p>This module will explain how to use a group of web development techniques called <strong>AJAX</strong>.</p>
+
+<p>“With AJAX, web applications can send data to and retrieve from a server asynchronously (in the background) without interfering with the display and behavior of the existing page. Data can be retrieved using the <strong>XMLHttpRequest</strong> object.” -Wikipedia</p>
+
+<p>“XMLHttpRequest is a JavaScript object that was designed by Microsoft and adopted by Mozilla, Apple, and Google.  XMLHttpRequest can be used to retrieve any type of data, not just XML, and it supports protocols other than HTTP (including file and ftp).” -Mozilla Developer Network</p>
+
+<p>AJAX presents us with a convenient way to make seamless transitions between divisions of content on a web page or to display relevant data to our users without breaking the perceived continuity of our web application. When I say “perceived continuity” I mean the uninterrupted <em>flow</em> (or fluidity) of our web application. </p>
+
+<p>Some newer web applications are opting for the <strong>single-page application</strong> (SPA) approach, where all the necessary code (HTML, JavaScript, CSS) is retrieved on a single page load or all of the relevant resources are dynamically loaded when needed. AJAX helps accomplish this.</p>
+
+<p>For example, when you navigate to <code>http://127.0.0.1:3000/intern</code>, your browser brings in the following assets: <code>intern.html</code> and <code>intern.js</code>. We end up including the additional assets with our <code>loadAssets</code> function defined in <code>intern.js</code> module <code>DOMUtils</code>. Those include our cascading style sheets (CSS): <code>bootstrap.min.css</code> and <code>cover.css</code>; JavaScript: <code>jquery.min.js</code> and <code>bootstrap.min.js</code>. Even though we’re dynamically including those files, conceptually, this all happens in one load <em>cycle</em>.</p>
+
+<p>Notice that <code>intern.html</code> has a <em>Features</em> tab. If we defined a page for Features, the URL might look like <code>http://127.0.0.1:3000/features</code>. You’d then want to define a <code>features.html</code> to correspond with that route, which would be the logical place to put your “features” section. You’d have a structure like this:</p>
+
+<p><strong>features.html</strong> (you don’t have to make this)</p>
+
+
+
+<pre class="prettyprint"><code class="language-html hljs "><span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span> <span class="hljs-attribute">lang</span>=<span class="hljs-value">"en"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"utf-8"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">http-equiv</span>=<span class="hljs-value">"X-UA-Compatible"</span> <span class="hljs-attribute">content</span>=<span class="hljs-value">"IE=edge"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"viewport"</span> <span class="hljs-attribute">content</span>=<span class="hljs-value">"width=device-width, initial-scale=1"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"description"</span> <span class="hljs-attribute">content</span>=<span class="hljs-value">""</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"author"</span> <span class="hljs-attribute">content</span>=<span class="hljs-value">""</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>Costco Internship Workspace<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"site-wrapper"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"site-wrapper-inner"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"cover-container"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"masthead clearfix"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"inner"</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-title">h3</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"masthead-brand"</span>&gt;</span>Features<span class="hljs-tag">&lt;/<span class="hljs-title">h3</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-title">nav</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"nav masthead-nav"</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>Home<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-title">li</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"active"</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>Features<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                  <span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"#"</span>&gt;</span>Contact<span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+              <span class="hljs-tag">&lt;/<span class="hljs-title">nav</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"inner cover"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">h1</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"cover-heading"</span>&gt;</span>Features<span class="hljs-tag">&lt;/<span class="hljs-title">h1</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">'lead-text'</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"lead"</span>&gt;</span>
+                I am a unique snowflake. I have great features.
+            <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"mastfoot"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"inner"</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">'/js/intern.js'</span> <span class="hljs-attribute">async</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span>
+</code></pre>
+
+<p>This HTML would be served up to users by your web server when they navigated to <code>http://127.0.0.1:3000/features</code>. <code>features.html</code> is nearly identical to <code>intern.html</code>. Transitioning to <code>features.html</code> might imply the following:</p>
+
+<ul>
+<li><p>I need at least some of the same scripts I used in <code>/intern</code> to perform tasks for the <code>/features</code> section (<code>jquery.min.js</code>,<code>bootstrap.min.js</code> and <code>intern.js</code>).</p></li>
+<li><p>I need at least some of the same stylesheets I used in <code>/intern</code> to make the <code>/features</code> section look pretty (<code>bootstrap.min.css</code> and <code>cover.css</code>).</p></li>
+<li><p>I might need unique stylesheets and/or scripts for the <code>/features</code> section.</p></li>
+</ul>
+
+<p>If you DO need any of the same stylesheets or scripts between sections and you naively serve the above HTML, you’ll force your client (the end user) to make additional requests to resources they already requested and received before. You’re also forcing your own server to serve more resources. Even if you have properly set up <strong>client-side caching</strong>, your client at least has to re-render and reinitialize those assets. </p>
+
+<p>If the majority of the <code>features.html</code> is exactly the same except the meat of the hamburger, we should serve what some call a <em>partial</em> view using AJAX.</p>
+
+<p>Here the only things that <em>really</em> changed in <code>features.html</code> were</p>
+
+
+
+<pre class="prettyprint"><code class="language-html hljs "><span class="hljs-tag">&lt;<span class="hljs-title">h1</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"cover-heading"</span>&gt;</span>Features<span class="hljs-tag">&lt;/<span class="hljs-title">h1</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">'lead-text'</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"lead"</span>&gt;</span>
+    I am a unique snowflake. I have great features.
+<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span></code></pre>
+
+<p>and the <code>active</code> class attached to the “features” list item.</p>
+
+<p>First we need create the actual HTML (what we’re calling a <em>partial</em>) that we’ll serve the user when they perform some action. I’ve included this HTML in the project directory under <code>views/partials/home.html</code> and <code>views/partials/features.html</code>.</p>
+
+<p>Second let’s look at the XMLHttpRequest JavaScript object and see what we’ll need to use. At a minimum, we need to do four things.</p>
+
+<p>We need to <strong>create</strong> a XMLHttpRequest object. We need to <strong>open</strong> (or initialize) the request. We need to define a <strong>callback function</strong> to tell the XMLHttpRequest object what to do with the retrieved resource. We need to <strong>send</strong> the request to our server to fetch the resource.</p>
+
+<ol>
+<li><p><strong>Create</strong>: </p>
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-keyword">var</span> request = <span class="hljs-keyword">new</span> XMLHttpRequest();</code></pre></li>
+<li><p><strong>Open</strong>:</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">request.open(<span class="hljs-string">'GET'</span>, <span class="hljs-string">'/views/partials/features'</span>)</code></pre></li>
+<li><p><strong>Callback</strong>:</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">request.onload(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span> <span class="hljs-comment">/* do something with fetched resource */</span> });</code></pre></li>
+<li><p><strong>Send</strong>:</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">request.send();</code></pre></li>
+</ol>
+
+<p>Thats it! This will send a request to our server to grab <code>/views/partials/features.html</code>. Now lets actually implement this:</p>
+
+
+
+<h3 id="task-1-use-ajax-to-replace-the-html-inside-internhtml-with-the-partial-featureshtml">Task 1: Use AJAX to replace the HTML inside <code>intern.html</code> with the partial <code>features.html</code>.</h3>
+
+<hr>
+
+<p>We could simply create a function that encapsulated the entire process of making a AJAX request in addition to calling our unique callback function to replace the meat of the HTML with our partial like so:</p>
+
+
+
+<pre class="prettyprint"><code class="language-js hljs ">getPartial : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(partial)</span> {</span>
+    <span class="hljs-comment">// 1. Create</span>
+    <span class="hljs-keyword">var</span> request = <span class="hljs-keyword">new</span> XMLHttpRequest();
+
+    <span class="hljs-comment">// 2. Open</span>
+    request.open(<span class="hljs-string">'GET'</span>, <span class="hljs-string">'/views/partials/'</span>+partial);
+
+    <span class="hljs-comment">// 3. Callback</span>
+    request.onload = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+        <span class="hljs-comment">// Test if our request was successful</span>
+        <span class="hljs-keyword">if</span> (request.status &gt;= <span class="hljs-number">200</span> &amp;&amp; request.status &lt; <span class="hljs-number">400</span>) {
+            <span class="hljs-keyword">var</span> partialHtmlString = request.responseText;
+            <span class="hljs-keyword">var</span> meat = document.getElementsByClassName(<span class="hljs-string">'inner cover'</span>)[<span class="hljs-number">0</span>];
+            meat.innerHTML = partialHtmlString;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// Server responded with an error status.</span>
+            console.log(<span class="hljs-string">'Error retrieving partial'</span>);        
+        }
+    };
+    <span class="hljs-comment">// 4. Send</span>
+    request.send();
+}</code></pre>
+
+<p>This would send a request to the <code>partial</code> route and our server is set up to respond with the corresponding HTML. The function looks good but its not reusable! We’ve <strong>hard coded</strong> a relative URL path in our <code>request.open</code> function. Take a look:</p>
+
+
+
+<pre class="prettyprint"><code class="language-js hljs ">request.open(<span class="hljs-string">'GET'</span>, <span class="hljs-string">'/views/partials/'</span>+partial)</code></pre>
+
+<p><code>'/views/partials/'</code> is a relative path. We’ll never be able to use the <code>XMLHttpRequest</code> object in a different way even if we wanted to. Its better to generalize this function a little so that we can reuse the <code>XMLHttpRequest</code> object without having to duplicate our code. Here we’re defining these functions on the <code>DOMUtils</code> module.</p>
+
+
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-comment">// Reusable AJAX request function</span>
+ajaxRequest : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(method, path, callback)</span> {</span>
+    <span class="hljs-keyword">var</span> request = <span class="hljs-keyword">new</span> XMLHttpRequest();
+    request.open(method, path);
+    request.onload = callback;
+    request.send();
+}
+
+<span class="hljs-comment">// Specific getPartial function that utilizes ajaxRequest</span>
+getPartial : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(partial)</span> {</span>
+    DOMUtils.ajaxRequest(<span class="hljs-string">'GET'</span>, <span class="hljs-string">'/views/partials/'</span>+partial, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(event)</span> {</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.status &gt;= <span class="hljs-number">200</span> &amp;&amp; <span class="hljs-keyword">this</span>.status &lt; <span class="hljs-number">400</span>) {
+            <span class="hljs-keyword">var</span> partialHtmlString = <span class="hljs-keyword">this</span>.responseText;
+            <span class="hljs-keyword">var</span> meat = document.getElementsByClassName(<span class="hljs-string">'inner cover'</span>)[<span class="hljs-number">0</span>];
+            meat.innerHTML = partialHtmlString;
+        } <span class="hljs-keyword">else</span> {
+            console.log(<span class="hljs-string">'Error retrieving partial'</span>);        
+        } 
+    });
+}</code></pre>
+
+<p><code>ajaxRequest</code> is an example of a <strong>higher-order function</strong>. </p>
+
+<p>In mathematics and computer science, a higher-order function (also functional form, functional or functor) is a function that does at least one of the following:</p>
+
+<ul>
+<li>takes one or more functions as an input</li>
+<li>outputs a function</li>
+</ul>
+
+<p>As you can see by its signature, <code>ajaxRequest(method, path, callback)</code> takes a function, <code>callback</code> as an input. This allows us to generalize functions that we create so we can get great reuse out of them.</p>
+
+<p>If you call <code>DOMUtils.getPartial('features');</code> in the console, you’ll see that the middle section (the meat) of our <em>layout</em> gets the partial <code>features.html</code> in place of the original HTML.</p>
+
+<p>This is considerably more efficient than simply defining an almost duplicate HTML file called <code>features.html</code>, giving it the <code>/features</code> route and forcing the user to re-download and re-process those assets (CSS, JavaScript, HTML). Especially if our <code>features.html</code> only replaces the meat of the layout.</p>
+
+<p>Whats left is to attach an event to our <code>Home</code>, <code>Features</code> and <code>Contact</code> tabs in <code>intern.html</code> to give the user a visual indicator as to what he/she is looking at.</p>
+
+
+
+<h3 id="task-2-interactive-tabs">Task 2: Interactive Tabs</h3>
+
+<hr>
+
+<p>Lets define a function that leverages our <code>getPartial</code> function when the user clicks <code>Home</code>, <code>Features</code> or <code>Contact</code> on the <code>DOMUtils</code> module.</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">bindNavigation : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> tabs = document.getElementsByClassName(<span class="hljs-string">'masthead-nav'</span>)[<span class="hljs-number">0</span>].children
+    <span class="hljs-keyword">var</span> getPartial = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+        DOMUtils.getPartial(<span class="hljs-keyword">this</span>.id);
+        DOMUtils.makeActive(<span class="hljs-keyword">this</span>);
+        <span class="hljs-comment">// History is defined Globally. It'll replace the URL with the page title.</span>
+        history.replaceState( {} , <span class="hljs-string">''</span>, <span class="hljs-string">'/'</span>+<span class="hljs-keyword">this</span>.id );
+    }
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; tabs.length; i++){
+        tabs[i].addEventListener(<span class="hljs-string">'click'</span>, getPartial);
+    }
+},
+makeActive : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(element)</span> {</span>
+    <span class="hljs-comment">// remove the active class (the underline thingy) from all tabs</span>
+    <span class="hljs-keyword">var</span> tabs = element.parentElement.children;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; tabs.length; i++) {
+        tabs[i].classList.remove(<span class="hljs-string">'active'</span>);
+    }
+    element.classList.add(<span class="hljs-string">'active'</span>);
+}</code></pre>
+
+<p>Lastly, make a call to <code>DOMUtils.bindNavigation</code> in your <code>DOMUtils.jqueryLoaded</code> function so that it gets called when the page loads. Now refresh <code>http://127.0.0.1:3000/intern</code> and watch your navigation work.</p>
 
 <footer>
     <div class="row">
