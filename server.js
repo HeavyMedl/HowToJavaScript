@@ -25,5 +25,5 @@ app.get('/views/partials/contact', function (req, res) {
 });
 
 app.listen(3000, function () {
-  console.log('Costco Internship server listening at http://127.0.0.1:3000');
+  console.log('HowToJavaScript server listening at http://127.0.0.1:3000');
 });

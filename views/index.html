@@ -33,6 +33,7 @@
                 <li><a href="#module-3-synchronous-vs-asynchronous">Module 3</a></li>
                 <li><a href="#module-4-the-art-of-debugging">Module 4</a></li>
                 <li><a href="#module-5-asynchronous-javascript-and-xml-ajax">Module 5</a></li>
+                <li><a href="#module-6-templating-101">Module 6</a></li>
               </ul>
             </li>
           </ul>
@@ -885,6 +886,331 @@ makeActive : <span class="hljs-function"><span class="hljs-keyword">function</sp
 }</code></pre>
 
 <p>Lastly, make a call to <code>DOMUtils.bindNavigation</code> in your <code>DOMUtils.jqueryLoaded</code> function so that it gets called when the page loads. Now refresh <code>http://127.0.0.1:3000/intern</code> and watch your navigation work.</p>
+
+<h1 id="module-6-templating-101">Module 6: Templating 101</h1>
+
+<hr>
+
+<p><em>Templating</em> is a useful technique for mitigating the amount of static HTML you’ll need for your web application. Instead of duplicating a bunch of HTML that has the same fundamental structure, you can create one template with your HTML structure and expose it using a templating framework that consumes the <em>dynamic</em> data.</p>
+
+<p>For example, if you have a piece of HTML that needs to be repeatedly used:</p>
+
+<pre class="prettyprint"><code class="language-html hljs "><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">'person-list-item col-md-12'</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">'col-md-4'</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">h4</span>&gt;</span>Kurt<span class="hljs-tag">&lt;/<span class="hljs-title">h4</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">'col-md-4'</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">label</span>&gt;</span>Title<span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>Programmer<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">'col-md-4'</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">label</span>&gt;</span>Salary<span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>1000 gbh (gummy bears per hour)<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span></code></pre>
+
+<p>This <em>widget</em> represents an employee. Maybe you’ve hard coded this piece of HTML several times to account for all of your employees. Your HTML can suddenly become large and unwieldy. This is a perfect opportunity to use the templating framework defined in <strong>underscore.js</strong>.  Directly from their site:</p>
+
+<p>“Underscore is a JavaScript library that provides a whole mess of useful functional programming helpers without extending any built-in objects. It’s the answer to the question: “If I sit down in front of a blank HTML page, and want to start being productive immediately, what do I need?” … and the tie to go along with jQuery’s tux”.</p>
+
+<p>Underscore provides some very nifty functionality. If you read through their library, you’ll see some cross-paradigm functions that can help you be very expressive with the way you write code. In addition, their templating is very elementary to implement. </p>
+
+<p>First of all,  when we include underscore.js in our app <code>_</code>, or literally <em>underscore</em> is now a global variable that we can expose and use. Similary to <code>$</code> (<code>jQuery</code>), <code>_</code> has a bunch of functions defined on it’s properties. In the below example we use <code>_.each</code>, which is essentially underscore’s version of <code>Array.prototype.forEach</code>. It has an almost identical function definition. The <code>&lt;%= %&gt;</code> are tags used by underscore. It parses the content between these tags and allocates our dynamic object property value.</p>
+
+<p>There are three things we need to define to make use of this</p>
+
+<ol>
+<li><p>The <strong>template</strong>: This is the actual template (a text string that converts to HTML) that we’ll tell underscore to utilize when it augments the document object model (DOM). It’ll look something like this:</p>
+
+<pre class="prettyprint"><code class="language-html hljs "><span class="vbscript">&lt;% _.<span class="hljs-keyword">each</span>(employees, <span class="hljs-keyword">function</span>(employee) { %&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">'person-list-item col-md-12'</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">'col-md-4'</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">h4</span>&gt;</span><span class="vbscript">&lt;%= employee.name %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">h4</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">'col-md-4'</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">label</span>&gt;</span>Title<span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span><span class="vbscript">&lt;%= employee.title %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">'col-md-4'</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">label</span>&gt;</span>Salary<span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span><span class="vbscript">&lt;%= employee.salary %&gt;</span> gbh<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="vbscript">&lt;% }); %&gt;</span></code></pre>
+
+<blockquote>
+  <p>This template looks a little funky because we need to loop through the <em>array of objects</em>. So we use the <code>_.each</code> to accomplish this. </p>
+</blockquote></li>
+<li><p>The <strong>data</strong>: This will be an object containing a <em>property</em> with the name <code>employees</code> and the value being an <em>array of objects</em>. The array of objects represents the employees that you want to embed into your templates:</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">{
+    employees :
+        [
+            { name: <span class="hljs-string">"Kurt"</span>, title: <span class="hljs-string">"Programmer"</span>, salary: <span class="hljs-number">1000</span> },
+            { name: <span class="hljs-string">"Brian"</span>, title: <span class="hljs-string">"Programmer"</span>, salary: <span class="hljs-number">1500</span> },
+            { name: <span class="hljs-string">"Robert"</span>, title: <span class="hljs-string">"Programmer"</span>, salary: <span class="hljs-number">2000</span> }
+        ]
+}</code></pre></li>
+<li><p>The <strong>target</strong>: The place where you want to insert the HTML generated by underscore.</p></li>
+</ol>
+
+<h3 id="task-1-using-underscorejs-build-a-template-that-can-take-an-array-of-objects-and-insert-them-into-the-dom">Task 1: Using <code>underscore.js</code>, build a template that can take an array of objects and insert them into the DOM.</h3>
+
+<hr>
+
+<p>We’ll need to include underscore in our application. Find a CDN and add it to our <code>loadAssets</code> function. In <code>intern.js</code>, <code>loadAssets</code> should look like this:</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">DOMUtils.loadAssets([
+    {
+        source : <span class="hljs-string">"http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"</span>,
+        type : <span class="hljs-string">"css"</span>,
+        callback: <span class="hljs-literal">undefined</span>
+    },
+    {
+        source : <span class="hljs-string">"/css/cover.css"</span>,
+        type : <span class="hljs-string">"css"</span>,
+        callback: <span class="hljs-literal">undefined</span>
+    },
+    {
+        source : <span class="hljs-string">"https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"</span>,
+        type : <span class="hljs-string">"script"</span>,
+        callback : DOMUtils.jQueryLoaded
+    },
+    {
+        source : <span class="hljs-string">"https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"</span>,
+        type : <span class="hljs-string">"script"</span>,
+        callback : <span class="hljs-literal">undefined</span>
+    }
+]);</code></pre>
+
+<p>Notice we’re creating yet <em>another</em> dependency on somebody’s library. After this example using underscore, we’ll write our own very basic templating system and ditch underscore.</p>
+
+<ol>
+<li><p>Define a <code>buildTemplate</code> function in <code>DOMUtils</code> to initialize building our templates for when underscore loads:</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">buildTemplate : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(dataObj, templateName, target)</span> {</span>
+    <span class="hljs-comment">// Get the template string.</span>
+    <span class="hljs-keyword">var</span> template = document.getElementById(templateName).innerHTML;
+
+    <span class="hljs-comment">// Generate the HTML necessary by calling _.template with the</span>
+    <span class="hljs-comment">// template and the data object. </span>
+    <span class="hljs-keyword">var</span> generatedHtmlString = _.template(template)(dataObj);
+
+    <span class="hljs-comment">// Insert the HTML into the DOM by using the target parameter.</span>
+    document.getElementById(target).innerHTML = generatedHtmlString;
+}</code></pre>
+
+<p>This generalized function allows you to define <code>dataObj</code> (object containing the array of objects), the <code>templateName</code> (where the template is defined) and the <code>target</code> (where you want the template in the DOM) with each call.</p></li>
+<li><p>Create the template using an inline <code>&lt;script&gt;</code> tag within <code>intern.html</code>. Place this just before the <code>&lt;/body&gt;</code> tag:</p>
+
+<pre class="prettyprint"><code class="language-html hljs "><span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">'text/template'</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">'employee-template'</span>&gt;</span><span class="javascript">
+    &lt;% _.each(employees, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(employee)</span> {</span> %&gt;
+        <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">'person-list-item col-md-12'</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">'col-md-4'</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-title">h4</span>&gt;</span><span class="vbscript">&lt;%= employee.name %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">h4</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">'col-md-4'</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">label</span>&gt;</span>Title<span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span><span class="vbscript">&lt;%= employee.title %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">'col-md-4'</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">label</span>&gt;</span>Salary<span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span><span class="vbscript">&lt;%= employee.salary %&gt;</span> gbh<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="vbscript">&lt;% }); %&gt;</span>
+</span></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span></code></pre>
+
+<p>Notice that we’re placing the template contents inside of a <code>&lt;script&gt;</code> tag with <code>type='text/template'</code>. This type tells the browser not to process this block of text like JavaScript, thus we won’t have any issues with those funky <code>&lt;%= %&gt;</code> tags.</p></li>
+<li><p>Create the <code>underscoreLoaded</code> callback function and attach it to the <code>callback</code> property of the underscore asset when we call <code>loadAssets</code>.</p>
+
+<pre class="prettyprint"><code class="language-js hljs "> {
+    source : <span class="hljs-string">"https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"</span>,
+    type : <span class="hljs-string">"script"</span>,
+    callback : DOMUtils.underscoreLoaded
+}
+
+<span class="hljs-comment">// and define the function on DOMUtils. Call our DOMUtils.buildTemplate when</span>
+<span class="hljs-comment">// we load.</span>
+
+underscoreLoaded : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+     DOMUtils.buildTemplate(
+        { 
+            employees : [
+                { name: <span class="hljs-string">"Kurt"</span>, title: <span class="hljs-string">"Programmer"</span>, salary: <span class="hljs-number">1000</span> },
+                { name: <span class="hljs-string">"Brian"</span>, title: <span class="hljs-string">"Programmer"</span>, salary: <span class="hljs-number">1500</span> },
+                { name: <span class="hljs-string">"Robert"</span>, title: <span class="hljs-string">"Programmer"</span>, salary: <span class="hljs-number">2000</span> }
+            ]
+        },
+        <span class="hljs-string">'employee-template'</span>,
+        <span class="hljs-string">'employee-list'</span>
+    )
+}</code></pre>
+
+<p>Lets stop inserting those pictures of our demigods Chuck Norris, Arnold Schwarzenegger, Steven Seagal, and Jean-Claude Van Damme. <em>Comment</em> (or make the program skip) this function out of our <code>jqueryLoaded</code> function.</p>
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-comment">// DOMUtils.insertPics(['chuck','arnold','steven','jean']);</span></code></pre>
+
+<p>Now refresh <code>http://127.0.0.1:3000/intern</code> to see your list represented in HTML</p></li>
+</ol>
+
+<p class='text-center'><img src="/imgs/template.png" alt="template.png" title=""></p>
+
+<p>Play around with inserting different data into your utility function by changing the data object to see different employees.</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">DOMUtils.buildTemplate(
+    { 
+        employees : [
+            { name: <span class="hljs-string">"Jean-Claude Van Damme"</span>, title: <span class="hljs-string">"Kickboxer"</span>, salary: <span class="hljs-number">3500</span> },
+            { name: <span class="hljs-string">"Arnold Schwarzenegger"</span>, title: <span class="hljs-string">"Commando"</span>, salary: <span class="hljs-number">4000</span> },
+            { name: <span class="hljs-string">"Bruce Lee"</span>, title: <span class="hljs-string">"The Dragon"</span>, salary: <span class="hljs-number">5000</span> }
+        ]
+    },
+    <span class="hljs-string">'employee-template'</span>,
+    <span class="hljs-string">'employee-list'</span>
+)</code></pre>
+
+
+
+<h3 id="task-2-ditch-underscorejs">Task 2: Ditch <code>underscore.js</code></h3>
+
+<hr>
+
+<p>While underscore is powerful tool set, we don’t need it to accomplish what we want. Underscore includes a lot of other stuff we might not ever use, so naively including it is sort of a bad idea. By writing our own JavaScript templating function, we can eliminate the overhead (dependency and bandwidth) of including it.</p>
+
+<p>First we need to do some code cleanup.</p>
+
+<ol>
+<li><p>Remove the <code>underscore.js</code> dependencies. Remove the underscore asset object from the <code>loadAssets</code> function.</p>
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-comment">// Remove this!</span>
+{
+    source : <span class="hljs-string">"https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"</span>,
+    type : <span class="hljs-string">"script"</span>,
+    callback : DOMUtils.underscoreLoaded
+}</code></pre>
+
+<p><code>DOMUtils.underscoreLoaded</code> is now <strong>dead code</strong>, which means that it so no longer used by our application. You might want to remove or comment this code out.</p>
+
+<pre class="prettyprint"><code class="language-js hljs "><span class="hljs-comment">// underscoreLoaded : function() { </span>
+<span class="hljs-comment">//     DOMUtils.buildTemplate(</span>
+<span class="hljs-comment">//         { </span>
+<span class="hljs-comment">//             employees : [</span>
+<span class="hljs-comment">//                 { name: "Kurt", title: "Programmer", salary: 1000 },</span>
+<span class="hljs-comment">//                 { name: "Brian", title: "Programmer", salary: 1500 },</span>
+<span class="hljs-comment">//                 { name: "Robert", title: "Programmer", salary: 2000 }</span>
+<span class="hljs-comment">//             ]</span>
+<span class="hljs-comment">//         },</span>
+<span class="hljs-comment">//         'employee-template',</span>
+<span class="hljs-comment">//         'employee-list'</span>
+<span class="hljs-comment">//     )</span>
+<span class="hljs-comment">// }</span></code></pre>
+
+<p>We can refactor <code>DOMUTils.buildTemplate</code> to make it work with our custom templating system.</p></li>
+<li><p>Remove the <code>&lt;script type='text/template' id='employee-template'&gt;</code> that you defined in <code>intern.html</code>. The <code>&lt;%= =&gt;</code> is no longer useful to us because it is unique syntax relevant only to underscore. </p>
+
+<pre class="prettyprint"><code class="language-html hljs "><span class="hljs-comment">&lt;!-- Remove this! --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">'text/template'</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">'employee-template'</span>&gt;</span><span class="javascript">
+    &lt;% _.each(employees, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(employee)</span> {</span> %&gt;
+        <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">'person-list-item col-md-12'</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">'col-md-4'</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-title">h4</span>&gt;</span><span class="vbscript">&lt;%= employee.name %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">h4</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">'col-md-4'</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">label</span>&gt;</span>Title<span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span><span class="vbscript">&lt;%= employee.title %&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">'col-md-4'</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">label</span>&gt;</span>Salary<span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span><span class="vbscript">&lt;%= employee.salary %&gt;</span> gbh<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+    <span class="vbscript">&lt;% }); %&gt;</span>
+</span></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span></code></pre></li>
+</ol>
+
+<h3 id="task-3-build-your-own-templating-system">Task 3: Build your own templating system</h3>
+
+<hr>
+
+<p>The same three things are needed in our own custom templating solution:</p>
+
+<ol>
+<li><p>The <strong>template</strong>: </p>
+
+<p>This time we’ll define our template using just pure JavaScript. The structure of our template is basically the same, we just need a <em>string</em> representation of the HTML. We can do this using an array.</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">templates : {
+    template_0 : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(employee)</span> {</span>
+        <span class="hljs-keyword">return</span> [<span class="hljs-string">'&lt;div class="person-list-item col-md-12"&gt;'</span>,
+                    <span class="hljs-string">'&lt;div class="col-md-4"&gt;'</span>,
+                        <span class="hljs-string">'&lt;h4&gt;'</span>+employee.name+<span class="hljs-string">'&lt;/h4&gt;'</span>,
+                    <span class="hljs-string">'&lt;/div&gt;'</span>,
+                    <span class="hljs-string">'&lt;div class="col-md-4"&gt;'</span>,
+                        <span class="hljs-string">'&lt;label&gt;Title&lt;/label&gt;'</span>,
+                        <span class="hljs-string">'&lt;p&gt;'</span>+employee.title+<span class="hljs-string">'&lt;/p&gt;'</span>,
+                    <span class="hljs-string">'&lt;/div&gt;'</span>,
+                    <span class="hljs-string">'&lt;div class="col-md-4"&gt;'</span>,
+                        <span class="hljs-string">'&lt;label&gt;Salary&lt;/label&gt;'</span>,
+                        <span class="hljs-string">'&lt;p&gt;'</span>+employee.salary+<span class="hljs-string">' gbh&lt;/p&gt;'</span>,
+                    <span class="hljs-string">'&lt;/div&gt;'</span>,
+                <span class="hljs-string">'&lt;/div&gt;'</span>].join(<span class="hljs-string">''</span>);
+    }
+}</code></pre>
+
+<p>Create a <code>templates</code> object. Each property of the object will represent a different template function that returns a string representing the HTML infused with each employee’s data. Attach the <code>templates</code> object to the <code>DOMUtils</code> module.</p></li>
+<li><p>The <strong>data</strong>:</p>
+
+<p>The data has a slightly different (and more simplistic) structure. We can now represent our data as a simple array of objects.</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">[
+    { name: <span class="hljs-string">"Kurt"</span>, title: <span class="hljs-string">"Programmer"</span>, salary: <span class="hljs-number">1000</span> },
+    { name: <span class="hljs-string">"Brian"</span>, title: <span class="hljs-string">"Programmer"</span>, salary: <span class="hljs-number">1500</span> },
+    { name: <span class="hljs-string">"Robert"</span>, title: <span class="hljs-string">"Programmer"</span>, salary: <span class="hljs-number">2000</span> }
+]</code></pre></li>
+<li><p>The <strong>target</strong>:</p>
+
+<p>The target remains the same, we need to insert the HTML generated by our function into the DOM. </p></li>
+</ol>
+
+<hr>
+
+<p><code>DOMUtils.buildTemplate</code> will be our workhorse again. First we need to strip it of its underscore dependency. Lets refactor <code>buildTemplate</code>:</p>
+
+<pre class="prettyprint"><code class="language-js hljs ">buildTemplate : <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(dataArray, templateIndex, target)</span> {</span>
+    <span class="hljs-comment">// First - loop through each data object in dataArray</span>
+    <span class="hljs-keyword">var</span> generatedHTML = <span class="hljs-string">""</span>;
+    dataArray.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(object)</span> {</span>
+        <span class="hljs-comment">// Generate HTML for each object in our dataArray</span>
+
+        <span class="hljs-comment">// += means append and assign. Its the same thing as saying:</span>
+        <span class="hljs-comment">// generatedHTML = generatedHTML + `new value`</span>
+
+        <span class="hljs-comment">// Use the templateIndex to select our unique template function.</span>
+        <span class="hljs-comment">// ['template_'+templateIndex] is a dynamic way of getting a property from</span>
+        <span class="hljs-comment">// an object. It is equivalent to </span>
+        <span class="hljs-comment">// DOMUtils.templates.template_&lt;templateIndex&gt;</span>
+        generatedHTML += DOMUtils.templates[<span class="hljs-string">'template_'</span>+templateIndex](object);
+    });
+    document.getElementById(target).innerHTML = generatedHTML;
+}</code></pre>
+
+<p>Place the call to <code>buildTemplate</code> in the <code>jQueryLoaded</code> callback function:</p>
+
+<pre class="prettyprint"><code class="language-js hljs "> DOMUtils.buildTemplate(
+    [
+        { name: <span class="hljs-string">"Kurt"</span>, title: <span class="hljs-string">"Programmer"</span>, salary: <span class="hljs-number">1000</span> },
+        { name: <span class="hljs-string">"Brian"</span>, title: <span class="hljs-string">"Programmer"</span>, salary: <span class="hljs-number">1500</span> },
+        { name: <span class="hljs-string">"Robert"</span>, title: <span class="hljs-string">"Programmer"</span>, salary: <span class="hljs-number">2000</span> }
+    ],
+    <span class="hljs-number">0</span>, <span class="hljs-string">'employee-list'</span>
+);</code></pre>
+
+<p>Refresh your <code>http://127.0.0.1:3000/intern</code> and watch your templating system work. You’ve just saved yourself another dependency, sped up your application’s execution time, and made your client’s experience a little better.</p>
+
+<div class='text-center'>
+<img style="-webkit-user-select: none" src="http://i.imgur.com/tk4mfse.gif">
+</div>
 
 <footer>
     <div class="row">

@@ -161,3 +161,10 @@ body {
     width: 700px;
   }
 }
+
+.person-list-item {
+  margin: 5px;
+  background-color: darkslategrey;
+  padding: 5px;
+  border-radius: 4px;
+};
