@@ -112,8 +112,9 @@
 //         // document.getElementById(target).innerHTML = generatedHtmlString;
 
 //         var generatedHTML = "";
+//         var template = new Template();
 //         dataArray.forEach(function(object) {
-//             generatedHTML += DOMUtils.templates['template_'+templateIndex](object);
+//             generatedHTML += template['template_'+templateIndex](object);
 //         });
 //         document.getElementById(target).innerHTML = generatedHTML;
 //     },
@@ -130,24 +131,25 @@
 //     //         'employee-list'
 //     //     )
 //     // }
-//     templates : {
-//         template_0 : function(employee) {
-//             return ['<div class="person-list-item col-md-12">',
-//                         '<div class="col-md-4">',
-//                             '<h4>'+employee.name+'</h4>',
-//                         '</div>',
-//                         '<div class="col-md-4">',
-//                             '<label>Title</label>',
-//                             '<p>'+employee.title+'</p>',
-//                         '</div>',
-//                         '<div class="col-md-4">',
-//                             '<label>Salary</label>',
-//                             '<p>'+employee.salary+' gbh</p>',
-//                         '</div>',
-//                     '</div>'].join('');
-//         }
-//     }
 // };
+// var Template = function() {};
+// Template.prototype = {
+// 	template_0 : function(employee) {
+// 		return ['<div class="person-list-item col-md-12">',
+// 					'<div class="col-md-4">',
+// 						'<h4>'+employee.name+'</h4>',
+// 					'</div>',
+// 					'<div class="col-md-4">',
+// 						'<label>Title</label>',
+// 						'<p>'+employee.title+'</p>',
+// 			        '</div>',
+// 			        '<div class="col-md-4">',
+// 				        '<label>Salary</label>',
+// 				        '<p>'+employee.salary+' gbh</p>',
+// 				    '</div>',
+// 				'</div>'].join('');
+// 	}	
+// }
 // DOMUtils.loadAssets([
 //     {
 //         source : "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css",
