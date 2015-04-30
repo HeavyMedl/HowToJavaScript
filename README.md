@@ -604,3 +604,218 @@ insertPics : function(arrayOfNames) {
 
 Now that your function is revised with the correct index, refresh the page. Wow, that's an excellent line up.
 
+#Module 5: Asynchronous JavaScript and XML (AJAX)
+
+This module will explain how to use a group of web development techniques called **AJAX**.
+
+ "With AJAX, web applications can send data to and retrieve from a server asynchronously (in the background) without interfering with the display and behavior of the existing page. Data can be retrieved using the **XMLHttpRequest** object." -Wikipedia
+
+"XMLHttpRequest is a JavaScript object that was designed by Microsoft and adopted by Mozilla, Apple, and Google.  XMLHttpRequest can be used to retrieve any type of data, not just XML, and it supports protocols other than HTTP (including file and ftp)." -Mozilla Developer Network
+
+AJAX presents us with a convenient way to make seamless transitions between divisions of content on a web page or to display relevant data to our users without breaking the perceived continuity of our web application. When I say "perceived continuity" I mean the uninterrupted *flow* (or fluidity) of our web application. 
+
+Some newer web applications are opting for the **single-page application** (SPA) approach, where all the necessary code (HTML, JavaScript, CSS) is retrieved on a single page load or all of the relevant resources are dynamically loaded when needed. AJAX helps accomplish this.
+
+For example, when you navigate to `http://127.0.0.1:3000/intern`, your browser brings in the following assets: `intern.html` and `intern.js`. We end up including the additional assets with our `loadAssets` function defined in `intern.js` module `DOMUtils`. Those include our cascading style sheets (CSS): `bootstrap.min.css` and `cover.css`; JavaScript: `jquery.min.js` and `bootstrap.min.js`. Even though we're dynamically including those files, conceptually, this all happens in one load *cycle*.
+
+Notice that `intern.html` has a *Features* tab. If we defined a page for Features, the URL might look like `http://127.0.0.1:3000/features`. You'd then want to define a `features.html` to correspond with that route, which would be the logical place to put your "features" section. You'd have a structure like this:
+
+**features.html** (you don't have to make this)
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Costco Internship Workspace</title>
+  </head>
+  <body>
+    <div class="site-wrapper">
+      <div class="site-wrapper-inner">
+        <div class="cover-container">
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand">Features</h3>
+              <nav>
+                <ul class="nav masthead-nav">
+                  <li><a href="#">Home</a></li>
+                  <li class="active"><a href="#">Features</a></li>
+                  <li><a href="#">Contact</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+          <div class="inner cover">
+            <h1 class="cover-heading">Features</h1>
+            <p id='lead-text' class="lead">
+	            I am a unique snowflake. I have great features.
+	        </p>
+          </div>
+          <div class="mastfoot">
+            <div class="inner">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src='/js/intern.js' async></script>
+  </body>
+</html>
+
+```
+
+This HTML would be served up to users by your web server when they navigated to `http://127.0.0.1:3000/features`. `features.html` is nearly identical to `intern.html`. Transitioning to `features.html` might imply the following:
+
+- I need at least some of the same scripts I used in `/intern` to perform tasks for the `/features` section (`jquery.min.js`,`bootstrap.min.js` and `intern.js`).
+
+- I need at least some of the same stylesheets I used in `/intern` to make the `/features` section look pretty (`bootstrap.min.css` and `cover.css`).
+
+- I might need unique stylesheets and/or scripts for the `/features` section.
+
+If you DO need any of the same stylesheets or scripts between sections and you naively serve the above HTML, you'll force your client (the end user) to make additional requests to resources they already requested and received before. You're also forcing your own server to serve more resources. Even if you have properly set up **client-side caching**, your client at least has to re-render and reinitialize those assets. 
+
+If the majority of the `features.html` is exactly the same except the meat of the hamburger, we should serve what some call a *partial* view using AJAX.
+
+Here the only things that *really* changed in `features.html` were
+
+```html
+<h1 class="cover-heading">Features</h1>
+<p id='lead-text' class="lead">
+	I am a unique snowflake. I have great features.
+</p>
+```
+and the `active` class attached to the "features" list item.
+
+First we need create the actual HTML (what we're calling a *partial*) that we'll serve the user when they perform some action. I've included this HTML in the project directory under `views/partials/home.html` and `views/partials/features.html`.
+
+Second let's look at the XMLHttpRequest JavaScript object and see what we'll need to use. At a minimum, we need to do four things.
+
+We need to **create** a XMLHttpRequest object. We need to **open** (or initialize) the request. We need to define a **callback function** to tell the XMLHttpRequest object what to do with the retrieved resource. We need to **send** the request to our server to fetch the resource.
+
+1. **Create**: 
+
+	```js
+	var request = new XMLHttpRequest();
+	```
+2. **Open**:
+
+	```js
+	request.open('GET', '/views/partials/features')
+	```
+3. **Callback**:
+	
+	```js
+	request.onload(function() { /* do something with fetched resource */ });
+	```
+
+4. **Send**:
+	
+	```js
+	request.send();
+	```
+	
+Thats it! This will send a request to our server to grab `/views/partials/features.html`. Now lets actually implement this:
+
+###Task 1: Use AJAX to replace the HTML inside `intern.html` with the partial `features.html`.
+---
+We could simply create a function that encapsulated the entire process of making a AJAX request in addition to calling our unique callback function to replace the meat of the HTML with our partial like so:
+
+```js
+getPartial : function(partial) {
+	// 1. Create
+	var request = new XMLHttpRequest();
+	
+	// 2. Open
+	request.open('GET', '/views/partials/'+partial);
+	
+	// 3. Callback
+	request.onload = function() {
+		// Test if our request was successful
+		if (request.status >= 200 && request.status < 400) {
+			var partialHtmlString = request.responseText;
+			var meat = document.getElementsByClassName('inner cover')[0];
+			meat.innerHTML = partialHtmlString;
+		} else {
+			// Server responded with an error status.
+			console.log('Error retrieving partial');        
+		}
+	};
+	// 4. Send
+	request.send();
+}
+```
+This would send a request to the `partial` route and our server is set up to respond with the corresponding HTML. The function looks good but its not reusable! We've **hard coded** a relative URL path in our `request.open` function. Take a look:
+
+```js
+request.open('GET', '/views/partials/'+partial)
+```
+`'/views/partials/'` is a relative path. We'll never be able to use the `XMLHttpRequest` object in a different way even if we wanted to. Its better to generalize this function a little so that we can reuse the `XMLHttpRequest` object without having to duplicate our code. Here we're defining these functions on the `DOMUtils` module.
+
+```js
+// Reusable AJAX request function
+ajaxRequest : function(method, path, callback) {
+	var request = new XMLHttpRequest();
+	request.open(method, path);
+	request.onload = callback;
+	request.send();
+}
+
+// Specific getPartial function that utilizes ajaxRequest
+getPartial : function(partial) {
+	DOMUtils.ajaxRequest('GET', '/views/partials/'+partial, function(event) {
+		if (this.status >= 200 && this.status < 400) {
+			var partialHtmlString = this.responseText;
+			var meat = document.getElementsByClassName('inner cover')[0];
+			meat.innerHTML = partialHtmlString;
+		} else {
+			console.log('Error retrieving partial');        
+		} 
+	});
+}
+```
+`ajaxRequest` is an example of a **higher-order function**. 
+
+In mathematics and computer science, a higher-order function (also functional form, functional or functor) is a function that does at least one of the following:
+
+-	takes one or more functions as an input
+-	outputs a function
+
+As you can see by its signature, `ajaxRequest(method, path, callback)` takes a function, `callback` as an input. This allows us to generalize functions that we create so we can get great reuse out of them.
+
+If you call `DOMUtils.getPartial('features');` in the console, you'll see that the middle section (the meat) of our *layout* gets the partial `features.html` in place of the original HTML.
+
+This is considerably more efficient than simply defining an almost duplicate HTML file called `features.html`, giving it the `/features` route and forcing the user to re-download and re-process those assets (CSS, JavaScript, HTML). Especially if our `features.html` only replaces the meat of the layout.
+
+Whats left is to attach an event to our `Home`, `Features` and `Contact` tabs in `intern.html` to give the user a visual indicator as to what he/she is looking at.
+
+###Task 2: Interactive Tabs
+---
+Lets define a function that leverages our `getPartial` function when the user clicks `Home`, `Features` or `Contact` on the `DOMUtils` module.
+
+```js
+bindNavigation : function() {
+	var tabs = document.getElementsByClassName('masthead-nav')[0].children
+	var getPartial = function() {
+		DOMUtils.getPartial(this.id);
+		DOMUtils.makeActive(this);
+		// History is defined Globally. It'll replace the URL with the page title.
+		history.replaceState( {} , '', '/'+this.id );
+	}
+	for (var i = 0; i < tabs.length; i++){
+		tabs[i].addEventListener('click', getPartial);
+	}
+},
+makeActive : function(element) {
+	// remove the active class (the underline thingy) from all tabs
+	var tabs = element.parentElement.children;
+	for (var i = 0; i < tabs.length; i++) {
+		tabs[i].classList.remove('active');
+	}
+	element.classList.add('active');
+}
+```
+
+Lastly, make a call to `DOMUtils.bindNavigation` in your `DOMUtils.jqueryLoaded` function so that it gets called when the page loads. Now refresh `http://127.0.0.1:3000/intern` and watch your navigation work.
