@@ -588,17 +588,17 @@ For me this line is line number 64. Simply click on the line number 64. You'll s
 
 "A point in a program that, when reached, triggers some special behavior useful to the process of debugging; generally, breakpoints are used to either pause program execution, and/or dump the values of some or all of the program variables." -dictionary.com
 
-![debug-0](/imgs/debug-0.png)
+![debug-0](http://i.imgur.com/fewHlCL.png)
 
 That's exactly what we're about to do. We're going to pause program execution for the purpose of seeing whats going wrong with our function. Refresh the page and observe the program execution *breaking* on our breakpoint. 
 
-![debug-1](/imgs/debug-1.png)
+![debug-1](http://i.imgur.com/HNV5uvG.png)
 
 Now that the program execution has stopped, we can check out the variables that are in scope during the while the function is being called. In the above picture, I'm hovering over the parameter `arrayOfNames`. Clearly, we can see Chuck is in the array but his picture isn't being displayed.
 
 Set another breakpoint inside the for loop. For me thats line 66. 
 
-![debug-2](/imgs/debug-2.png)
+![debug-2](http://i.imgur.com/kAhG5FU.png)
 
 In the top right of the debugger you'll see a green "play" button. Clicking it makes the script resume execution. We can assume line 64 is cool because its just a variable holding an empty string, `var html = "";`. No problem there. Click the "play" button. Now we're inside the for loop. Lets take a peak at what variables are in scope. 
 
@@ -610,7 +610,7 @@ We see that `i` returns 1. This is expected, we set it to 1 to start the loop. W
 
 Cool we found the bug. We need to first disable or remove our breakpoints before revising our function. Do this by right clicking and selecting "Remove All Breakpoints" from the breakpoints pane on the right side of the debugger.
 
-![debug-3](/imgs/debug-3.png)
+![debug-3](http://i.imgur.com/aLwRHkX.png)
 
 After this, hit the play button one more time to allow the script execution to finish. Man I need to see Chuck. Lets revise that function, NOW!
 
@@ -1022,7 +1022,7 @@ Notice we're creating yet *another* dependency on somebody's library. After this
 	```  
 Now refresh `http://127.0.0.1:3000/intern` to see your list represented in HTML
 
-![template.png](/imgs/template.png)
+![template.png](http://i.imgur.com/c68olJZ.png)
 
 Play around with inserting different data into your utility function by changing the data object to see different employees.
 
