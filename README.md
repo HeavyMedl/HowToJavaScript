@@ -259,3 +259,160 @@ I'm one of those weird elitists who likes performance, however, I'll admit that 
 3. Write a function, `changeLead(text)` using the jQuery selector to change the lead text inside `intern.html` from `Will you please style me? I feel so naked without my styles.` to `I have my styles now, I'm so comfy and warm`.
 
 4. Create a Object Literal Module to encapsulate your `getFile` and `changeLead` functions. Call the Object `DOMUtils`. Experiment calling your `changeLead` function from the `DOMUtils` module.
+
+#Module 2: Dependencies and Load Order
+
+This module will discuss the importance of loading JavaScript assets in the right order based on their dependencies. A JavaScript dependency means that your script is *dependent* on a particular JavaScript asset to be loaded before running correctly. This is an important thought to keep in your mind while you develop your application as having access to your dependencies is essential.
+
+So far our `intern.js` file should look something like this:
+
+```js
+var SumModule = {
+	sumSeries : function(n) {
+		var total = 0;
+		for (var i = 0; i <= n; i++) {
+			total += i;
+		}
+		return total;
+	},
+	sumOddSeries : function(n) {
+		var total = 0;
+		for (var i = 0; i <= n; i++) {
+			if (i % 2 == 1) {
+				total += i;
+			}
+		}
+		return total;
+	}
+}
+var DOMUtils = {
+	getFile : function(source, type) {
+	    var head = document.getElementsByTagName('head')[0],
+		    element = null;
+		if (type == 'css') {
+		    element = document.createElement('link'); 
+		    element.type = 'text/css';
+		    element.rel = 'stylesheet';
+		    element.href = source;
+		} else {
+			element = document.createElement('script');
+			element.src = source; 
+		}
+		head.appendChild(element);  
+	},
+	changeLead : function(text) {
+		$('#lead-text').html(text);
+	}
+}
+```
+
+Can you spot the dependency? Because the `changeLead` function leverages jQuery, it is *dependent* on jQuery being loaded to your page before it can be executed. So what do we do? The simple answer is to *not* use jQuery but that's slightly naive to assume you'll not need to use it. Especially if you're coming onto Costco (or some other company) that does leverage jQuery. Lets make a small loader function that can load all of our assets in the proper order.
+
+###Task 1: Create a loader for loading our dependencies
+---
+An **Array** in JavaScript is a data structure that can hold a series of multi-value elements. We make arrays in a couple of different ways.
+```js
+// Using the Array constructor - looks similar to Java
+var coolDudes = new Array("Chuck Norris", "Bruce Lee");
+
+// Using Array literal notation - equivalent to the above; just short hand
+var coolDudes = ["Chuck Norris", "Bruce Lee"];
+
+// Implicitly creating an array - the function `split` returns an array.
+var stringOfDudes = "Chuck Norris-Bruce Lee";
+var coolDudes = stringOfDudes.split('-');
+```
+
+We need to define a new function that we can call when we arrive at our web application (`intern.html`). I'm sick of having to call our function `getFile` every time I want to look at our pretty version of `intern.html`. 
+
+1. Define a function on `DOMUtils` called `loadAssets(assets)` that accepts an array of objects that will represent our list of  assets that we need to load.
+
+	```js
+	loadAssets : function(assets) {
+		// get our assets
+	}
+	```
+		
+We need to once again refactor our `getFile` function so that it accepts an **Event Listener**. *Events* are "things" that happen to HTML elements. When JavaScript is used in HTML pages, JavaScript can "react" on these events. We're going to leveraging the native function, `document.addEventListener` to attach a "onload" event to the assets we dynamically fetch with our `getFile` function.
+
+In this context, we need to make sure that jQuery is loaded before we do anything that involves calling the `changeLead` function as part of our script.  Refactor your `getFile` function to accept a **callback** function and to use `document.addEventListener`.
+
+```js
+// Delta (change) to parameters list
+getFile : function(source, type, callback) { 
+    var head = document.getElementsByTagName('head')[0],
+	    element = null;
+	if (type == 'css') {
+	    element = document.createElement('link'); 
+	    element.type = 'text/css';
+	    element.rel = 'stylesheet';
+	    element.href = source;
+	} else {
+		element = document.createElement('script');
+		// Delta - adding load event if the callback gets passed.
+		if (typeof callback !== 'undefined') {
+			element.addEventListener('load', callback); 
+		}
+		element.src = source; 
+	}
+	head.appendChild(element);  
+}
+```
+
+"A callback function, also known as a higher-order function, is a function that is passed to another function (let’s call this other function “otherFunction”) as a parameter, and the callback function is called (or executed) inside the otherFunction. A callback function is essentially a pattern (an established solution to a common problem), and therefore, the use of a callback function is also known as a callback pattern." -javascriptissexy.com
+
+So this essentially sums up what we're doing with the *callback function*. We're literally calling our function `getFile` with three parameters: `source`, a string, `type`, a string, and `callback`, which is a function. The callback function will get executed when the asset we've allocated into the `<head>` tells us, "Hey I'm done loading".
+
+Naturally we'll have to define the callback. Define it on the `DOMUtils` module.
+
+```js
+// We execute this function on the load event of an asset
+// We it fires, we're safe to execute our jQuery dependent function.
+jQueryLoaded : function() {
+	DOMUtils.changeLead("I have my styles now, I'm so comfy and warm");
+}
+```
+
+Now lets go back to our `loadAssets` function. We're going to pass an array of objects representing our assets to this guy. We know the parameter `assets` is an Array because we're defining it that way. We can then use functions on the `Array.prototype` Object to help us. In this instance, we'll use a **`forEach`** function on the `asset` array. Its really just shorthand for using a **for loop**.
+
+```js
+loadAssets : function(assets) {
+	assets.forEach(function(assetObj) { 
+		DOMUtils.getFile(assetObj.source, assetObj.type, assetObj.callback);
+	});
+}
+```
+So how do we use this function? Well, remember `loadAssets` is going to take an *Array of Objects* which means it'll have a structure like this:
+
+```js
+var assets = 
+	[
+		{source: 'cdn endpoint', type: 'script or css', callback: DOMUtils.jQueryLoaded},
+		{source: 'cdn endpoint', type: 'script or css', callback: undefined},
+		... // more objects if we need them
+	]
+```
+We can create a variable called `assets` like the above or we can just call our function with the above data structure straight in our function's parameter. Finally.. lets load our assets. As a rule of thumb, I like to load my CSS assets vendor first. Meaning I load the Twitter Bootstrap CSS and then followed by my own CSS. This ensures that any customization in the styles of my application get rendered correctly.
+
+We wont apply a callback to any other resource aside from the jQuery one, which is the only one we really care about. Its the only dependency. Call this function at the bottom of your last line in `intern.js`. 
+
+```js
+DOMUtils.loadAssets([
+	{ 
+		source : "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css",
+		type : "css",
+		callback: undefined
+	},
+	{
+		source : "/css/cover.css",
+		type : "css",
+		callback: undefined
+	},
+	{
+		source : "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js",
+		type : "script",
+		callback : DOMUtils.jQueryLoaded
+	}
+]);
+``` 
+Now every time you refresh, you should see your pretty `intern.html` page without having to call `getFile` manually for each asset.
