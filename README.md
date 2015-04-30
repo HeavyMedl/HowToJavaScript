@@ -650,7 +650,7 @@ Notice that `intern.html` has a *Features* tab. If we defined a page for Feature
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Costco Internship Workspace</title>
+    <title>How To JavaScript</title>
   </head>
   <body>
     <div class="site-wrapper">
