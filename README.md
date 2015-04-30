@@ -13,11 +13,11 @@
 #####[Module 10: Google Maps API](#)
 
 <a name='module-0'/>
-#Module 0: Javascript Functions
+#Module 0: JavaScript Functions
 
- JavaScript has no relation to Java, it simply piggy backed off the popularity of Java during the 90's. The great thing about JavaScript (and most object oriented languages) is that the language skills you develop while writing code end up transcending language barriers. You can use the object-oriented abstraction and apply it to other languages such as Java, JavaScript, C#, C++, Python, PHP, Ruby and Objective-C for example.
+ JavaScript has no relation to Java, it simply piggy backed off the popularity of Java during the 90's. One of great things about learning JavaScript (and similar object-oriented languages) is that the language skills you develop while writing code end up transcending language barriers. You can use the object-oriented abstraction and apply it to Java, C#, C++, Python, PHP, Ruby and Objective-C albeit a few language specific differences.
  
-In JavaScript, functions are the primary work horses of the language. They are roughly equivalent to **methods** in Java. Functions in JS are actually **Function Objects**. When you declare a function like this: 
+In JavaScript, functions are the primary work horses of the language. They are roughly equivalent to **methods** in Java. Functions in JavaScript are actually **Function Objects**. When you declare a function like this: 
 
 ```js
 // a. function declaration
@@ -29,27 +29,27 @@ function sum(a,b) {
 	return a+b;
 }
 ```
-You're actually creating an object of type Function. Your new function,  `sum`, is a Function Object. All Objects in JS have what is called a **prototype** object. Formally, JS implements **prototypal inheritance**; meaning when you create a Object, you inherit all of the functions and properties defined in the **prototypal chain** describing that Object. 
+You're actually creating an object of type Function. Your new function,  `sum`, is a Function Object. All Objects in JavaScript have what is called a **prototype** object as part of their makeup. Formally, JavaScript implements **prototypal inheritance**; meaning when you create a Object, you inherit all of the functions and properties defined on the **prototypal chain** of that Object's lineage. 
 
 ```js
 // sum --> Function.prototype --> Object.prototype --> null
 // null represents the end of the prototypal chain.
 ```
 
-Because you've created `sum`, which has the type *Function*, you now inherit all of the methods and properties defined on Function's prototypal chain. This includes Object.prototype because Function inherits from Object.  For example:
+Because you've created `sum`, which has the type *Function*, you now inherit all of the methods and properties defined on Function's prototypal chain. This includes the Object.prototype object because Function inherits from Object.  For example:
 
 ```js
 sum.length 
 // outputs 2 - The length property specifies the 
 // number of arguments expected by the function. 
-// Its defined on Function.prototype
+// It's defined on Function.prototype
 sum.hasOwnProperty()
-// outputs false - hasOwnProperty is defined in 
+// outputs false - hasOwnProperty is defined on 
 // Object.prototype. You have access to it because 
 // sum inherits from Object.prototype
 ```
 
-###Task 1: write a couple functions
+###Task 1: Write some functions
 ---
 
 1. Open a new tab in your browser and navigate to the URL `http://127.0.0.1:3000/intern`. You should land on the page that says, "Hello, Costco Intern!"
@@ -63,21 +63,21 @@ sum.hasOwnProperty()
 	// example output: sum(5) = 0+1+2+3+4+5 = 15
 	```
 		
-	**b.** Sum only odd numbers. Write a function that takes a single argument, an integer **n**, and successively sums the odd series of numbers (beginnign with 0) up until **n**.
+	**b.** Sum only odd numbers. Write a function that takes a single argument, an integer **n**, and successively sums the odd series of numbers (beginning with 0) up until **n**.
 	```js
 	// example output: sum(5) = 0+1+2+3+4+5 = 9
 	```
 	
-4. Test your functions by refreshing the page in your browser (url is `http://127.0.0.1:3000/intern`). Hit F12 in Google Chrome. This opens the Chrome Developer Tools. Now press `Ctrl+P` and type `intern.js`. Select this file and see your new functions defined in the interpreter. If the `console` (a place to type and call code) isn't open, in the top right, click `open drawer` and the `console` should appear. Type the name of your function and a give it a parameter:
+4. Test your functions by refreshing the page in your browser (url is `http://127.0.0.1:3000/intern`). Hit `F12` in Google Chrome. This opens the Chrome Developer Tools. Now press `Ctrl+P` and type `intern.js`. Select this file and see your new functions defined in the interpreter. If the `console` (a place to type and call code) isn't opened, on the top right of the Dev Tools click `open drawer` and the `console` should appear. Type the name of your function and a give it a parameter:
 
 	```js
 	kurtsSum(5) // = 15
 	```
 	
-###Task 2: move your functions into their own namespace
+###Task 2: Move your functions into their own namespace
 ---
 
-A namespace collision happens when a script happens to have the same name for an Object that a different script that you've loaded has.
+A namespace collision happens when the script interpreter has duplicate variable assignments defined by one or more scripts contained within your application.
 
 ```js
 // from script1.js
@@ -90,9 +90,11 @@ var work = function() {
 	// do some work
 }
 
-// namespace collision of the Function Object work between script1.js and script2.js. The interpreter may pick the wrong function when you call work();
+// namespace collision of the Function Object 
+// work defined in scripts `script1.js` and `script2.js`. 
+//The interpreter may pick the wrong function when you call work();
 ```
-Namespace collisions are a real hazard in a modern web application. We can limit these potential hazards by giving a unique namespace to a cohesive body of work. This effectively becomes a **module**. Costco's implementation of a modular pattern in its mobile project not only stops namespace collision but increases portability, readability, and gives a logical structure to a body of work.
+Namespace collisions are a real hazard in a modern web application. We can limit these potential hazards by giving a unique namespace to a cohesive body of work. This effectively becomes a **module**. Developers choose to use an assortment of different design patterns when writing JavaScript modules.  Any implementation of a modular pattern not only stops namespace collision but increases portability, readability, and gives a logical structure to a body of work.
 
 ```js
 var SumModule = {
@@ -109,7 +111,7 @@ This represents a **object literal** module pattern. We can now call our functio
 ```js
 SumModule.sumOfSeries(5) // outputs 15
 ```
-This is a logical structure for a module that has the functionality of summing a series of numbers in different ways.  The `{}` defines an Object. You can define properties on this Object. You can access these properties by using the reference `SumModule` and period `.`, followed by the name of the property you'd like to access.
+This is a logical structure for a module that has the functionality of summing a series of numbers in different ways.  The `{}` defines an Object literal. You can define properties on this Object. You can access these properties by using the reference `SumModule` and period `.`, followed by the name of the property you'd like to access.
 
 1. Move your functions into a object literal module with a unique namespace.
 
@@ -122,7 +124,7 @@ This is a logical structure for a module that has the functionality of summing a
  
 Google is sweet. We all know this. Google provides their own CDN for delivering commonly used assets to web developers. The above quote explains what a CDN is in a nutshell. Typically a server that is part of a CDN is *specialized* in delivering static assets. 
 
-Why would I want a file from somebody elses server? Simply put, requesting a resource from somebody else's web server means less work for your own web server. We're all about saving bandwidth in the web application business. It means less CPU usage, less third party's charge for caching, and ultimately, faster web applications. 
+Why would I want a file from somebody elses server? Simply put, requesting a resource from somebody else's web server means less work for your own web server. We're all about saving bandwidth in the web application business. It means less CPU usage, less third party's charge for fetching said assets, and ultimately, faster web applications. 
 
 Lets look at some common assets (CSS and JavaScript files) provided by Google:
 
@@ -136,12 +138,12 @@ https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css
 
 Similarly, when you click on this link, maxcdn returns you the CSS file you requested as a minified CSS file.
 
-What happens when you can't reach a remote file like the above two? Well, its good practice to keep a local copy that your own web server can serve to the user in case Google's URL breaks.  Typically a static file's relative path look something like this: `HowToJavaScript/js/intern.js`. `/js/` designates the JavaScript directory that we keep all of our JavaScript organized in.
+What happens when you can't reach a remote file like the above two? Well, its good practice to keep a local copy that your own web server can serve to the user in case Google's URL breaks.  Typically a static file's relative path will look something like this: `HowToJavaScript/js/intern.js`. `/js/` designates the JavaScript directory that we keep all of our JavaScript organized in.
 
-###Task 1: dynamically retrieving CSS from a CDN using JavaScript.
+###Task 1: Dynamically retrieving CSS from a CDN using JavaScript.
 ---
 
-So our `intern.html` page looks pretty ugly, right? We need to fetch the styles sheet (CSS) to support the front end framework we're leveraging named *Twitter Bootstrap*. Twitter Bootstrap was developed by.. Twitter developers and it offers a beautiful user interface (UI) for stylistically challenged developers like me. We have the proper HTML attributes in place, we just need the CSS and JavaScript. First the CSS, though.
+So our `intern.html` page looks pretty ugly, right? We need to fetch the styles sheet (CSS) to support the front end framework we're leveraging named *Twitter Bootstrap*. Twitter Bootstrap was developed by.. Twitter Bootstrap offers a beautiful user interface (UI) for stylistically challenged developers like me. We have the proper Bootstrap specific class attributes in our HTML, we just need the CSS and JavaScript. First the CSS, though.
 
 There are a couple of ways of doing this. Typically people like to include CSS directly in the `<head>` element of their HTML like this:
 
@@ -155,8 +157,9 @@ Although we don't do this on Costco.com/.ca, we're going to do it for our projec
 
 1. We need a function.
 	```js
-	// write this intern.js
-	// boilerplate empty function declaration with two parameters: source and type
+	// write this in intern.js
+	// boilerplate empty function declaration with 
+	// two parameters: source and type
 	function getFile(source, type) {
 	
 	}
@@ -190,11 +193,11 @@ Although we don't do this on Costco.com/.ca, we're going to do it for our projec
 	```
 	Sweet. You've essentially created a dynamic way of retrieving a CSS file from a `source` without blocking the rendering of the page
 
-4. Now we need to call our function using the CDN resource from step 2. Go to your workspace: `http://127.0.0.1:3000/intern` and refresh. Find our function by typing `CTRL+P` and then `intern.js`. You should see it defined. Now call the function from the `console`:
+4. Now we need to call our function using the CDN resource from step 2. Go to your workspace: `http://127.0.0.1:3000/intern` and refresh. Find our function by typing `F12`, `CTRL+P` and then `intern.js`. You should see it defined. Now call the function from the `console`:
 	```js
 	getFile('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css');
 	```
-Now that's a little better! The page doesn't look so newb anymore but its not perfect. If you `Right Click` and `Inspect Element`, find the `<head>` element and look closely you'll see that you've successfully allocated a style sheet. You should see this in the head:
+Now that's a little better! The page doesn't look so ugly anymore but its not perfect. If you `Right Click` and `Inspect Element`, find the `<head>`. Look closely and you'll see that you've successfully allocated a style sheet. You should see this in the head:
 	```html
 	<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 	```
@@ -202,9 +205,9 @@ This bootstrap template requires some more CSS not located in the CDN resource. 
 	```js
 	getFile('/css/cover.css');
 	```
-Damn, that's pretty.
+Wow, that's pretty.
 
-###Task 2: dynamically retrieving JavaScript from a CDN using JavaScript.
+###Task 2: Dynamically retrieving JavaScript from a CDN using JavaScript.
 ---
 
 Now that we have a pattern for retrieving CSS using our `getFile` function, lets reuse the same function to retrieve some JavaScript from a CDN.  Let's just go ahead and get jQuery. jQuery is a framework for *querying* the DOM using less characters in our code. For example:
@@ -217,7 +220,7 @@ Compare this to:
 
 ```js
 // Using the jQuery framework
-var element = $('#someElementId');
+var element = $('#someElementId')[0];
 ```
 
 The jQuery **selector** `$('')` is a powerful abstraction that can significantly reduce the amount of code a developer has to write to achieve something. The above example is trivial, however, because it doesn't really demonstrate the power of jQuery. Here's some HTML:
@@ -264,11 +267,11 @@ function getNames(className) {
 
 The jQuery selector allows you to select put the `li` element (the descendent of `<ul class='list'>`) directly in the selector aka `$('.list li')`. So you immediately have access to the list items. There is no need for the nested loop to retrieve the `li` elements.
 
-So why would you ever want to write native JavaScript? Because it executes **MUCH** faster! Fan boys will always argue readability of code and the expressivity jQuery offers over writing native JavaScript. They're right and wrong. Readability and expressivity are important, but so is performance. The end user is not a developer.
+So why would you ever want to write native JavaScript? Because it executes **MUCH** faster! Fan boys will always argue readability of code and the expressivity jQuery offers over writing native JavaScript. They're right and they're wrong. Readability and expressivity are important, but so is performance. The end user is not a developer.
 
-I'm one of those weird elitists who likes performance, however, I'll admit that learning JavaScript can more easily be learned by learning jQuery. So lets get it.
+I'm one of those elitists who likes performance. However, I'll admit that learning JavaScript can more easily be learned by learning jQuery. So lets get it.
 
-1. Refactor your `getFile(source, type)` function from the previous file to accept a type of either `'css'` or `'script'`. You'll need to use a Boolean conditional operator to check the value of the parameter `type` and adjust your code accordingly.
+1. Refactor your `getFile(source, type)` function from `intern.js` to accept a type of either `'css'` or `'script'`. You'll need to use a Boolean conditional operator to check the value of the parameter `type` and adjust your code accordingly.
 
 2. Now that your function is ready to append a script to the `<head>`, include jQuery using this CDN endpoint https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js.
 
@@ -323,26 +326,29 @@ var DOMUtils = {
 }
 ```
 
-Can you spot the dependency? Because the `changeLead` function leverages jQuery, it is *dependent* on jQuery being loaded to your page before it can be executed. So what do we do? The simple answer is to *not* use jQuery but that's slightly naive to assume you'll not need to use it. Especially if you're coming onto Costco (or some other company) that does leverage jQuery. Lets make a small loader function that can load all of our assets in the proper order.
+Can you spot the dependency? Because the `changeLead` function leverages jQuery, it is *dependent* on jQuery being loaded to your page before it can be executed. So what do we do? The simple answer is to *not* use jQuery but maybe that isn't a suitable solution based on your developmental needs. Maybe you just joined a team that does leverage jQuery. Lets make a small loader function that can load all of our assets in the proper order.
 
 ###Task 1: Create a loader for loading our dependencies
 ---
-An **Array** in JavaScript is a data structure that can hold a series of multi-value elements. We make arrays in a couple of different ways.
+An **Array** in JavaScript is a data structure that can hold a series of multi-valued elements. We can make arrays in a couple of different ways.
 ```js
-// Using the Array constructor - looks similar to Java
+// Using the Array constructor:
+// looks similar to Java
 var coolDudes = new Array("Chuck Norris", "Bruce Lee");
 
-// Using Array literal notation - equivalent to the above; just short hand
+// Using Array literal notation:
+// equivalent to the above; just short hand
 var coolDudes = ["Chuck Norris", "Bruce Lee"];
 
-// Implicitly creating an array - the function `split` returns an array.
+// Implicitly creating an array:
+// the function `split` returns an array.
 var stringOfDudes = "Chuck Norris-Bruce Lee";
 var coolDudes = stringOfDudes.split('-');
 ```
 
 We need to define a new function that we can call when we arrive at our web application (`intern.html`). I'm sick of having to call our function `getFile` every time I want to look at our pretty version of `intern.html`. 
 
-1. Define a function on `DOMUtils` called `loadAssets(assets)` that accepts an array of objects that will represent our list of  assets that we need to load.
+1. Define a function on `DOMUtils` called `loadAssets(assets)` that accepts an array of objects that will represent our list of assets that we need to load.
 
 	```js
 	loadAssets : function(assets) {
@@ -350,7 +356,7 @@ We need to define a new function that we can call when we arrive at our web appl
 	}
 	```
 		
-We need to once again refactor our `getFile` function so that it accepts an **Event Listener**. *Events* are "things" that happen to HTML elements. When JavaScript is used in HTML pages, JavaScript can "react" on these events. We're going to leveraging the native function, `document.addEventListener` to attach a "onload" event to the assets we dynamically fetch with our `getFile` function.
+We need to once again refactor our `getFile` function so that it accepts an **Event Listener**. *Events* are "things" that happen to HTML elements. When JavaScript is used in HTML pages, JavaScript can "react" on these events. We're going to leverage the native function, `document.addEventListener` to attach a "onload" event to the assets we dynamically fetch with our `getFile` function.
 
 In this context, we need to make sure that jQuery is loaded before we do anything that involves calling the `changeLead` function as part of our script.  Refactor your `getFile` function to accept a **callback** function and to use `document.addEventListener`.
 
@@ -409,9 +415,9 @@ var assets =
 		... // more objects if we need them
 	]
 ```
-We can create a variable called `assets` like the above or we can just call our function with the above data structure straight in our function's parameter. Finally.. lets load our assets. As a rule of thumb, I like to load my CSS assets vendor first. Meaning I load the Twitter Bootstrap CSS and then followed by my own CSS. This ensures that any customization in the styles of my application get rendered correctly.
+We can create a variable called `assets` like the above or we can just call our function with the above data structure straight in our function's parameter to save an unnecessary reference. Finally.. lets load our assets. As a rule of thumb, I like to load my CSS assets vendor first. Meaning I load the Twitter Bootstrap CSS and then followed by my own CSS. This ensures that any customization in the styles of my application get rendered correctly.
 
-We wont apply a callback to any other resource aside from the jQuery one, which is the only one we really care about. Its the only dependency. Call this function at the bottom of your last line in `intern.js`. 
+We wont apply a callback to any other resource aside from the jQuery one, which is the only one we really care about. Its the only dependency. Call this function on last line of `intern.js`. 
 
 ```js
 DOMUtils.loadAssets([
@@ -439,7 +445,7 @@ Now every time you refresh, you should see your pretty `intern.html` page withou
 
 **Asynchronous**: not going at the same rate and exactly together with something else, in particular.
 
-Well, that's ambiguous. Up until now, we've been loading our jQuery synchronously. The following example will demonstrate loading scripts synchronously. We need the Twitter Bootstrap JavaScript that comes with the framework to proceed further, so lets go ahead and pull that asset from a CDN. Our `DOMUtils` module is becoming more useful, right? I need to simply include it in my *array of objects* that is the parameter to our function `loadAssets`.
+Well, that's ambiguous. Up until now, we've been loading our jQuery asset synchronously. The following example will demonstrate loading scripts synchronously. We need the Twitter Bootstrap JavaScript that comes with the framework to proceed further, so lets go ahead and pull that asset from a CDN. Our `DOMUtils` module is becoming more useful, right? I need to simply include it in my *array of objects* that is the parameter to our function `loadAssets`.
 
 ```js
 DOMUtils.loadAssets([
@@ -465,7 +471,7 @@ DOMUtils.loadAssets([
     }
 ]);
 ```
-Cool. So this successfully loads the Twitter Bootstrap script and we now can take advantage of the numerous features that they offer. Lets switch the positions of the objects that represent jQuery and Bootstrap.
+Cool. So this successfully loads the Twitter Bootstrap script and we can now take advantage of the numerous features that it offers. Lets switch the positions of the objects that represent jQuery and Bootstrap.
 
 ```js
 	{
@@ -479,13 +485,13 @@ Cool. So this successfully loads the Twitter Bootstrap script and we now can tak
         callback : DOMUtils.jQueryLoaded
     }
 ```
-Open your Google Dev Tools using `F12` and selecting `open drawer` at the top right of the tools. Now refresh a couple times. Eventually you'll notice a JavaScript error thrown by Bootstrap that says:
+Open your Google Dev Tools using `F12`. Select `open drawer` at the top right of the tools. Now refresh a couple times. Eventually you'll notice a JavaScript error thrown by Bootstrap that says:
 
 `Uncaught Error: Bootstrap's JavaScript requires jQuery`
 
-We have a dependency issue. The easy solution is to keep your files in order starting vendor first. This isn't preferable, however. 
+We have a dependency issue. The easy solution is to keep your files in order starting vendor first. This isn't always preferable, however. 
 
-What happens if we want to load *everything* asynchronously? Why would you want to load everything asynchronously? Well if a third party vendor (like Google) goes down or is slow, your page won't be held up trying to load that resource. Loading your scripts asynchronously increases the speed in which your application loads by preventing **resource blocking**. 
+What happens if we want to load *everything* asynchronously? Why would you want to load everything asynchronously? Well if a vendor's CDN (like Google) goes down or is slow, your page won't be held up trying to load that resource. Loading your scripts asynchronously increases the speed in which your application loads by preventing **resource blocking**. 
 
 The solution is to attach a `async` attribute to the script element that you're dynamically allocating in `getFile`. The inherent problem with this method is that if we have two resources that are being fetched in parallel with no order associated, how do we guarantee that the dependency loads *before* the dependee? Here is one strategy:
 
@@ -496,11 +502,11 @@ The solution is to attach a `async` attribute to the script element that you're 
 	```js
 	element.async = true;
 	```
-2. Run the same `DOMUtils.loadAssets(...)`function a couple times by refreshing the page. This time, the order of the script objects don't matter, as we're running everything in parallel. You should eventually get the same error thrown by Twitter Bootstrap:
+2. Run the same `DOMUtils.loadAssets(...)`function a couple times by refreshing the page. This time, the order of the script objects doesn't matter, as we're running everything in parallel. You should eventually get the same error thrown by Twitter Bootstrap:
 
 	`Uncaught Error: Bootstrap's JavaScript requires jQuery`
 
-	The solution to this problem is to create a sort of synchronous load order of the asynchronous script assets. We need to first load jQuery, test to see if jQuery has indeed loaded, and then load Twitter Bootstrap's JavaScript.
+	The solution to this problem is to create a pseudo-synchronous load order of your asynchronous script assets. We need to first load jQuery, test to see if jQuery has indeed loaded, and then load Twitter Bootstrap's JavaScript. This is a necessary strategy because the Bootstrap script is *self-executing* and assumes jQuery's presence within your application when it executes.
 
 3. Remove the Twitter Bootstrap JavaScript object from your *array of objects* as part of the parameter to `loadAssets`. Modify the `jQueryLoaded` callback in the `DOMUtils` module so that we can test for jQuery's existence before we make a call to get the Twitter Bootstrap JavaScript.
 
@@ -517,7 +523,7 @@ The solution is to attach a `async` attribute to the script element that you're 
 	}
 	```
 	
-	Notice here that we're making an additional call to `loadAssets` as part of the callback function to the jQuery asset of the initially call to `loadAssets`:
+	Notice here that we're marking jQuery's callback property with the above function:
 	```js
 	 {
         source : "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js",
@@ -525,7 +531,7 @@ The solution is to attach a `async` attribute to the script element that you're 
         callback : DOMUtils.jQueryLoaded
     }
 	```
-We append the script (which has the asynchronous attribute) and when it loads,  jQuery as a module *exports* a **global variable** called `jQuery` and the short hand version, `$`. The `<script>`'s *event listener* `onload` calls our function, `jQueryLoaded`. We've modified our callback function `jQueryLoaded` to test for the existence of the global variable `jQuery`. If the object, `jQuery` exists, we're safe to load our dependent scripts! Thus we make another call to `loadAssets` to bring in our Twitter Bootstrap JavaScript. You should no longer get any dependency errors stemming from Bootstrap in the console. Our scripts are ready to rock.
+We append the script (which has the asynchronous attribute) and when it loads,  jQuery as a module *exports* a **global variable** called `jQuery` and the short hand version, `$`. The `<script>`'s *event listener* `onload` calls our function, `jQueryLoaded`. We've modified our callback function `jQueryLoaded` to test for the existence of the global variable `jQuery`. If the object `jQuery` exists, we're safe to load our dependent scripts! Thus we make another call to `loadAssets` to bring in our Twitter Bootstrap JavaScript. You should no longer get any dependency errors stemming from Bootstrap in the console. Our scripts are ready to rock.
 
 A quick note about global variables from w3schools: A variable declared outside a function, becomes GLOBAL. A global variable has global scope: All scripts and functions on a web page can access it.
 
@@ -544,7 +550,7 @@ We have a little bit of experience unit testing our own script `intern.js`. Reme
 
 The unit of source code, `loadAssets` was tested to see what would happen if switched that order. We determined there was a dependency error. This would have been a bug had we not corrected it then and there. 
 
-Say we didn't recognize the bug immediately and our script turned into 1000 lines of code. Sometimes the jQuery object did indeed export to the global scope before the Bootstrap script did and everything executed fine. Later down the line you notice that Bootstrap is sometimes throwing the dependency error. It may not be immediately apparent that the order in which you loaded those scripts using `loadAssets` was incorrect. This can become a headache to resolve.
+Say we didn't recognize the bug immediately and our script turned into 1000 lines of code. Sometimes the jQuery object did export to the global scope before the Bootstrap script and everything executed fine. Later down the line you notice that Bootstrap is sometimes throwing the dependency error. It may not be immediately apparent that the order in which you loaded those scripts using `loadAssets` was incorrect. This can become a headache to resolve.
 
 Lets say you've written a function that inserts some pictures into the DOM. Its part of the `DOMUtils` module. It might look something like this:
 
@@ -582,17 +588,17 @@ For me this line is line number 64. Simply click on the line number 64. You'll s
 
 "A point in a program that, when reached, triggers some special behavior useful to the process of debugging; generally, breakpoints are used to either pause program execution, and/or dump the values of some or all of the program variables." -dictionary.com
 
-![debug-0](http://i.imgur.com/fewHlCL.png)
+![debug-0](/imgs/debug-0.png)
 
 That's exactly what we're about to do. We're going to pause program execution for the purpose of seeing whats going wrong with our function. Refresh the page and observe the program execution *breaking* on our breakpoint. 
 
-![debug-1](http://i.imgur.com/HNV5uvG.png)
+![debug-1](/imgs/debug-1.png)
 
 Now that the program execution has stopped, we can check out the variables that are in scope during the while the function is being called. In the above picture, I'm hovering over the parameter `arrayOfNames`. Clearly, we can see Chuck is in the array but his picture isn't being displayed.
 
 Set another breakpoint inside the for loop. For me thats line 66. 
 
-![debug-2](http://i.imgur.com/kAhG5FU.png)
+![debug-2](/imgs/debug-2.png)
 
 In the top right of the debugger you'll see a green "play" button. Clicking it makes the script resume execution. We can assume line 64 is cool because its just a variable holding an empty string, `var html = "";`. No problem there. Click the "play" button. Now we're inside the for loop. Lets take a peak at what variables are in scope. 
 
@@ -604,7 +610,7 @@ We see that `i` returns 1. This is expected, we set it to 1 to start the loop. W
 
 Cool we found the bug. We need to first disable or remove our breakpoints before revising our function. Do this by right clicking and selecting "Remove All Breakpoints" from the breakpoints pane on the right side of the debugger.
 
-![debug-3](http://i.imgur.com/aLwRHkX.png)
+![debug-3](/imgs/debug-3.png)
 
 After this, hit the play button one more time to allow the script execution to finish. Man I need to see Chuck. Lets revise that function, NOW!
 
@@ -636,7 +642,7 @@ AJAX presents us with a convenient way to make seamless transitions between divi
 
 Some newer web applications are opting for the **single-page application** (SPA) approach, where all the necessary code (HTML, JavaScript, CSS) is retrieved on a single page load or all of the relevant resources are dynamically loaded when needed. AJAX helps accomplish this.
 
-For example, when you navigate to `http://127.0.0.1:3000/intern`, your browser brings in the following assets: `intern.html` and `intern.js`. We end up including the additional assets with our `loadAssets` function defined in `intern.js` module `DOMUtils`. Those include our cascading style sheets (CSS): `bootstrap.min.css` and `cover.css`; JavaScript: `jquery.min.js` and `bootstrap.min.js`. Even though we're dynamically including those files, conceptually, this all happens in one load *cycle*.
+For example, when you navigate to `http://127.0.0.1:3000/intern`, your browser brings in the following assets: `intern.html` and `intern.js`. We end up including the additional assets with our `loadAssets` function defined in `intern.js` module `DOMUtils`. Those include our cascading style sheets (CSS): `bootstrap.min.css` and `cover.css`; JavaScript: `jquery.min.js` and `bootstrap.min.js`. We're dynamically including those files. Conceptually, this all happens in one load *cycle*.
 
 Notice that `intern.html` has a *Features* tab. If we defined a page for Features, the URL might look like `http://127.0.0.1:3000/features`. You'd then want to define a `features.html` to correspond with that route, which would be the logical place to put your "features" section. You'd have a structure like this:
 
@@ -709,7 +715,7 @@ Here the only things that *really* changed in `features.html` were
 ```
 and the `active` class attached to the "features" list item.
 
-First we need create the actual HTML (what we're calling a *partial*) that we'll serve the user when they perform some action. I've included this HTML in the project directory under `views/partials/home.html` and `views/partials/features.html`.
+First we need create the actual HTML (what we're calling a *partial*) that we'll serve the user when they perform some action. I've included this HTML in the project directory under `views/partials/home.html`, `views/partials/contact.html`, and `views/partials/features.html`.
 
 Second let's look at the XMLHttpRequest JavaScript object and see what we'll need to use. At a minimum, we need to do four things.
 
@@ -737,7 +743,7 @@ We need to **create** a XMLHttpRequest object. We need to **open** (or initializ
 	request.send();
 	```
 	
-Thats it! This will send a request to our server to grab `/views/partials/features.html`. Now lets actually implement this:
+Thats it! This will send a request to our server asking it to grab `/views/partials/features.html`. Now lets actually implement this:
 
 ###Task 1: Use AJAX to replace the HTML inside `intern.html` with the partial `features.html`.
 ---
@@ -807,7 +813,7 @@ As you can see by its signature, `ajaxRequest(method, path, callback)` takes a f
 
 If you call `DOMUtils.getPartial('features');` in the console, you'll see that the middle section (the meat) of our *layout* gets the partial `features.html` in place of the original HTML.
 
-This is considerably more efficient than simply defining an almost duplicate HTML file called `features.html`, giving it the `/features` route and forcing the user to re-download and re-process those assets (CSS, JavaScript, HTML). Especially if our `features.html` only replaces the meat of the layout.
+This is considerably more efficient than simply defining an almost duplicate HTML file called `features.html`, assigning it to the `/features` route and forcing the user to re-download and re-process those assets (CSS, JavaScript, HTML). Especially if our `features.html` only replaces the meat of the layout.
 
 Whats left is to attach an event to our `Home`, `Features` and `Contact` tabs in `intern.html` to give the user a visual indicator as to what he/she is looking at.
 
@@ -821,7 +827,8 @@ bindNavigation : function() {
 	var getPartial = function() {
 		DOMUtils.getPartial(this.id);
 		DOMUtils.makeActive(this);
-		// History is defined Globally. It'll replace the URL with the page title.
+		// History is defined Globally. It'll replace 
+		// the URL with the partial title.
 		history.replaceState( {} , '', '/'+this.id );
 	}
 	for (var i = 0; i < tabs.length; i++){
@@ -843,7 +850,7 @@ Lastly, make a call to `DOMUtils.bindNavigation` in your `DOMUtils.jqueryLoaded`
 <a name='module-6'/>
 #Module 6: Templating 101
 
-*Templating* is a useful technique for mitigating the amount of static HTML you'll need for your web application. Instead of duplicating a bunch of HTML that has the same fundamental structure, you can create one template with your HTML structure and expose it using a templating framework that consumes the *dynamic* data.
+*Templating* is a useful technique for mitigating the amount of static HTML you may need for your web application. Instead of duplicating a bunch of HTML that has the same fundamental structure, you can create one HTML template and expose it using a templating framework that consumes the *dynamic* data.
 
 For example, if you have a piece of HTML that needs to be repeatedly used:
 
@@ -869,7 +876,7 @@ This *widget* represents an employee. Maybe you've hard coded this piece of HTML
 
 Underscore provides some very nifty functionality. If you read through their library, you'll see some cross-paradigm functions that can help you be very expressive with the way you write code. In addition, their templating is very elementary to implement. 
 
-First of all,  when we include underscore.js in our app `_`, or literally *underscore* is now a global variable that we can expose and use. Similary to `$` (`jQuery`), `_` has a bunch of functions defined on it's properties. In the below example we use `_.each`, which is essentially underscore's version of `Array.prototype.forEach`. It has an almost identical function definition. The `<%= %>` are tags used by underscore. It parses the content between these tags and allocates our dynamic object property value.
+First of all,  when we include underscore.js in our app `_`, or literally *underscore* is now a global variable that we can expose and use. Similary to `$` (`jQuery`), `_` has a bunch of functions defined as properties. In the below example we use `_.each`, which is essentially underscore's version of `Array.prototype.forEach`. It has an almost identical function definition. The `<%= %>` are tags used by underscore. It parses the content between these tags and allocates our dynamic object property value.
 
 There are three things we need to define to make use of this
 
@@ -896,7 +903,7 @@ There are three things we need to define to make use of this
 	>	This template looks a little funky because we need to loop through the *array of objects*. So we use the `_.each` to accomplish this. 
 
 
-2. The **data**: This will be an object containing a *property* with the name `employees` and the value being an *array of objects*. The array of objects represents the employees that you want to embed into your templates:
+2. The **data**: This will be an object containing a *property* with the name `employees` and the value of the property being an *array of objects*. The array of objects represents the employees that you want to embed into your templates:
 	
 	```js 
 	{
@@ -940,7 +947,7 @@ DOMUtils.loadAssets([
     }
 ]);
 ```
-Notice we're creating yet *another* dependency on somebody's library. After this example using underscore, we'll write our own very basic templating system and ditch underscore.
+Notice we're creating yet *another* dependency on somebody's library. After this example using underscore, we'll ditch it and write our own very basic templating system.
 
 1. Define a `buildTemplate` function in `DOMUtils` to initialize building our templates for when underscore loads:
 		
@@ -959,7 +966,7 @@ Notice we're creating yet *another* dependency on somebody's library. After this
 	```
 	This generalized function allows you to define `dataObj` (object containing the array of objects), the `templateName` (where the template is defined) and the `target` (where you want the template in the DOM) with each call.
 
-2. Create the template using an inline `<script>` tag within `intern.html`. Place this just before the `</body>` tag:
+2. Create the template using an inline `<script>` tag within `intern.html`. Place this code just before the `</body>` tag:
 
 	```html
 	<script type='text/template' id='employee-template'>
@@ -1015,7 +1022,7 @@ Notice we're creating yet *another* dependency on somebody's library. After this
 	```  
 Now refresh `http://127.0.0.1:3000/intern` to see your list represented in HTML
 
-![template.png](http://i.imgur.com/c68olJZ.png)
+![template.png](/imgs/template.png)
 
 Play around with inserting different data into your utility function by changing the data object to see different employees.
 
@@ -1101,7 +1108,7 @@ The same three things are needed in our own custom templating solution:
 
 	This time we'll define our template using just pure JavaScript. The structure of our template is basically the same, we just need a *string* representation of the HTML. We can do this using an array. 
 
-	Lets use a new design pattern that we haven't used before. Lets create a *templates* object using the **prototype pattern**. Similar to our *object literal* `DOMUtils` module, The prototype pattern allows you to encapsulate some unit of work while gaining the benefit of leveraging JavaScript's native support of prototypal inheritance. The prototypal object (for example `Function.prototype`) itself is used as a blueprint of each object that the **constructor** creates. Another benefit of this pattern is that defining a function on an object's prototype, all child instances of this object reference a single definition of the function. They don't make copies for each object instance.
+	Lets use a new design pattern that we haven't used before. Lets create a *templates* object using the **prototype pattern**. Similar to our *object literal* `DOMUtils` module, The prototype pattern allows you to encapsulate some unit of work while gaining the benefit of leveraging JavaScript's native support of prototypal inheritance. The prototype object (for example `Function.prototype`) itself is used as a blueprint of each object that the **constructor** creates. Another benefit of this pattern is that defining a function on an object's prototype, all child instances of this object reference a single definition of the function. They don't make copies for each object instance.
 
 	Lets create a constructor and a prototype for our new object.
 
@@ -1194,4 +1201,4 @@ Place the call to `buildTemplate` in the `jQueryLoaded` callback function:
     0, 'employee-list'
 );
 ```
- Refresh your `http://127.0.0.1:3000/intern` and watch your templating system work. You've just saved yourself another dependency, sped up your application's execution time, and made your client's experience a little better.
+ Refresh your `http://127.0.0.1:3000/intern` and watch your templating system work. You've just saved yourself a dependency, sped up your application's execution time, and made your client's experience a little better.
