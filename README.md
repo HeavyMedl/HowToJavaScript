@@ -7,7 +7,7 @@
 #####[Module 4: The Art of Debugging](#module-4)
 #####[Module 5: Asynchronous JavaScript and XML (AJAX)](#module-5)
 #####[Module 6: Templating 101](#module-6)
-#####[Module 7: Exposing JavaScript Object Notation (JSON)]()
+#####[Module 7: Exposing JavaScript Object Notation (JSON)](#)
 #####[Module 8: Design Patterns](#)
 #####[Module 9: Memory Management](#)
 #####[Module 10: Google Maps API](#)
