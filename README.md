@@ -512,3 +512,95 @@ We append the script (which has the asynchronous attribute) and when it loads,  
 A quick note about global variables from w3schools: A variable declared outside a function, becomes GLOBAL. A global variable has global scope: All scripts and functions on a web page can access it.
 
 Be careful of what you define as *global*. Namespace collisions happen when you have too many definitions in the global space. The best practice is to leverage the module pattern we've discussed.
+
+#Module 4: The Art of Debugging
+
+"Debugging is a methodical process of finding and reducing the number of bugs, or defects, in a computer program or a piece of electronic hardware, thus making it behave as expected. Debugging tends to be harder when various subsystems are tightly coupled, as changes in one may cause bugs to emerge in another." -Wikipedia
+
+This module will focus on every developer's favorite thing to do: finding and correcting mistakes in their own code. When you have many moving parts in your application, you're bound to unwittingly create a few bugs. The best advice someone told me was to **unit test** frequently as a strategy to prevent creating bugs in your application. The importance of unit testing cannot be understated.
+
+"**Unit testing** is a software testing method by which individual units of source code, sets of one or more computer program modules together with associated control data, usage procedures, and operating procedures, are tested to determine whether they are fit for use." -Google
+
+We have a little bit of experience unit testing our own script `intern.js`. Remember when we switched the order of the static scripts we were feeding our function `DOMUtils.loadAssets` and determined that loading the Bootstrap script synchronously before the jQuery script caused Bootstrap to throw a dependency error? That was actually a form of *unit testing*. 
+
+The unit of source code, `loadAssets` was tested to see what would happen if switched that order. We determined there was a dependency error. This would have been a bug had we not corrected it then and there. 
+
+Say we didn't recognize the bug immediately and our script turned into 1000 lines of code. Sometimes the jQuery object did indeed export to the global scope before the Bootstrap script did and everything executed fine. Later down the line you notice that Bootstrap is sometimes throwing the dependency error. It may not be immediately apparent that the order in which you loaded those scripts using `loadAssets` was incorrect. This can become a headache to resolve.
+
+Lets say you've written a function that inserts some pictures into the DOM. Its part of the `DOMUtils` module. It might look something like this:
+
+```js
+// We'll use jQuery to insert our HTML
+insertPics : function(arrayOfNames) {
+	var html = "";
+	for (var i = 1; i < arrayOfNames.length; i++) {
+		html += '<img height="140" width="140" src="/imgs/'+arrayOfNames[i]+'.jpg" class="img-thumbnail">'
+	}
+	$(html).insertAfter('.inner.cover');
+}
+``` 
+
+Put this function in your `jQueryLoaded` callback function and refresh the page.
+
+```js
+jQueryLoaded : function() {
+    if (typeof jQuery !== 'undefined') {
+	    DOMUtils.changeLead("I have my styles now, I'm so comfy and warm");
+        DOMUtils.loadAssets([{
+            source : "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js",
+            type : "script",
+            callback : undefined
+        }]);
+        DOMUtils.insertPics(['chuck','arnold','steven','jean']);
+    }
+}
+```
+Um? Excuse me I don't see his holiness Chuck Norris even though we called for the local resource `chuck.jpg` in the function! We have ourselves a bug and we want to exterminate it. Lets open our Chrome Dev Tools (`F12`) and locate our script (`CTRL+P` -> type `intern.js`). Locate our function `insertPics` in the file. Insert a breakpoint *inside* the function beginning on the the line
+```js
+var html = "";
+```
+For me this line is line number 64. Simply click on the line number 64. You'll see the number gets highlighted with a blue arrow. You've just inserted a **breakpoint**. 
+
+"A point in a program that, when reached, triggers some special behavior useful to the process of debugging; generally, breakpoints are used to either pause program execution, and/or dump the values of some or all of the program variables." -dictionary.com
+
+![debug-0](/imgs/debug-0.png)
+
+That's exactly what we're about to do. We're going to pause program execution for the purpose of seeing whats going wrong with our function. Refresh the page and observe the program execution *breaking* on our breakpoint. 
+
+![debug-1](/imgs/debug-1.png)
+
+Now that the program execution has stopped, we can check out the variables that are in scope during the while the function is being called. In the above picture, I'm hovering over the parameter `arrayOfNames`. Clearly, we can see Chuck is in the array but his picture isn't being displayed.
+
+Set another breakpoint inside the for loop. For me thats line 66. 
+
+![debug-2](/imgs/debug-2.png)
+
+In the top right of the debugger you'll see a green "play" button. Clicking it makes the script resume execution. We can assume line 64 is cool because its just a variable holding an empty string, `var html = "";`. No problem there. Click the "play" button. Now we're inside the for loop. Lets take a peak at what variables are in scope. 
+
+- `i` is our index. We use it to fetch the a ith element of our `arrayOfNames`. We set it to 1 initially following `var i = 1;` Type `i` in our console to see the value of i at this point in the loop.
+
+- `arrayOfNames[i]` represents the value of the element in `arrayOfNames` at position `i`. Type `arrayOfNames[i]` in the console to see the value of `arrayOfNames[i]` at this point in the loop.
+
+We see that `i` returns 1. This is expected, we set it to 1 to start the loop. We also see that `arrayOfNames[i]` returns `"arnold"` in the console. However, if we type `arrayOfNames`, we see that `"chuck"` actually precedes `"arnold"` in the list. This is because `"chuck"` is at the 0th index of the array. We need to set our index (`i`) in the loop to 0, not 1. This is called a **off-by-one-error (OBOE)**.
+
+Cool we found the bug. We need to first disable or remove our breakpoints before revising our function. Do this by right clicking and selecting "Remove All Breakpoints" from the breakpoints pane on the right side of the debugger.
+
+![debug-3](/imgs/debug-3.png)
+
+After this, hit the play button one more time to allow the script execution to finish. Man I need to see Chuck. Lets revise that function, NOW!
+
+Change the index in the for loop from `1` to `0`.
+
+```js
+// We'll use jQuery to insert our HTML
+insertPics : function(arrayOfNames) {
+	var html = "";
+	for (var i = 0; i < arrayOfNames.length; i++) {
+		html += '<img height="140" width="140" src="/imgs/'+arrayOfNames[i]+'.jpg" class="img-thumbnail">'
+	}
+	$(html).insertAfter('.inner.cover');
+}
+``` 
+
+Now that your function is revised with the correct index, refresh the page. Wow, that's an excellent line up.
+
