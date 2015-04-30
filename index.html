@@ -41,8 +41,6 @@
         <h1>
 <a id="module-0-javascript-functions" class="anchor" href="#module-0-javascript-functions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Module 0: Javascript Functions</h1>
 
-<hr>
-
 <p>JavaScript has no relation to Java, it simply piggy backed off the popularity of Java during the 90's. The great thing about JavaScript (and most object oriented languages) is that the language skills you develop while writing code end up transcending language barriers. You can use the object-oriented abstraction and apply it to other languages such as Java, JavaScript, C#, C++, Python, PHP, Ruby and Objective-C for example.</p>
 
 <p>In JavaScript, functions are the primary work horses of the language. They are roughly equivalent to <strong>methods</strong> in Java. Functions in JS are actually <strong>Function Objects</strong>. When you declare a function like this: </p>
@@ -64,11 +62,13 @@
 <p>Because you've created <code>sum</code>, which has the type <em>Function</em>, you now inherit all of the methods and properties defined on Function's prototypal chain. This includes Object.prototype because Function inherits from Object.  For example:</p>
 
 <div class="highlight highlight-js"><pre>sum.<span class="pl-c1">length</span> 
-<span class="pl-c">// outputs 2 - The length property specifies the number of arguments expected by the function. Its defined on Function.prototype</span>
+<span class="pl-c">// outputs 2 - The length property specifies the </span>
+<span class="pl-c">// number of arguments expected by the function. </span>
+<span class="pl-c">// Its defined on Function.prototype</span>
 sum.hasOwnProperty()
-<span class="pl-c">// outputs false - hasOwnProperty is defined in Object.prototype. You have access to it because sum inherits from Object.prototype</span></pre></div>
-
-<p>We won't be dealing with the prototypes because they require some experience to leverage.</p>
+<span class="pl-c">// outputs false - hasOwnProperty is defined in </span>
+<span class="pl-c">// Object.prototype. You have access to it because </span>
+<span class="pl-c">// sum inherits from Object.prototype</span></pre></div>
 
 <h3>
 <a id="task-1-write-a-couple-functions" class="anchor" href="#task-1-write-a-couple-functions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Task 1: write a couple functions</h3>
@@ -77,7 +77,7 @@ sum.hasOwnProperty()
 
 <ol>
 <li><p>Open a new tab in your browser and navigate to the URL <code>http://127.0.0.1:3000/intern</code>. You should land on the page that says, "Hello, Costco Intern!"</p></li>
-<li><p>Go into the folder structure <strong>CostcoInternshipJS</strong> and find <code>intern.js</code> here: <code>~\Desktop\CostcoInternshipJS\js\intern.js</code>. Also, find  <code>intern.html</code> here: <code>~\Desktop\CostcoInternshipJS\views\intern.html</code>. Open these in your favorite text editor. I love <em>Sublime Text</em> and <em>Notepad++</em>. You can easily google and get one of these editors.</p></li>
+<li><p>Go into the folder structure <strong>HowToJavaScript</strong> and find <code>intern.js</code> here: <code>~\Desktop\HowToJavaScript\js\intern.js</code>. Also, find  <code>intern.html</code> here: <code>~\Desktop\HowToJavaScript\views\intern.html</code>. Open these in your favorite text editor. I love <em>Sublime Text</em> and <em>Notepad++</em>. You can easily google and get one of these editors.</p></li>
 <li>
 <p>Below the comments in <code>intern.js</code>, define a couple functions that</p>
 
@@ -136,6 +136,1087 @@ sum.hasOwnProperty()
 <li><p>Move your functions into a object literal module with a unique namespace.</p></li>
 <li><p>In the Chrome Dev Tools, call your functions using the module that you made.</p></li>
 </ol>
+
+<h1>
+<a id="module-1-get-your-ass-ets-over-here" class="anchor" href="#module-1-get-your-ass-ets-over-here" aria-hidden="true"><span class="octicon octicon-link"></span></a>Module 1: Get your ass-ets over here.</h1>
+
+<p>"A <strong>content delivery network</strong> (<strong>CDN</strong>) is a system of distributed servers (network) that deliver webpages and other Web content to a user based on the geographic locations of the user, the origin of the webpage and a content delivery server." -Google</p>
+
+<p>Google is sweet. We all know this. Google provides their own CDN for delivering commonly used assets to web developers. The above quote explains what a CDN is in a nutshell. Typically a server that is part of a CDN is <em>specialized</em> in delivering static assets. </p>
+
+<p>Why would I want a file from somebody elses server? Simply put, requesting a resource from somebody else's web server means less work for your own web server. We're all about saving bandwidth in the web application business. It means less CPU usage, less third party's charge for caching, and ultimately, faster web applications. </p>
+
+<p>Lets look at some common assets (CSS and JavaScript files) provided by Google:</p>
+
+<p>Everybody and their mother uses this CDN asset: jQuery.
+<a href="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js</a></p>
+
+<p>If you click on the above link, you'll make a request to Google's ajax subdomain ajax.googleapis.com asking for the script <code>jquery.min.js</code>. Google will return the minified script as the response and you can then leverage a really nifty library known as jQuery. </p>
+
+<p>For good measure, here is a CSS file (Cascading Style Sheet) from a different CDN provider:
+<a href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css</a></p>
+
+<p>Similarly, when you click on this link, maxcdn returns you the CSS file you requested as a minified CSS file.</p>
+
+<p>What happens when you can't reach a remote file like the above two? Well, its good practice to keep a local copy that your own web server can serve to the user in case Google's URL breaks.  Typically a static file's relative path look something like this: <code>HowToJavaScript/js/intern.js</code>. <code>/js/</code> designates the JavaScript directory that we keep all of our JavaScript organized in.</p>
+
+<h3>
+<a id="task-1-dynamically-retrieving-css-from-a-cdn-using-javascript" class="anchor" href="#task-1-dynamically-retrieving-css-from-a-cdn-using-javascript" aria-hidden="true"><span class="octicon octicon-link"></span></a>Task 1: dynamically retrieving CSS from a CDN using JavaScript.</h3>
+
+<hr>
+
+<p>So our <code>intern.html</code> page looks pretty ugly, right? We need to fetch the styles sheet (CSS) to support the front end framework we're leveraging named <em>Twitter Bootstrap</em>. Twitter Bootstrap was developed by.. Twitter developers and it offers a beautiful user interface (UI) for stylistically challenged developers like me. We have the proper HTML attributes in place, we just need the CSS and JavaScript. First the CSS, though.</p>
+
+<p>There are a couple of ways of doing this. Typically people like to include CSS directly in the <code>&lt;head&gt;</code> element of their HTML like this:</p>
+
+<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">link</span> <span class="pl-e">rel</span>=<span class="pl-s"><span class="pl-pds">"</span>stylesheet<span class="pl-pds">"</span></span> <span class="pl-e">href</span>=<span class="pl-s"><span class="pl-pds">"</span>https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css<span class="pl-pds">"</span></span>&gt;</pre></div>
+
+<p>This is totally fine to do. When the HTML gets rendered by the browser, the styles will be included and things will look pretty. One small problem. This is a sort of speed bump that the browser has to get over before getting to the point where it tells our scripts: "Hey, I'm ready for you to manipulate me." (That's not weird, right?). The faster we can produce the document object model (the interpreted tree generated by the browser reading the HTML) to our scripts, the faster the speed of our web application. On top of the speed, Google will score your page higher based on this concept alone.</p>
+
+<p>Although we don't do this on Costco.com/.ca, we're going to do it for our project. I'll go through using native JavaScript to dynamically fetch a file that doesn't block the rendering process.</p>
+
+<ol>
+<li>
+<p>We need a function.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-c">// write this intern.js</span>
+<span class="pl-c">// boilerplate empty function declaration with two parameters: source and type</span>
+<span class="pl-k">function</span> <span class="pl-en">getFile</span>(<span class="pl-smi">source</span>, <span class="pl-smi">type</span>) {
+
+}</pre></div>
+</li>
+<li><p>We need the endpoint URL to the CDN asset that we want. In this case, its the bootstrap CSS file. The endpoint is <code>https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css</code>.</p></li>
+<li>
+<p>Define the body of the function.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-k">function</span> <span class="pl-en">getFile</span>(<span class="pl-smi">source</span>, <span class="pl-smi">type</span>) {
+    <span class="pl-c">// document.createElement creates a element of a specific tag</span>
+    <span class="pl-c">// In this case, we need a `link`.</span>
+    <span class="pl-k">var</span> element <span class="pl-k">=</span> <span class="pl-c1">document</span>.<span class="pl-c1">createElement</span>(<span class="pl-s"><span class="pl-pds">'</span>link<span class="pl-pds">'</span></span>);
+
+    <span class="pl-c">// Head is a reference to the &lt;head&gt; tag in the DOM.</span>
+    <span class="pl-k">var</span> head <span class="pl-k">=</span> <span class="pl-c1">document</span>.<span class="pl-c1">getElementsByTagName</span>(<span class="pl-s"><span class="pl-pds">'</span>head<span class="pl-pds">'</span></span>)[<span class="pl-c1">0</span>];
+
+    <span class="pl-c">// Set the link element's type attribute to 'text/css' </span>
+    element.<span class="pl-c1">type</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>text/css<span class="pl-pds">'</span></span>;
+
+    <span class="pl-c">// Set the link element's rel attribute to 'stylesheet'</span>
+    element.<span class="pl-c1">rel</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>stylesheet<span class="pl-pds">'</span></span>;
+
+    <span class="pl-c">// Set the link element's href attribute to `source` argument</span>
+    <span class="pl-c">// which is a dynamic parameter set when calling our function.</span>
+    element.<span class="pl-c1">href</span> <span class="pl-k">=</span> source;
+
+    <span class="pl-c">// Append (or insert) this element into the &lt;head&gt;</span>
+    head.<span class="pl-c1">appendChild</span>(element);  
+}</pre></div>
+
+<p>Sweet. You've essentially created a dynamic way of retrieving a CSS file from a <code>source</code> without blocking the rendering of the page</p>
+</li>
+<li>
+<p>Now we need to call our function using the CDN resource from step 2. Go to your workspace: <code>http://127.0.0.1:3000/intern</code> and refresh. Find our function by typing <code>CTRL+P</code> and then <code>intern.js</code>. You should see it defined. Now call the function from the <code>console</code>:</p>
+
+<div class="highlight highlight-js"><pre>getFile(<span class="pl-s"><span class="pl-pds">'</span>https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css<span class="pl-pds">'</span></span>);</pre></div>
+
+<p>Now that's a little better! The page doesn't look so newb anymore but its not perfect. If you <code>Right Click</code> and <code>Inspect Element</code>, find the <code>&lt;head&gt;</code> element and look closely you'll see that you've successfully allocated a style sheet. You should see this in the head:</p>
+
+<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">link</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/css<span class="pl-pds">"</span></span> <span class="pl-e">rel</span>=<span class="pl-s"><span class="pl-pds">"</span>stylesheet<span class="pl-pds">"</span></span> <span class="pl-e">href</span>=<span class="pl-s"><span class="pl-pds">"</span>https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css<span class="pl-pds">"</span></span>&gt;</pre></div>
+
+<p>This bootstrap template requires some more CSS not located in the CDN resource. The local file is located at: <code>HowToJavaScript/css/cover.css</code>. We need the file <code>cover.css</code> as well. Lets use our function</p>
+
+<div class="highlight highlight-js"><pre>getFile(<span class="pl-s"><span class="pl-pds">'</span>/css/cover.css<span class="pl-pds">'</span></span>);</pre></div>
+
+<p>Damn, that's pretty.</p>
+</li>
+</ol>
+
+<h3>
+<a id="task-2-dynamically-retrieving-javascript-from-a-cdn-using-javascript" class="anchor" href="#task-2-dynamically-retrieving-javascript-from-a-cdn-using-javascript" aria-hidden="true"><span class="octicon octicon-link"></span></a>Task 2: dynamically retrieving JavaScript from a CDN using JavaScript.</h3>
+
+<hr>
+
+<p>Now that we have a pattern for retrieving CSS using our <code>getFile</code> function, lets reuse the same function to retrieve some JavaScript from a CDN.  Let's just go ahead and get jQuery. jQuery is a framework for <em>querying</em> the DOM using less characters in our code. For example:</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-c">// Native JavaScript</span>
+<span class="pl-k">var</span> element <span class="pl-k">=</span> <span class="pl-c1">document</span>.<span class="pl-c1">getElementById</span>(<span class="pl-s"><span class="pl-pds">'</span>someElementId<span class="pl-pds">'</span></span>);</pre></div>
+
+<p>Compare this to:</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-c">// Using the jQuery framework</span>
+<span class="pl-k">var</span> element <span class="pl-k">=</span> $(<span class="pl-s"><span class="pl-pds">'</span>#someElementId<span class="pl-pds">'</span></span>);</pre></div>
+
+<p>The jQuery <strong>selector</strong> <code>$('')</code> is a powerful abstraction that can significantly reduce the amount of code a developer has to write to achieve something. The above example is trivial, however, because it doesn't really demonstrate the power of jQuery. Here's some HTML:</p>
+
+<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">div</span>&gt;
+    &lt;<span class="pl-ent">ul</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">'</span>list<span class="pl-pds">'</span></span>&gt;
+        &lt;<span class="pl-ent">li</span>&gt;Chuck Norris&lt;/<span class="pl-ent">li</span>&gt;
+        &lt;<span class="pl-ent">li</span>&gt;Bruce Lee&lt;/<span class="pl-ent">li</span>&gt;
+    &lt;/<span class="pl-ent">ul</span>&gt;
+&lt;/<span class="pl-ent">div</span>&gt;</pre></div>
+
+<p>The above data structure represents an unordered list of the names "Chuck Norris" and "Bruce Lee". Say I want to do something dumb like create a function that retrieves the names. I'll demonstrate this using native JavaScript and jQuery.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-c">// Native JavaScript function to return the names as an array that can be used later</span>
+<span class="pl-k">function</span> <span class="pl-en">getNames</span>(<span class="pl-smi">className</span>) {
+    <span class="pl-k">var</span> classList <span class="pl-k">=</span> <span class="pl-c1">document</span>.getElementsByClassName(className);
+    <span class="pl-k">var</span> names <span class="pl-k">=</span> [];
+    <span class="pl-k">for</span> (<span class="pl-k">var</span> i <span class="pl-k">=</span> <span class="pl-c1">0</span>; i <span class="pl-k">&lt;</span> classList.<span class="pl-c1">length</span>; i<span class="pl-k">++</span>) {
+        <span class="pl-k">var</span> listItems <span class="pl-k">=</span> classList[i].children;
+        <span class="pl-k">for</span> (<span class="pl-k">var</span> j <span class="pl-k">=</span> <span class="pl-c1">0</span>; j <span class="pl-k">&lt;</span> listItems.<span class="pl-c1">length</span>; j<span class="pl-k">++</span>) {
+            names.<span class="pl-c1">push</span>(listItems[j].innerHTML);
+        }
+    }
+    <span class="pl-k">return</span> names;
+}
+getNames(<span class="pl-s"><span class="pl-pds">'</span>list<span class="pl-pds">'</span></span>); <span class="pl-c">// returns an array of strings ["Chuck Norris", "Bruce Lee"]</span></pre></div>
+
+<p>Here you have a loop and a nested loop to do the simple task of retrieving those values. Compare that with the jQuery equivalent:</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-c">// jQuery implementation of the same function</span>
+<span class="pl-k">function</span> <span class="pl-en">getNames</span>(<span class="pl-smi">className</span>) {
+    <span class="pl-k">var</span> names <span class="pl-k">=</span> [];
+    $(<span class="pl-s"><span class="pl-pds">'</span>.<span class="pl-pds">'</span></span><span class="pl-k">+</span>className<span class="pl-k">+</span><span class="pl-s"><span class="pl-pds">'</span> li<span class="pl-pds">'</span></span>).each(<span class="pl-k">function</span>(<span class="pl-smi">i</span>, <span class="pl-smi">elem</span>) {
+        names.<span class="pl-c1">push</span>(elem.innerHTML);
+    });
+    <span class="pl-k">return</span> names;
+}
+</pre></div>
+
+<p>The jQuery selector allows you to select put the <code>li</code> element (the descendent of <code>&lt;ul class='list'&gt;</code>) directly in the selector aka <code>$('.list li')</code>. So you immediately have access to the list items. There is no need for the nested loop to retrieve the <code>li</code> elements.</p>
+
+<p>So why would you ever want to write native JavaScript? Because it executes <strong>MUCH</strong> faster! Fan boys will always argue readability of code and the expressivity jQuery offers over writing native JavaScript. They're right and wrong. Readability and expressivity are important, but so is performance. The end user is not a developer.</p>
+
+<p>I'm one of those weird elitists who likes performance, however, I'll admit that learning JavaScript can more easily be learned by learning jQuery. So lets get it.</p>
+
+<ol>
+<li><p>Refactor your <code>getFile(source, type)</code> function from the previous file to accept a type of either <code>'css'</code> or <code>'script'</code>. You'll need to use a Boolean conditional operator to check the value of the parameter <code>type</code> and adjust your code accordingly.</p></li>
+<li><p>Now that your function is ready to append a script to the <code>&lt;head&gt;</code>, include jQuery using this CDN endpoint <a href="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js</a>.</p></li>
+<li><p>Write a function, <code>changeLead(text)</code> using the jQuery selector to change the lead text inside <code>intern.html</code> from <code>Will you please style me? I feel so naked without my styles.</code> to <code>I have my styles now, I'm so comfy and warm</code>.</p></li>
+<li><p>Create a Object Literal Module to encapsulate your <code>getFile</code> and <code>changeLead</code> functions. Call the Object <code>DOMUtils</code>. Experiment calling your <code>changeLead</code> function from the <code>DOMUtils</code> module.</p></li>
+</ol>
+
+<h1>
+<a id="module-2-dependencies-and-load-order" class="anchor" href="#module-2-dependencies-and-load-order" aria-hidden="true"><span class="octicon octicon-link"></span></a>Module 2: Dependencies and Load Order</h1>
+
+<p>This module will discuss the importance of loading JavaScript assets in the right order based on their dependencies. A JavaScript dependency means that your script is <em>dependent</em> on a particular JavaScript asset to be loaded before running correctly. This is an important thought to keep in your mind while you develop your application as having access to your dependencies is essential.</p>
+
+<p>So far our <code>intern.js</code> file should look something like this:</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-k">var</span> SumModule <span class="pl-k">=</span> {
+    <span class="pl-en">sumSeries</span> : <span class="pl-k">function</span>(<span class="pl-smi">n</span>) {
+        <span class="pl-k">var</span> total <span class="pl-k">=</span> <span class="pl-c1">0</span>;
+        <span class="pl-k">for</span> (<span class="pl-k">var</span> i <span class="pl-k">=</span> <span class="pl-c1">0</span>; i <span class="pl-k">&lt;=</span> n; i<span class="pl-k">++</span>) {
+            total <span class="pl-k">+=</span> i;
+        }
+        <span class="pl-k">return</span> total;
+    },
+    <span class="pl-en">sumOddSeries</span> : <span class="pl-k">function</span>(<span class="pl-smi">n</span>) {
+        <span class="pl-k">var</span> total <span class="pl-k">=</span> <span class="pl-c1">0</span>;
+        <span class="pl-k">for</span> (<span class="pl-k">var</span> i <span class="pl-k">=</span> <span class="pl-c1">0</span>; i <span class="pl-k">&lt;=</span> n; i<span class="pl-k">++</span>) {
+            <span class="pl-k">if</span> (i <span class="pl-k">%</span> <span class="pl-c1">2</span> <span class="pl-k">==</span> <span class="pl-c1">1</span>) {
+                total <span class="pl-k">+=</span> i;
+            }
+        }
+        <span class="pl-k">return</span> total;
+    }
+}
+<span class="pl-k">var</span> DOMUtils <span class="pl-k">=</span> {
+    <span class="pl-en">getFile</span> : <span class="pl-k">function</span>(<span class="pl-smi">source</span>, <span class="pl-smi">type</span>) {
+        <span class="pl-k">var</span> head <span class="pl-k">=</span> <span class="pl-c1">document</span>.<span class="pl-c1">getElementsByTagName</span>(<span class="pl-s"><span class="pl-pds">'</span>head<span class="pl-pds">'</span></span>)[<span class="pl-c1">0</span>],
+            element <span class="pl-k">=</span> <span class="pl-c1">null</span>;
+        <span class="pl-k">if</span> (type <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">'</span>css<span class="pl-pds">'</span></span>) {
+            element <span class="pl-k">=</span> <span class="pl-c1">document</span>.<span class="pl-c1">createElement</span>(<span class="pl-s"><span class="pl-pds">'</span>link<span class="pl-pds">'</span></span>); 
+            element.<span class="pl-c1">type</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>text/css<span class="pl-pds">'</span></span>;
+            element.<span class="pl-c1">rel</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>stylesheet<span class="pl-pds">'</span></span>;
+            element.<span class="pl-c1">href</span> <span class="pl-k">=</span> source;
+        } <span class="pl-k">else</span> {
+            element <span class="pl-k">=</span> <span class="pl-c1">document</span>.<span class="pl-c1">createElement</span>(<span class="pl-s"><span class="pl-pds">'</span>script<span class="pl-pds">'</span></span>);
+            element.<span class="pl-c1">src</span> <span class="pl-k">=</span> source; 
+        }
+        head.<span class="pl-c1">appendChild</span>(element);  
+    },
+    <span class="pl-en">changeLead</span> : <span class="pl-k">function</span>(<span class="pl-smi">text</span>) {
+        $(<span class="pl-s"><span class="pl-pds">'</span>#lead-text<span class="pl-pds">'</span></span>).html(text);
+    }
+}</pre></div>
+
+<p>Can you spot the dependency? Because the <code>changeLead</code> function leverages jQuery, it is <em>dependent</em> on jQuery being loaded to your page before it can be executed. So what do we do? The simple answer is to <em>not</em> use jQuery but that's slightly naive to assume you'll not need to use it. Especially if you're coming onto Costco (or some other company) that does leverage jQuery. Lets make a small loader function that can load all of our assets in the proper order.</p>
+
+<h3>
+<a id="task-1-create-a-loader-for-loading-our-dependencies" class="anchor" href="#task-1-create-a-loader-for-loading-our-dependencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Task 1: Create a loader for loading our dependencies</h3>
+
+<hr>
+
+<p>An <strong>Array</strong> in JavaScript is a data structure that can hold a series of multi-value elements. We make arrays in a couple of different ways.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-c">// Using the Array constructor - looks similar to Java</span>
+<span class="pl-k">var</span> coolDudes <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Array</span>(<span class="pl-s"><span class="pl-pds">"</span>Chuck Norris<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Bruce Lee<span class="pl-pds">"</span></span>);
+
+<span class="pl-c">// Using Array literal notation - equivalent to the above; just short hand</span>
+<span class="pl-k">var</span> coolDudes <span class="pl-k">=</span> [<span class="pl-s"><span class="pl-pds">"</span>Chuck Norris<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Bruce Lee<span class="pl-pds">"</span></span>];
+
+<span class="pl-c">// Implicitly creating an array - the function `split` returns an array.</span>
+<span class="pl-k">var</span> stringOfDudes <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Chuck Norris-Bruce Lee<span class="pl-pds">"</span></span>;
+<span class="pl-k">var</span> coolDudes <span class="pl-k">=</span> stringOfDudes.<span class="pl-c1">split</span>(<span class="pl-s"><span class="pl-pds">'</span>-<span class="pl-pds">'</span></span>);</pre></div>
+
+<p>We need to define a new function that we can call when we arrive at our web application (<code>intern.html</code>). I'm sick of having to call our function <code>getFile</code> every time I want to look at our pretty version of <code>intern.html</code>. </p>
+
+<ol>
+<li>
+<p>Define a function on <code>DOMUtils</code> called <code>loadAssets(assets)</code> that accepts an array of objects that will represent our list of  assets that we need to load.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-en">loadAssets</span> : <span class="pl-k">function</span>(<span class="pl-smi">assets</span>) {
+    <span class="pl-c">// get our assets</span>
+}</pre></div>
+</li>
+</ol>
+
+<p>We need to once again refactor our <code>getFile</code> function so that it accepts an <strong>Event Listener</strong>. <em>Events</em> are "things" that happen to HTML elements. When JavaScript is used in HTML pages, JavaScript can "react" on these events. We're going to leveraging the native function, <code>document.addEventListener</code> to attach a "onload" event to the assets we dynamically fetch with our <code>getFile</code> function.</p>
+
+<p>In this context, we need to make sure that jQuery is loaded before we do anything that involves calling the <code>changeLead</code> function as part of our script.  Refactor your <code>getFile</code> function to accept a <strong>callback</strong> function and to use <code>document.addEventListener</code>.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-c">// Delta (change) to parameters list</span>
+<span class="pl-en">getFile</span> : <span class="pl-k">function</span>(<span class="pl-smi">source</span>, <span class="pl-smi">type</span>, <span class="pl-smi">callback</span>) { 
+    <span class="pl-k">var</span> head <span class="pl-k">=</span> <span class="pl-c1">document</span>.<span class="pl-c1">getElementsByTagName</span>(<span class="pl-s"><span class="pl-pds">'</span>head<span class="pl-pds">'</span></span>)[<span class="pl-c1">0</span>],
+        element <span class="pl-k">=</span> <span class="pl-c1">null</span>;
+    <span class="pl-k">if</span> (type <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">'</span>css<span class="pl-pds">'</span></span>) {
+        element <span class="pl-k">=</span> <span class="pl-c1">document</span>.<span class="pl-c1">createElement</span>(<span class="pl-s"><span class="pl-pds">'</span>link<span class="pl-pds">'</span></span>); 
+        element.<span class="pl-c1">type</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>text/css<span class="pl-pds">'</span></span>;
+        element.<span class="pl-c1">rel</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>stylesheet<span class="pl-pds">'</span></span>;
+        element.<span class="pl-c1">href</span> <span class="pl-k">=</span> source;
+    } <span class="pl-k">else</span> {
+        element <span class="pl-k">=</span> <span class="pl-c1">document</span>.<span class="pl-c1">createElement</span>(<span class="pl-s"><span class="pl-pds">'</span>script<span class="pl-pds">'</span></span>);
+        <span class="pl-c">// Delta - adding load event if the callback gets passed.</span>
+        <span class="pl-k">if</span> (<span class="pl-k">typeof</span> callback <span class="pl-k">!==</span> <span class="pl-s"><span class="pl-pds">'</span>undefined<span class="pl-pds">'</span></span>) {
+            element.addEventListener(<span class="pl-s"><span class="pl-pds">'</span>load<span class="pl-pds">'</span></span>, callback); 
+        }
+        element.<span class="pl-c1">src</span> <span class="pl-k">=</span> source; 
+    }
+    head.<span class="pl-c1">appendChild</span>(element);  
+}</pre></div>
+
+<p>"A callback function, also known as a higher-order function, is a function that is passed to another function (let’s call this other function “otherFunction”) as a parameter, and the callback function is called (or executed) inside the otherFunction. A callback function is essentially a pattern (an established solution to a common problem), and therefore, the use of a callback function is also known as a callback pattern." -javascriptissexy.com</p>
+
+<p>So this essentially sums up what we're doing with the <em>callback function</em>. We're literally calling our function <code>getFile</code> with three parameters: <code>source</code>, a string, <code>type</code>, a string, and <code>callback</code>, which is a function. The callback function will get executed when the asset we've allocated into the <code>&lt;head&gt;</code> tells us, "Hey I'm done loading".</p>
+
+<p>Naturally we'll have to define the callback. Define it on the <code>DOMUtils</code> module.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-c">// We execute this function on the load event of an asset</span>
+<span class="pl-c">// We it fires, we're safe to execute our jQuery dependent function.</span>
+<span class="pl-en">jQueryLoaded</span> : <span class="pl-k">function</span>() {
+    DOMUtils.changeLead(<span class="pl-s"><span class="pl-pds">"</span>I have my styles now, I'm so comfy and warm<span class="pl-pds">"</span></span>);
+}</pre></div>
+
+<p>Now lets go back to our <code>loadAssets</code> function. We're going to pass an array of objects representing our assets to this guy. We know the parameter <code>assets</code> is an Array because we're defining it that way. We can then use functions on the <code>Array.prototype</code> Object to help us. In this instance, we'll use a <strong><code>forEach</code></strong> function on the <code>asset</code> array. Its really just shorthand for using a <strong>for loop</strong>.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-en">loadAssets</span> : <span class="pl-k">function</span>(<span class="pl-smi">assets</span>) {
+    assets.forEach(<span class="pl-k">function</span>(<span class="pl-smi">assetObj</span>) { 
+        DOMUtils.getFile(assetObj.<span class="pl-c1">source</span>, assetObj.<span class="pl-c1">type</span>, assetObj.callback);
+    });
+}</pre></div>
+
+<p>So how do we use this function? Well, remember <code>loadAssets</code> is going to take an <em>Array of Objects</em> which means it'll have a structure like this:</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-k">var</span> assets <span class="pl-k">=</span> 
+    [
+        {source<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>cdn endpoint<span class="pl-pds">'</span></span>, type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>script or css<span class="pl-pds">'</span></span>, callback<span class="pl-k">:</span> DOMUtils.jQueryLoaded},
+        {source<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>cdn endpoint<span class="pl-pds">'</span></span>, type<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>script or css<span class="pl-pds">'</span></span>, callback<span class="pl-k">:</span> <span class="pl-c1">undefined</span>},
+        ... <span class="pl-c">// more objects if we need them</span>
+    ]</pre></div>
+
+<p>We can create a variable called <code>assets</code> like the above or we can just call our function with the above data structure straight in our function's parameter. Finally.. lets load our assets. As a rule of thumb, I like to load my CSS assets vendor first. Meaning I load the Twitter Bootstrap CSS and then followed by my own CSS. This ensures that any customization in the styles of my application get rendered correctly.</p>
+
+<p>We wont apply a callback to any other resource aside from the jQuery one, which is the only one we really care about. Its the only dependency. Call this function at the bottom of your last line in <code>intern.js</code>. </p>
+
+<div class="highlight highlight-js"><pre>DOMUtils.loadAssets([
+    { 
+        source <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css<span class="pl-pds">"</span></span>,
+        type <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>css<span class="pl-pds">"</span></span>,
+        callback<span class="pl-k">:</span> <span class="pl-c1">undefined</span>
+    },
+    {
+        source <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>/css/cover.css<span class="pl-pds">"</span></span>,
+        type <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>css<span class="pl-pds">"</span></span>,
+        callback<span class="pl-k">:</span> <span class="pl-c1">undefined</span>
+    },
+    {
+        source <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js<span class="pl-pds">"</span></span>,
+        type <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>script<span class="pl-pds">"</span></span>,
+        callback <span class="pl-k">:</span> DOMUtils.jQueryLoaded
+    }
+]);</pre></div>
+
+<p>Now every time you refresh, you should see your pretty <code>intern.html</code> page without having to call <code>getFile</code> manually for each asset.</p>
+
+<h1>
+<a id="module-3-synchronous-vs-asynchronous" class="anchor" href="#module-3-synchronous-vs-asynchronous" aria-hidden="true"><span class="octicon octicon-link"></span></a>Module 3: Synchronous vs. Asynchronous</h1>
+
+<p><strong>Asynchronous</strong>: not going at the same rate and exactly together with something else, in particular.</p>
+
+<p>Well, that's ambiguous. Up until now, we've been loading our jQuery synchronously. The following example will demonstrate loading scripts synchronously. We need the Twitter Bootstrap JavaScript that comes with the framework to proceed further, so lets go ahead and pull that asset from a CDN. Our <code>DOMUtils</code> module is becoming more useful, right? I need to simply include it in my <em>array of objects</em> that is the parameter to our function <code>loadAssets</code>.</p>
+
+<div class="highlight highlight-js"><pre>DOMUtils.loadAssets([
+    { 
+        source <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css<span class="pl-pds">"</span></span>,
+        type <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>css<span class="pl-pds">"</span></span>,
+        callback<span class="pl-k">:</span> <span class="pl-c1">undefined</span>
+    },
+    {
+        source <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>/css/cover.css<span class="pl-pds">"</span></span>,
+        type <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>css<span class="pl-pds">"</span></span>,
+        callback<span class="pl-k">:</span> <span class="pl-c1">undefined</span>
+    },
+    {
+        source <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js<span class="pl-pds">"</span></span>,
+        type <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>script<span class="pl-pds">"</span></span>,
+        callback <span class="pl-k">:</span> DOMUtils.jQueryLoaded
+    },
+    {
+        source <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js<span class="pl-pds">"</span></span>,
+        type <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>script<span class="pl-pds">"</span></span>,
+        callback <span class="pl-k">:</span> <span class="pl-c1">undefined</span>
+    }
+]);</pre></div>
+
+<p>Cool. So this successfully loads the Twitter Bootstrap script and we now can take advantage of the numerous features that they offer. Lets switch the positions of the objects that represent jQuery and Bootstrap.</p>
+
+<div class="highlight highlight-js"><pre>    {
+        source <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js<span class="pl-pds">"</span></span>,
+        type <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>script<span class="pl-pds">"</span></span>,
+        callback <span class="pl-k">:</span> <span class="pl-c1">undefined</span>
+    },
+    {
+        source <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js<span class="pl-pds">"</span></span>,
+        type <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>script<span class="pl-pds">"</span></span>,
+        callback <span class="pl-k">:</span> DOMUtils.jQueryLoaded
+    }</pre></div>
+
+<p>Open your Google Dev Tools using <code>F12</code> and selecting <code>open drawer</code> at the top right of the tools. Now refresh a couple times. Eventually you'll notice a JavaScript error thrown by Bootstrap that says:</p>
+
+<p><code>Uncaught Error: Bootstrap's JavaScript requires jQuery</code></p>
+
+<p>We have a dependency issue. The easy solution is to keep your files in order starting vendor first. This isn't preferable, however. </p>
+
+<p>What happens if we want to load <em>everything</em> asynchronously? Why would you want to load everything asynchronously? Well if a third party vendor (like Google) goes down or is slow, your page won't be held up trying to load that resource. Loading your scripts asynchronously increases the speed in which your application loads by preventing <strong>resource blocking</strong>. </p>
+
+<p>The solution is to attach a <code>async</code> attribute to the script element that you're dynamically allocating in <code>getFile</code>. The inherent problem with this method is that if we have two resources that are being fetched in parallel with no order associated, how do we guarantee that the dependency loads <em>before</em> the dependee? Here is one strategy:</p>
+
+<h3>
+<a id="task-1-load-your-assets-asynchronously" class="anchor" href="#task-1-load-your-assets-asynchronously" aria-hidden="true"><span class="octicon octicon-link"></span></a>Task 1: Load your assets asynchronously</h3>
+
+<hr>
+
+<ol>
+<li>
+<p>Revisit <code>DOMUtils.getFile(source, type, callback)</code> and for the condition where we're creating a <code>&lt;script&gt;</code> element, give the element an async attribute with value <code>true</code>.</p>
+
+<div class="highlight highlight-js"><pre>element.async <span class="pl-k">=</span> <span class="pl-c1">true</span>;</pre></div>
+</li>
+<li>
+<p>Run the same <code>DOMUtils.loadAssets(...)</code>function a couple times by refreshing the page. This time, the order of the script objects don't matter, as we're running everything in parallel. You should eventually get the same error thrown by Twitter Bootstrap:</p>
+
+<p><code>Uncaught Error: Bootstrap's JavaScript requires jQuery</code></p>
+
+<p>The solution to this problem is to create a sort of synchronous load order of the asynchronous script assets. We need to first load jQuery, test to see if jQuery has indeed loaded, and then load Twitter Bootstrap's JavaScript.</p>
+</li>
+<li>
+<p>Remove the Twitter Bootstrap JavaScript object from your <em>array of objects</em> as part of the parameter to <code>loadAssets</code>. Modify the <code>jQueryLoaded</code> callback in the <code>DOMUtils</code> module so that we can test for jQuery's existence before we make a call to get the Twitter Bootstrap JavaScript.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-en">jQueryLoaded</span> : <span class="pl-k">function</span>() {
+    <span class="pl-k">if</span> (<span class="pl-k">typeof</span> jQuery <span class="pl-k">!==</span> <span class="pl-s"><span class="pl-pds">'</span>undefined<span class="pl-pds">'</span></span>) {
+        DOMUtils.changeLead(<span class="pl-s"><span class="pl-pds">"</span>I have my styles now, I'm so comfy and warm<span class="pl-pds">"</span></span>);
+        DOMUtils.loadAssets([{
+            source <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js<span class="pl-pds">"</span></span>,
+            type <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>script<span class="pl-pds">"</span></span>,
+            callback <span class="pl-k">:</span> <span class="pl-c1">undefined</span>
+        }]);
+    }
+}</pre></div>
+
+<p>Notice here that we're making an additional call to <code>loadAssets</code> as part of the callback function to the jQuery asset of the initially call to <code>loadAssets</code>:</p>
+
+<div class="highlight highlight-js"><pre> {
+    source <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js<span class="pl-pds">"</span></span>,
+    type <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>script<span class="pl-pds">"</span></span>,
+    callback <span class="pl-k">:</span> DOMUtils.jQueryLoaded
+}</pre></div>
+
+<p>We append the script (which has the asynchronous attribute) and when it loads,  jQuery as a module <em>exports</em> a <strong>global variable</strong> called <code>jQuery</code> and the short hand version, <code>$</code>. The <code>&lt;script&gt;</code>'s <em>event listener</em> <code>onload</code> calls our function, <code>jQueryLoaded</code>. We've modified our callback function <code>jQueryLoaded</code> to test for the existence of the global variable <code>jQuery</code>. If the object, <code>jQuery</code> exists, we're safe to load our dependent scripts! Thus we make another call to <code>loadAssets</code> to bring in our Twitter Bootstrap JavaScript. You should no longer get any dependency errors stemming from Bootstrap in the console. Our scripts are ready to rock.</p>
+</li>
+</ol>
+
+<p>A quick note about global variables from w3schools: A variable declared outside a function, becomes GLOBAL. A global variable has global scope: All scripts and functions on a web page can access it.</p>
+
+<p>Be careful of what you define as <em>global</em>. Namespace collisions happen when you have too many definitions in the global space. The best practice is to leverage the module pattern we've discussed.</p>
+
+<h1>
+<a id="module-4-the-art-of-debugging" class="anchor" href="#module-4-the-art-of-debugging" aria-hidden="true"><span class="octicon octicon-link"></span></a>Module 4: The Art of Debugging</h1>
+
+<p>"Debugging is a methodical process of finding and reducing the number of bugs, or defects, in a computer program or a piece of electronic hardware, thus making it behave as expected. Debugging tends to be harder when various subsystems are tightly coupled, as changes in one may cause bugs to emerge in another." -Wikipedia</p>
+
+<p>This module will focus on every developer's favorite thing to do: finding and correcting mistakes in their own code. When you have many moving parts in your application, you're bound to unwittingly create a few bugs. The best advice someone told me was to <strong>unit test</strong> frequently as a strategy to prevent creating bugs in your application. The importance of unit testing cannot be understated.</p>
+
+<p>"<strong>Unit testing</strong> is a software testing method by which individual units of source code, sets of one or more computer program modules together with associated control data, usage procedures, and operating procedures, are tested to determine whether they are fit for use." -Google</p>
+
+<p>We have a little bit of experience unit testing our own script <code>intern.js</code>. Remember when we switched the order of the static scripts we were feeding our function <code>DOMUtils.loadAssets</code> and determined that loading the Bootstrap script synchronously before the jQuery script caused Bootstrap to throw a dependency error? That was actually a form of <em>unit testing</em>. </p>
+
+<p>The unit of source code, <code>loadAssets</code> was tested to see what would happen if switched that order. We determined there was a dependency error. This would have been a bug had we not corrected it then and there. </p>
+
+<p>Say we didn't recognize the bug immediately and our script turned into 1000 lines of code. Sometimes the jQuery object did indeed export to the global scope before the Bootstrap script did and everything executed fine. Later down the line you notice that Bootstrap is sometimes throwing the dependency error. It may not be immediately apparent that the order in which you loaded those scripts using <code>loadAssets</code> was incorrect. This can become a headache to resolve.</p>
+
+<p>Lets say you've written a function that inserts some pictures into the DOM. Its part of the <code>DOMUtils</code> module. It might look something like this:</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-c">// We'll use jQuery to insert our HTML</span>
+<span class="pl-en">insertPics</span> : <span class="pl-k">function</span>(<span class="pl-smi">arrayOfNames</span>) {
+    <span class="pl-k">var</span> html <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>;
+    <span class="pl-k">for</span> (<span class="pl-k">var</span> i <span class="pl-k">=</span> <span class="pl-c1">1</span>; i <span class="pl-k">&lt;</span> arrayOfNames.<span class="pl-c1">length</span>; i<span class="pl-k">++</span>) {
+        html <span class="pl-k">+=</span> <span class="pl-s"><span class="pl-pds">'</span>&lt;img height="140" width="140" src="/imgs/<span class="pl-pds">'</span></span><span class="pl-k">+</span>arrayOfNames[i]<span class="pl-k">+</span><span class="pl-s"><span class="pl-pds">'</span>.jpg" class="img-thumbnail"&gt;<span class="pl-pds">'</span></span>
+    }
+    $(html).insertAfter(<span class="pl-s"><span class="pl-pds">'</span>.inner.cover<span class="pl-pds">'</span></span>);
+}</pre></div>
+
+<p>Put this function in your <code>jQueryLoaded</code> callback function and refresh the page.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-en">jQueryLoaded</span> : <span class="pl-k">function</span>() {
+    <span class="pl-k">if</span> (<span class="pl-k">typeof</span> jQuery <span class="pl-k">!==</span> <span class="pl-s"><span class="pl-pds">'</span>undefined<span class="pl-pds">'</span></span>) {
+        DOMUtils.changeLead(<span class="pl-s"><span class="pl-pds">"</span>I have my styles now, I'm so comfy and warm<span class="pl-pds">"</span></span>);
+        DOMUtils.loadAssets([{
+            source <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js<span class="pl-pds">"</span></span>,
+            type <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>script<span class="pl-pds">"</span></span>,
+            callback <span class="pl-k">:</span> <span class="pl-c1">undefined</span>
+        }]);
+        DOMUtils.insertPics([<span class="pl-s"><span class="pl-pds">'</span>chuck<span class="pl-pds">'</span></span>,<span class="pl-s"><span class="pl-pds">'</span>arnold<span class="pl-pds">'</span></span>,<span class="pl-s"><span class="pl-pds">'</span>steven<span class="pl-pds">'</span></span>,<span class="pl-s"><span class="pl-pds">'</span>jean<span class="pl-pds">'</span></span>]);
+    }
+}</pre></div>
+
+<p>Um? Excuse me I don't see his holiness Chuck Norris even though we called for the local resource <code>chuck.jpg</code> in the function! We have ourselves a bug and we want to exterminate it. Lets open our Chrome Dev Tools (<code>F12</code>) and locate our script (<code>CTRL+P</code> -&gt; type <code>intern.js</code>). Locate our function <code>insertPics</code> in the file. Insert a breakpoint <em>inside</em> the function beginning on the the line</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-k">var</span> html <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>;</pre></div>
+
+<p>For me this line is line number 64. Simply click on the line number 64. You'll see the number gets highlighted with a blue arrow. You've just inserted a <strong>breakpoint</strong>. </p>
+
+<p>"A point in a program that, when reached, triggers some special behavior useful to the process of debugging; generally, breakpoints are used to either pause program execution, and/or dump the values of some or all of the program variables." -dictionary.com</p>
+
+<p><img src="/imgs/debug-0.png" alt="debug-0"></p>
+
+<p>That's exactly what we're about to do. We're going to pause program execution for the purpose of seeing whats going wrong with our function. Refresh the page and observe the program execution <em>breaking</em> on our breakpoint. </p>
+
+<p><img src="/imgs/debug-1.png" alt="debug-1"></p>
+
+<p>Now that the program execution has stopped, we can check out the variables that are in scope during the while the function is being called. In the above picture, I'm hovering over the parameter <code>arrayOfNames</code>. Clearly, we can see Chuck is in the array but his picture isn't being displayed.</p>
+
+<p>Set another breakpoint inside the for loop. For me thats line 66. </p>
+
+<p><img src="/imgs/debug-2.png" alt="debug-2"></p>
+
+<p>In the top right of the debugger you'll see a green "play" button. Clicking it makes the script resume execution. We can assume line 64 is cool because its just a variable holding an empty string, <code>var html = "";</code>. No problem there. Click the "play" button. Now we're inside the for loop. Lets take a peak at what variables are in scope. </p>
+
+<ul>
+<li><p><code>i</code> is our index. We use it to fetch the a ith element of our <code>arrayOfNames</code>. We set it to 1 initially following <code>var i = 1;</code> Type <code>i</code> in our console to see the value of i at this point in the loop.</p></li>
+<li><p><code>arrayOfNames[i]</code> represents the value of the element in <code>arrayOfNames</code> at position <code>i</code>. Type <code>arrayOfNames[i]</code> in the console to see the value of <code>arrayOfNames[i]</code> at this point in the loop.</p></li>
+</ul>
+
+<p>We see that <code>i</code> returns 1. This is expected, we set it to 1 to start the loop. We also see that <code>arrayOfNames[i]</code> returns <code>"arnold"</code> in the console. However, if we type <code>arrayOfNames</code>, we see that <code>"chuck"</code> actually precedes <code>"arnold"</code> in the list. This is because <code>"chuck"</code> is at the 0th index of the array. We need to set our index (<code>i</code>) in the loop to 0, not 1. This is called a <strong>off-by-one-error (OBOE)</strong>.</p>
+
+<p>Cool we found the bug. We need to first disable or remove our breakpoints before revising our function. Do this by right clicking and selecting "Remove All Breakpoints" from the breakpoints pane on the right side of the debugger.</p>
+
+<p><img src="/imgs/debug-3.png" alt="debug-3"></p>
+
+<p>After this, hit the play button one more time to allow the script execution to finish. Man I need to see Chuck. Lets revise that function, NOW!</p>
+
+<p>Change the index in the for loop from <code>1</code> to <code>0</code>.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-c">// We'll use jQuery to insert our HTML</span>
+<span class="pl-en">insertPics</span> : <span class="pl-k">function</span>(<span class="pl-smi">arrayOfNames</span>) {
+    <span class="pl-k">var</span> html <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>;
+    <span class="pl-k">for</span> (<span class="pl-k">var</span> i <span class="pl-k">=</span> <span class="pl-c1">0</span>; i <span class="pl-k">&lt;</span> arrayOfNames.<span class="pl-c1">length</span>; i<span class="pl-k">++</span>) {
+        html <span class="pl-k">+=</span> <span class="pl-s"><span class="pl-pds">'</span>&lt;img height="140" width="140" src="/imgs/<span class="pl-pds">'</span></span><span class="pl-k">+</span>arrayOfNames[i]<span class="pl-k">+</span><span class="pl-s"><span class="pl-pds">'</span>.jpg" class="img-thumbnail"&gt;<span class="pl-pds">'</span></span>
+    }
+    $(html).insertAfter(<span class="pl-s"><span class="pl-pds">'</span>.inner.cover<span class="pl-pds">'</span></span>);
+}</pre></div>
+
+<p>Now that your function is revised with the correct index, refresh the page. Wow, that's an excellent line up.</p>
+
+<h1>
+<a id="module-5-asynchronous-javascript-and-xml-ajax" class="anchor" href="#module-5-asynchronous-javascript-and-xml-ajax" aria-hidden="true"><span class="octicon octicon-link"></span></a>Module 5: Asynchronous JavaScript and XML (AJAX)</h1>
+
+<p>This module will explain how to use a group of web development techniques called <strong>AJAX</strong>.</p>
+
+<p>"With AJAX, web applications can send data to and retrieve from a server asynchronously (in the background) without interfering with the display and behavior of the existing page. Data can be retrieved using the <strong>XMLHttpRequest</strong> object." -Wikipedia</p>
+
+<p>"XMLHttpRequest is a JavaScript object that was designed by Microsoft and adopted by Mozilla, Apple, and Google.  XMLHttpRequest can be used to retrieve any type of data, not just XML, and it supports protocols other than HTTP (including file and ftp)." -Mozilla Developer Network</p>
+
+<p>AJAX presents us with a convenient way to make seamless transitions between divisions of content on a web page or to display relevant data to our users without breaking the perceived continuity of our web application. When I say "perceived continuity" I mean the uninterrupted <em>flow</em> (or fluidity) of our web application. </p>
+
+<p>Some newer web applications are opting for the <strong>single-page application</strong> (SPA) approach, where all the necessary code (HTML, JavaScript, CSS) is retrieved on a single page load or all of the relevant resources are dynamically loaded when needed. AJAX helps accomplish this.</p>
+
+<p>For example, when you navigate to <code>http://127.0.0.1:3000/intern</code>, your browser brings in the following assets: <code>intern.html</code> and <code>intern.js</code>. We end up including the additional assets with our <code>loadAssets</code> function defined in <code>intern.js</code> module <code>DOMUtils</code>. Those include our cascading style sheets (CSS): <code>bootstrap.min.css</code> and <code>cover.css</code>; JavaScript: <code>jquery.min.js</code> and <code>bootstrap.min.js</code>. Even though we're dynamically including those files, conceptually, this all happens in one load <em>cycle</em>.</p>
+
+<p>Notice that <code>intern.html</code> has a <em>Features</em> tab. If we defined a page for Features, the URL might look like <code>http://127.0.0.1:3000/features</code>. You'd then want to define a <code>features.html</code> to correspond with that route, which would be the logical place to put your "features" section. You'd have a structure like this:</p>
+
+<p><strong>features.html</strong> (you don't have to make this)</p>
+
+<div class="highlight highlight-html"><pre>&lt;!DOCTYPE html&gt;
+&lt;<span class="pl-ent">html</span> <span class="pl-e">lang</span>=<span class="pl-s"><span class="pl-pds">"</span>en<span class="pl-pds">"</span></span>&gt;
+  &lt;<span class="pl-ent">head</span>&gt;
+    &lt;<span class="pl-ent">meta</span> <span class="pl-e">charset</span>=<span class="pl-s"><span class="pl-pds">"</span>utf-8<span class="pl-pds">"</span></span>&gt;
+    &lt;<span class="pl-ent">meta</span> <span class="pl-e">http-equiv</span>=<span class="pl-s"><span class="pl-pds">"</span>X-UA-Compatible<span class="pl-pds">"</span></span> <span class="pl-e">content</span>=<span class="pl-s"><span class="pl-pds">"</span>IE=edge<span class="pl-pds">"</span></span>&gt;
+    &lt;<span class="pl-ent">meta</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>viewport<span class="pl-pds">"</span></span> <span class="pl-e">content</span>=<span class="pl-s"><span class="pl-pds">"</span>width=device-width, initial-scale=1<span class="pl-pds">"</span></span>&gt;
+    &lt;<span class="pl-ent">meta</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>description<span class="pl-pds">"</span></span> <span class="pl-e">content</span>=<span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>&gt;
+    &lt;<span class="pl-ent">meta</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>author<span class="pl-pds">"</span></span> <span class="pl-e">content</span>=<span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>&gt;
+    &lt;<span class="pl-ent">title</span>&gt;Costco Internship Workspace&lt;/<span class="pl-ent">title</span>&gt;
+  &lt;/<span class="pl-ent">head</span>&gt;
+  &lt;<span class="pl-ent">body</span>&gt;
+    &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>site-wrapper<span class="pl-pds">"</span></span>&gt;
+      &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>site-wrapper-inner<span class="pl-pds">"</span></span>&gt;
+        &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>cover-container<span class="pl-pds">"</span></span>&gt;
+          &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>masthead clearfix<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>inner<span class="pl-pds">"</span></span>&gt;
+              &lt;<span class="pl-ent">h3</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>masthead-brand<span class="pl-pds">"</span></span>&gt;Features&lt;/<span class="pl-ent">h3</span>&gt;
+              &lt;<span class="pl-ent">nav</span>&gt;
+                &lt;<span class="pl-ent">ul</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>nav masthead-nav<span class="pl-pds">"</span></span>&gt;
+                  &lt;<span class="pl-ent">li</span>&gt;&lt;<span class="pl-ent">a</span> <span class="pl-e">href</span>=<span class="pl-s"><span class="pl-pds">"</span>#<span class="pl-pds">"</span></span>&gt;Home&lt;/<span class="pl-ent">a</span>&gt;&lt;/<span class="pl-ent">li</span>&gt;
+                  &lt;<span class="pl-ent">li</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>active<span class="pl-pds">"</span></span>&gt;&lt;<span class="pl-ent">a</span> <span class="pl-e">href</span>=<span class="pl-s"><span class="pl-pds">"</span>#<span class="pl-pds">"</span></span>&gt;Features&lt;/<span class="pl-ent">a</span>&gt;&lt;/<span class="pl-ent">li</span>&gt;
+                  &lt;<span class="pl-ent">li</span>&gt;&lt;<span class="pl-ent">a</span> <span class="pl-e">href</span>=<span class="pl-s"><span class="pl-pds">"</span>#<span class="pl-pds">"</span></span>&gt;Contact&lt;/<span class="pl-ent">a</span>&gt;&lt;/<span class="pl-ent">li</span>&gt;
+                &lt;/<span class="pl-ent">ul</span>&gt;
+              &lt;/<span class="pl-ent">nav</span>&gt;
+            &lt;/<span class="pl-ent">div</span>&gt;
+          &lt;/<span class="pl-ent">div</span>&gt;
+          &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>inner cover<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">h1</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>cover-heading<span class="pl-pds">"</span></span>&gt;Features&lt;/<span class="pl-ent">h1</span>&gt;
+            &lt;<span class="pl-ent">p</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">'</span>lead-text<span class="pl-pds">'</span></span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>lead<span class="pl-pds">"</span></span>&gt;
+                I am a unique snowflake. I have great features.
+            &lt;/<span class="pl-ent">p</span>&gt;
+          &lt;/<span class="pl-ent">div</span>&gt;
+          &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>mastfoot<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>inner<span class="pl-pds">"</span></span>&gt;
+            &lt;/<span class="pl-ent">div</span>&gt;
+          &lt;/<span class="pl-ent">div</span>&gt;
+        &lt;/<span class="pl-ent">div</span>&gt;
+      &lt;/<span class="pl-ent">div</span>&gt;
+    &lt;/<span class="pl-ent">div</span>&gt;
+<span class="pl-s1">    &lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">'</span>/js/intern.js<span class="pl-pds">'</span></span> <span class="pl-e">async</span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</span>
+  &lt;/<span class="pl-ent">body</span>&gt;
+&lt;/<span class="pl-ent">html</span>&gt;
+</pre></div>
+
+<p>This HTML would be served up to users by your web server when they navigated to <code>http://127.0.0.1:3000/features</code>. <code>features.html</code> is nearly identical to <code>intern.html</code>. Transitioning to <code>features.html</code> might imply the following:</p>
+
+<ul>
+<li><p>I need at least some of the same scripts I used in <code>/intern</code> to perform tasks for the <code>/features</code> section (<code>jquery.min.js</code>,<code>bootstrap.min.js</code> and <code>intern.js</code>).</p></li>
+<li><p>I need at least some of the same stylesheets I used in <code>/intern</code> to make the <code>/features</code> section look pretty (<code>bootstrap.min.css</code> and <code>cover.css</code>).</p></li>
+<li><p>I might need unique stylesheets and/or scripts for the <code>/features</code> section.</p></li>
+</ul>
+
+<p>If you DO need any of the same stylesheets or scripts between sections and you naively serve the above HTML, you'll force your client (the end user) to make additional requests to resources they already requested and received before. You're also forcing your own server to serve more resources. Even if you have properly set up <strong>client-side caching</strong>, your client at least has to re-render and reinitialize those assets. </p>
+
+<p>If the majority of the <code>features.html</code> is exactly the same except the meat of the hamburger, we should serve what some call a <em>partial</em> view using AJAX.</p>
+
+<p>Here the only things that <em>really</em> changed in <code>features.html</code> were</p>
+
+<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">h1</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>cover-heading<span class="pl-pds">"</span></span>&gt;Features&lt;/<span class="pl-ent">h1</span>&gt;
+&lt;<span class="pl-ent">p</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">'</span>lead-text<span class="pl-pds">'</span></span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>lead<span class="pl-pds">"</span></span>&gt;
+    I am a unique snowflake. I have great features.
+&lt;/<span class="pl-ent">p</span>&gt;</pre></div>
+
+<p>and the <code>active</code> class attached to the "features" list item.</p>
+
+<p>First we need create the actual HTML (what we're calling a <em>partial</em>) that we'll serve the user when they perform some action. I've included this HTML in the project directory under <code>views/partials/home.html</code> and <code>views/partials/features.html</code>.</p>
+
+<p>Second let's look at the XMLHttpRequest JavaScript object and see what we'll need to use. At a minimum, we need to do four things.</p>
+
+<p>We need to <strong>create</strong> a XMLHttpRequest object. We need to <strong>open</strong> (or initialize) the request. We need to define a <strong>callback function</strong> to tell the XMLHttpRequest object what to do with the retrieved resource. We need to <strong>send</strong> the request to our server to fetch the resource.</p>
+
+<ol>
+<li>
+<p><strong>Create</strong>: </p>
+
+<div class="highlight highlight-js"><pre><span class="pl-k">var</span> request <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">XMLHttpRequest</span>();</pre></div>
+</li>
+<li>
+<p><strong>Open</strong>:</p>
+
+<div class="highlight highlight-js"><pre>request.<span class="pl-c1">open</span>(<span class="pl-s"><span class="pl-pds">'</span>GET<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>/views/partials/features<span class="pl-pds">'</span></span>)</pre></div>
+</li>
+<li>
+<p><strong>Callback</strong>:</p>
+
+<div class="highlight highlight-js"><pre>request.onload(<span class="pl-k">function</span>() { <span class="pl-c">/* do something with fetched resource */</span> });</pre></div>
+</li>
+<li>
+<p><strong>Send</strong>:</p>
+
+<div class="highlight highlight-js"><pre>request.<span class="pl-c1">send</span>();</pre></div>
+</li>
+</ol>
+
+<p>Thats it! This will send a request to our server to grab <code>/views/partials/features.html</code>. Now lets actually implement this:</p>
+
+<h3>
+<a id="task-1-use-ajax-to-replace-the-html-inside-internhtml-with-the-partial-featureshtml" class="anchor" href="#task-1-use-ajax-to-replace-the-html-inside-internhtml-with-the-partial-featureshtml" aria-hidden="true"><span class="octicon octicon-link"></span></a>Task 1: Use AJAX to replace the HTML inside <code>intern.html</code> with the partial <code>features.html</code>.</h3>
+
+<hr>
+
+<p>We could simply create a function that encapsulated the entire process of making a AJAX request in addition to calling our unique callback function to replace the meat of the HTML with our partial like so:</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-en">getPartial</span> : <span class="pl-k">function</span>(<span class="pl-smi">partial</span>) {
+    <span class="pl-c">// 1. Create</span>
+    <span class="pl-k">var</span> request <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">XMLHttpRequest</span>();
+
+    <span class="pl-c">// 2. Open</span>
+    request.<span class="pl-c1">open</span>(<span class="pl-s"><span class="pl-pds">'</span>GET<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>/views/partials/<span class="pl-pds">'</span></span><span class="pl-k">+</span>partial);
+
+    <span class="pl-c">// 3. Callback</span>
+    <span class="pl-c1">request</span>.<span class="pl-en">onload</span> <span class="pl-k">=</span> <span class="pl-k">function</span>() {
+        <span class="pl-c">// Test if our request was successful</span>
+        <span class="pl-k">if</span> (request.<span class="pl-c1">status</span> <span class="pl-k">&gt;=</span> <span class="pl-c1">200</span> <span class="pl-k">&amp;&amp;</span> request.<span class="pl-c1">status</span> <span class="pl-k">&lt;</span> <span class="pl-c1">400</span>) {
+            <span class="pl-k">var</span> partialHtmlString <span class="pl-k">=</span> request.<span class="pl-c1">responseText</span>;
+            <span class="pl-k">var</span> meat <span class="pl-k">=</span> <span class="pl-c1">document</span>.getElementsByClassName(<span class="pl-s"><span class="pl-pds">'</span>inner cover<span class="pl-pds">'</span></span>)[<span class="pl-c1">0</span>];
+            meat.innerHTML <span class="pl-k">=</span> partialHtmlString;
+        } <span class="pl-k">else</span> {
+            <span class="pl-c">// Server responded with an error status.</span>
+            <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">'</span>Error retrieving partial<span class="pl-pds">'</span></span>);        
+        }
+    };
+    <span class="pl-c">// 4. Send</span>
+    request.<span class="pl-c1">send</span>();
+}</pre></div>
+
+<p>This would send a request to the <code>partial</code> route and our server is set up to respond with the corresponding HTML. The function looks good but its not reusable! We've <strong>hard coded</strong> a relative URL path in our <code>request.open</code> function. Take a look:</p>
+
+<div class="highlight highlight-js"><pre>request.<span class="pl-c1">open</span>(<span class="pl-s"><span class="pl-pds">'</span>GET<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>/views/partials/<span class="pl-pds">'</span></span><span class="pl-k">+</span>partial)</pre></div>
+
+<p><code>'/views/partials/'</code> is a relative path. We'll never be able to use the <code>XMLHttpRequest</code> object in a different way even if we wanted to. Its better to generalize this function a little so that we can reuse the <code>XMLHttpRequest</code> object without having to duplicate our code. Here we're defining these functions on the <code>DOMUtils</code> module.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-c">// Reusable AJAX request function</span>
+<span class="pl-en">ajaxRequest</span> : <span class="pl-k">function</span>(<span class="pl-smi">method</span>, <span class="pl-smi">path</span>, <span class="pl-smi">callback</span>) {
+    <span class="pl-k">var</span> request <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">XMLHttpRequest</span>();
+    request.<span class="pl-c1">open</span>(method, path);
+    request.onload <span class="pl-k">=</span> callback;
+    request.<span class="pl-c1">send</span>();
+}
+
+<span class="pl-c">// Specific getPartial function that utilizes ajaxRequest</span>
+<span class="pl-en">getPartial</span> : <span class="pl-k">function</span>(<span class="pl-smi">partial</span>) {
+    DOMUtils.ajaxRequest(<span class="pl-s"><span class="pl-pds">'</span>GET<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>/views/partials/<span class="pl-pds">'</span></span><span class="pl-k">+</span>partial, <span class="pl-k">function</span>(<span class="pl-smi">event</span>) {
+        <span class="pl-k">if</span> (<span class="pl-v">this</span>.<span class="pl-c1">status</span> <span class="pl-k">&gt;=</span> <span class="pl-c1">200</span> <span class="pl-k">&amp;&amp;</span> <span class="pl-v">this</span>.<span class="pl-c1">status</span> <span class="pl-k">&lt;</span> <span class="pl-c1">400</span>) {
+            <span class="pl-k">var</span> partialHtmlString <span class="pl-k">=</span> <span class="pl-v">this</span>.<span class="pl-c1">responseText</span>;
+            <span class="pl-k">var</span> meat <span class="pl-k">=</span> <span class="pl-c1">document</span>.getElementsByClassName(<span class="pl-s"><span class="pl-pds">'</span>inner cover<span class="pl-pds">'</span></span>)[<span class="pl-c1">0</span>];
+            meat.innerHTML <span class="pl-k">=</span> partialHtmlString;
+        } <span class="pl-k">else</span> {
+            <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">'</span>Error retrieving partial<span class="pl-pds">'</span></span>);        
+        } 
+    });
+}</pre></div>
+
+<p><code>ajaxRequest</code> is an example of a <strong>higher-order function</strong>. </p>
+
+<p>In mathematics and computer science, a higher-order function (also functional form, functional or functor) is a function that does at least one of the following:</p>
+
+<ul>
+<li>  takes one or more functions as an input</li>
+<li>  outputs a function</li>
+</ul>
+
+<p>As you can see by its signature, <code>ajaxRequest(method, path, callback)</code> takes a function, <code>callback</code> as an input. This allows us to generalize functions that we create so we can get great reuse out of them.</p>
+
+<p>If you call <code>DOMUtils.getPartial('features');</code> in the console, you'll see that the middle section (the meat) of our <em>layout</em> gets the partial <code>features.html</code> in place of the original HTML.</p>
+
+<p>This is considerably more efficient than simply defining an almost duplicate HTML file called <code>features.html</code>, giving it the <code>/features</code> route and forcing the user to re-download and re-process those assets (CSS, JavaScript, HTML). Especially if our <code>features.html</code> only replaces the meat of the layout.</p>
+
+<p>Whats left is to attach an event to our <code>Home</code>, <code>Features</code> and <code>Contact</code> tabs in <code>intern.html</code> to give the user a visual indicator as to what he/she is looking at.</p>
+
+<h3>
+<a id="task-2-interactive-tabs" class="anchor" href="#task-2-interactive-tabs" aria-hidden="true"><span class="octicon octicon-link"></span></a>Task 2: Interactive Tabs</h3>
+
+<hr>
+
+<p>Lets define a function that leverages our <code>getPartial</code> function when the user clicks <code>Home</code>, <code>Features</code> or <code>Contact</code> on the <code>DOMUtils</code> module.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-en">bindNavigation</span> : <span class="pl-k">function</span>() {
+    <span class="pl-k">var</span> tabs <span class="pl-k">=</span> <span class="pl-c1">document</span>.getElementsByClassName(<span class="pl-s"><span class="pl-pds">'</span>masthead-nav<span class="pl-pds">'</span></span>)[<span class="pl-c1">0</span>].children
+    <span class="pl-k">var</span> <span class="pl-en">getPartial</span> <span class="pl-k">=</span> <span class="pl-k">function</span>() {
+        DOMUtils.getPartial(<span class="pl-v">this</span>.<span class="pl-c1">id</span>);
+        DOMUtils.makeActive(<span class="pl-v">this</span>);
+        <span class="pl-c">// History is defined Globally. It'll replace the URL with the page title.</span>
+        history.replaceState( {} , <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>/<span class="pl-pds">'</span></span><span class="pl-k">+</span><span class="pl-v">this</span>.<span class="pl-c1">id</span> );
+    }
+    <span class="pl-k">for</span> (<span class="pl-k">var</span> i <span class="pl-k">=</span> <span class="pl-c1">0</span>; i <span class="pl-k">&lt;</span> tabs.<span class="pl-c1">length</span>; i<span class="pl-k">++</span>){
+        tabs[i].addEventListener(<span class="pl-s"><span class="pl-pds">'</span>click<span class="pl-pds">'</span></span>, getPartial);
+    }
+},
+<span class="pl-en">makeActive</span> : <span class="pl-k">function</span>(<span class="pl-smi">element</span>) {
+    <span class="pl-c">// remove the active class (the underline thingy) from all tabs</span>
+    <span class="pl-k">var</span> tabs <span class="pl-k">=</span> element.parentElement.children;
+    <span class="pl-k">for</span> (<span class="pl-k">var</span> i <span class="pl-k">=</span> <span class="pl-c1">0</span>; i <span class="pl-k">&lt;</span> tabs.<span class="pl-c1">length</span>; i<span class="pl-k">++</span>) {
+        tabs[i].classList.<span class="pl-c1">remove</span>(<span class="pl-s"><span class="pl-pds">'</span>active<span class="pl-pds">'</span></span>);
+    }
+    element.classList.<span class="pl-c1">add</span>(<span class="pl-s"><span class="pl-pds">'</span>active<span class="pl-pds">'</span></span>);
+}</pre></div>
+
+<p>Lastly, make a call to <code>DOMUtils.bindNavigation</code> in your <code>DOMUtils.jqueryLoaded</code> function so that it gets called when the page loads. Now refresh <code>http://127.0.0.1:3000/intern</code> and watch your navigation work.</p>
+
+<h1>
+<a id="module-6-templating-101" class="anchor" href="#module-6-templating-101" aria-hidden="true"><span class="octicon octicon-link"></span></a>Module 6: Templating 101</h1>
+
+<p><em>Templating</em> is a useful technique for mitigating the amount of static HTML you'll need for your web application. Instead of duplicating a bunch of HTML that has the same fundamental structure, you can create one template with your HTML structure and expose it using a templating framework that consumes the <em>dynamic</em> data.</p>
+
+<p>For example, if you have a piece of HTML that needs to be repeatedly used:</p>
+
+<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">'</span>person-list-item col-md-12<span class="pl-pds">'</span></span>&gt;
+    &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">'</span>col-md-4<span class="pl-pds">'</span></span>&gt;
+      &lt;<span class="pl-ent">h4</span>&gt;Kurt&lt;/<span class="pl-ent">h4</span>&gt;
+    &lt;/<span class="pl-ent">div</span>&gt;
+    &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">'</span>col-md-4<span class="pl-pds">'</span></span>&gt;
+        &lt;<span class="pl-ent">label</span>&gt;Title&lt;/<span class="pl-ent">label</span>&gt;
+        &lt;<span class="pl-ent">p</span>&gt;Programmer&lt;/<span class="pl-ent">p</span>&gt;
+    &lt;/<span class="pl-ent">div</span>&gt;
+    &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">'</span>col-md-4<span class="pl-pds">'</span></span>&gt;
+        &lt;<span class="pl-ent">label</span>&gt;Salary&lt;/<span class="pl-ent">label</span>&gt;
+        &lt;<span class="pl-ent">p</span>&gt;1000 gbh (gummy bears per hour)&lt;/<span class="pl-ent">p</span>&gt;
+    &lt;/<span class="pl-ent">div</span>&gt;
+&lt;/<span class="pl-ent">div</span>&gt;</pre></div>
+
+<p>This <em>widget</em> represents an employee. Maybe you've hard coded this piece of HTML several times to account for all of your employees. Your HTML can suddenly become large and unwieldy. This is a perfect opportunity to use the templating framework defined in <strong>underscore.js</strong>.  Directly from their site:</p>
+
+<p>"Underscore is a JavaScript library that provides a whole mess of useful functional programming helpers without extending any built-in objects. It’s the answer to the question: “If I sit down in front of a blank HTML page, and want to start being productive immediately, what do I need?” … and the tie to go along with jQuery's tux".</p>
+
+<p>Underscore provides some very nifty functionality. If you read through their library, you'll see some cross-paradigm functions that can help you be very expressive with the way you write code. In addition, their templating is very elementary to implement. </p>
+
+<p>First of all,  when we include underscore.js in our app <code>_</code>, or literally <em>underscore</em> is now a global variable that we can expose and use. Similary to <code>$</code> (<code>jQuery</code>), <code>_</code> has a bunch of functions defined on it's properties. In the below example we use <code>_.each</code>, which is essentially underscore's version of <code>Array.prototype.forEach</code>. It has an almost identical function definition. The <code>&lt;%= %&gt;</code> are tags used by underscore. It parses the content between these tags and allocates our dynamic object property value.</p>
+
+<p>There are three things we need to define to make use of this</p>
+
+<ol>
+<li>
+<p>The <strong>template</strong>: This is the actual template (a text string that converts to HTML) that we'll tell underscore to utilize when it augments the document object model (DOM). It'll look something like this:</p>
+
+<div class="highlight highlight-html"><pre>&lt;% _.each(employees, function(employee) { %&gt;
+    &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">'</span>person-list-item col-md-12<span class="pl-pds">'</span></span>&gt;
+        &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">'</span>col-md-4<span class="pl-pds">'</span></span>&gt;
+          &lt;<span class="pl-ent">h4</span>&gt;&lt;%= employee.name %&gt;&lt;/<span class="pl-ent">h4</span>&gt;
+        &lt;/<span class="pl-ent">div</span>&gt;
+        &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">'</span>col-md-4<span class="pl-pds">'</span></span>&gt;
+            &lt;<span class="pl-ent">label</span>&gt;Title&lt;/<span class="pl-ent">label</span>&gt;
+            &lt;<span class="pl-ent">p</span>&gt;&lt;%= employee.title %&gt;&lt;/<span class="pl-ent">p</span>&gt;
+        &lt;/<span class="pl-ent">div</span>&gt;
+        &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">'</span>col-md-4<span class="pl-pds">'</span></span>&gt;
+            &lt;<span class="pl-ent">label</span>&gt;Salary&lt;/<span class="pl-ent">label</span>&gt;
+            &lt;<span class="pl-ent">p</span>&gt;&lt;%= employee.salary %&gt; gbh&lt;/<span class="pl-ent">p</span>&gt;
+        &lt;/<span class="pl-ent">div</span>&gt;
+    &lt;/<span class="pl-ent">div</span>&gt;
+&lt;% }); %&gt;</pre></div>
+
+<blockquote>
+<p>This template looks a little funky because we need to loop through the <em>array of objects</em>. So we use the <code>_.each</code> to accomplish this. </p>
+</blockquote>
+</li>
+<li>
+<p>The <strong>data</strong>: This will be an object containing a <em>property</em> with the name <code>employees</code> and the value being an <em>array of objects</em>. The array of objects represents the employees that you want to embed into your templates:</p>
+
+<div class="highlight highlight-js"><pre>{
+    employees <span class="pl-k">:</span>
+        [
+            { name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Kurt<span class="pl-pds">"</span></span>, title<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Programmer<span class="pl-pds">"</span></span>, salary<span class="pl-k">:</span> <span class="pl-c1">1000</span> },
+            { name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Brian<span class="pl-pds">"</span></span>, title<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Programmer<span class="pl-pds">"</span></span>, salary<span class="pl-k">:</span> <span class="pl-c1">1500</span> },
+            { name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Robert<span class="pl-pds">"</span></span>, title<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Programmer<span class="pl-pds">"</span></span>, salary<span class="pl-k">:</span> <span class="pl-c1">2000</span> }
+        ]
+}</pre></div>
+</li>
+<li><p>The <strong>target</strong>: The place where you want to insert the HTML generated by underscore.</p></li>
+</ol>
+
+<h3>
+<a id="task-1-using-underscorejs-build-a-template-that-can-take-an-array-of-objects-and-insert-them-into-the-dom" class="anchor" href="#task-1-using-underscorejs-build-a-template-that-can-take-an-array-of-objects-and-insert-them-into-the-dom" aria-hidden="true"><span class="octicon octicon-link"></span></a>Task 1: Using <code>underscore.js</code>, build a template that can take an array of objects and insert them into the DOM.</h3>
+
+<hr>
+
+<p>We'll need to include underscore in our application. Find a CDN and add it to our <code>loadAssets</code> function. In <code>intern.js</code>, <code>loadAssets</code> should look like this:</p>
+
+<div class="highlight highlight-js"><pre>DOMUtils.loadAssets([
+    {
+        source <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css<span class="pl-pds">"</span></span>,
+        type <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>css<span class="pl-pds">"</span></span>,
+        callback<span class="pl-k">:</span> <span class="pl-c1">undefined</span>
+    },
+    {
+        source <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>/css/cover.css<span class="pl-pds">"</span></span>,
+        type <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>css<span class="pl-pds">"</span></span>,
+        callback<span class="pl-k">:</span> <span class="pl-c1">undefined</span>
+    },
+    {
+        source <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js<span class="pl-pds">"</span></span>,
+        type <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>script<span class="pl-pds">"</span></span>,
+        callback <span class="pl-k">:</span> DOMUtils.jQueryLoaded
+    },
+    {
+        source <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js<span class="pl-pds">"</span></span>,
+        type <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>script<span class="pl-pds">"</span></span>,
+        callback <span class="pl-k">:</span> <span class="pl-c1">undefined</span>
+    }
+]);</pre></div>
+
+<p>Notice we're creating yet <em>another</em> dependency on somebody's library. After this example using underscore, we'll write our own very basic templating system and ditch underscore.</p>
+
+<ol>
+<li>
+<p>Define a <code>buildTemplate</code> function in <code>DOMUtils</code> to initialize building our templates for when underscore loads:</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-en">buildTemplate</span> : <span class="pl-k">function</span>(<span class="pl-smi">dataObj</span>, <span class="pl-smi">templateName</span>, <span class="pl-smi">target</span>) {
+    <span class="pl-c">// Get the template string.</span>
+    <span class="pl-k">var</span> template <span class="pl-k">=</span> <span class="pl-c1">document</span>.<span class="pl-c1">getElementById</span>(templateName).innerHTML;
+
+    <span class="pl-c">// Generate the HTML necessary by calling _.template with the</span>
+    <span class="pl-c">// template and the data object. </span>
+    <span class="pl-k">var</span> generatedHtmlString <span class="pl-k">=</span> _.template(template)(dataObj);
+
+    <span class="pl-c">// Insert the HTML into the DOM by using the target parameter.</span>
+    <span class="pl-c1">document</span>.<span class="pl-c1">getElementById</span>(target).innerHTML <span class="pl-k">=</span> generatedHtmlString;
+}</pre></div>
+
+<p>This generalized function allows you to define <code>dataObj</code> (object containing the array of objects), the <code>templateName</code> (where the template is defined) and the <code>target</code> (where you want the template in the DOM) with each call.</p>
+</li>
+<li>
+<p>Create the template using an inline <code>&lt;script&gt;</code> tag within <code>intern.html</code>. Place this just before the <code>&lt;/body&gt;</code> tag:</p>
+
+<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">'</span>text/template<span class="pl-pds">'</span></span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">'</span>employee-template<span class="pl-pds">'</span></span>&gt;
+    &lt;% _.each(employees, function(employee) { %&gt;
+        &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">'</span>person-list-item col-md-12<span class="pl-pds">'</span></span>&gt;
+            &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">'</span>col-md-4<span class="pl-pds">'</span></span>&gt;
+              &lt;<span class="pl-ent">h4</span>&gt;&lt;%= employee.name %&gt;&lt;/<span class="pl-ent">h4</span>&gt;
+            &lt;/<span class="pl-ent">div</span>&gt;
+            &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">'</span>col-md-4<span class="pl-pds">'</span></span>&gt;
+                &lt;<span class="pl-ent">label</span>&gt;Title&lt;/<span class="pl-ent">label</span>&gt;
+                &lt;<span class="pl-ent">p</span>&gt;&lt;%= employee.title %&gt;&lt;/<span class="pl-ent">p</span>&gt;
+            &lt;/<span class="pl-ent">div</span>&gt;
+            &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">'</span>col-md-4<span class="pl-pds">'</span></span>&gt;
+                &lt;<span class="pl-ent">label</span>&gt;Salary&lt;/<span class="pl-ent">label</span>&gt;
+                &lt;<span class="pl-ent">p</span>&gt;&lt;%= employee.salary %&gt; gbh&lt;/<span class="pl-ent">p</span>&gt;
+            &lt;/<span class="pl-ent">div</span>&gt;
+        &lt;/<span class="pl-ent">div</span>&gt;
+    &lt;% }); %&gt;
+&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+
+<p>Notice that we're placing the template contents inside of a <code>&lt;script&gt;</code> tag with <code>type='text/template'</code>. This type tells the browser not to process this block of text like JavaScript, thus we won't have any issues with those funky <code>&lt;%= %&gt;</code> tags.</p>
+</li>
+<li>
+<p>Create the <code>underscoreLoaded</code> callback function and attach it to the <code>callback</code> property of the underscore asset when we call <code>loadAssets</code>.</p>
+
+<div class="highlight highlight-js"><pre> {
+    source <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js<span class="pl-pds">"</span></span>,
+    type <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>script<span class="pl-pds">"</span></span>,
+    callback <span class="pl-k">:</span> DOMUtils.underscoreLoaded
+}
+
+<span class="pl-c">// and define the function on DOMUtils. Call our DOMUtils.buildTemplate when</span>
+<span class="pl-c">// we load.</span>
+
+<span class="pl-en">underscoreLoaded</span> : <span class="pl-k">function</span>() {
+     DOMUtils.buildTemplate(
+        { 
+            employees <span class="pl-k">:</span> [
+                { name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Kurt<span class="pl-pds">"</span></span>, title<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Programmer<span class="pl-pds">"</span></span>, salary<span class="pl-k">:</span> <span class="pl-c1">1000</span> },
+                { name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Brian<span class="pl-pds">"</span></span>, title<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Programmer<span class="pl-pds">"</span></span>, salary<span class="pl-k">:</span> <span class="pl-c1">1500</span> },
+                { name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Robert<span class="pl-pds">"</span></span>, title<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Programmer<span class="pl-pds">"</span></span>, salary<span class="pl-k">:</span> <span class="pl-c1">2000</span> }
+            ]
+        },
+        <span class="pl-s"><span class="pl-pds">'</span>employee-template<span class="pl-pds">'</span></span>,
+        <span class="pl-s"><span class="pl-pds">'</span>employee-list<span class="pl-pds">'</span></span>
+    )
+}</pre></div>
+
+<p>Lets stop inserting those pictures of our demigods Chuck Norris, Arnold Schwarzenegger, Steven Seagal, and Jean-Claude Van Damme. <em>Comment</em> (or make the program skip) this function out of our <code>jqueryLoaded</code> function.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-c">// DOMUtils.insertPics(['chuck','arnold','steven','jean']);</span></pre></div>
+
+<p>Now refresh <code>http://127.0.0.1:3000/intern</code> to see your list represented in HTML</p>
+</li>
+</ol>
+
+<p><img src="/imgs/template.png" alt="template.png"></p>
+
+<p>Play around with inserting different data into your utility function by changing the data object to see different employees.</p>
+
+<div class="highlight highlight-js"><pre>DOMUtils.buildTemplate(
+    { 
+        employees <span class="pl-k">:</span> [
+            { name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Jean-Claude Van Damme<span class="pl-pds">"</span></span>, title<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Kickboxer<span class="pl-pds">"</span></span>, salary<span class="pl-k">:</span> <span class="pl-c1">3500</span> },
+            { name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Arnold Schwarzenegger<span class="pl-pds">"</span></span>, title<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Commando<span class="pl-pds">"</span></span>, salary<span class="pl-k">:</span> <span class="pl-c1">4000</span> },
+            { name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Bruce Lee<span class="pl-pds">"</span></span>, title<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>The Dragon<span class="pl-pds">"</span></span>, salary<span class="pl-k">:</span> <span class="pl-c1">5000</span> }
+        ]
+    },
+    <span class="pl-s"><span class="pl-pds">'</span>employee-template<span class="pl-pds">'</span></span>,
+    <span class="pl-s"><span class="pl-pds">'</span>employee-list<span class="pl-pds">'</span></span>
+)</pre></div>
+
+<h3>
+<a id="task-2-ditch-underscorejs" class="anchor" href="#task-2-ditch-underscorejs" aria-hidden="true"><span class="octicon octicon-link"></span></a>Task 2: Ditch <code>underscore.js</code>
+</h3>
+
+<hr>
+
+<p>While underscore is powerful tool set, we don't need it to accomplish what we want. Underscore includes a lot of other stuff we might not ever use, so naively including it is sort of a bad idea. By writing our own JavaScript templating function, we can eliminate the overhead (dependency and bandwidth) of including it.</p>
+
+<p>First we need to do some code cleanup.</p>
+
+<ol>
+<li>
+<p>Remove the <code>underscore.js</code> dependencies. Remove the underscore asset object from the <code>loadAssets</code> function.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-c">// Remove this!</span>
+{
+    source <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js<span class="pl-pds">"</span></span>,
+    type <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>script<span class="pl-pds">"</span></span>,
+    callback <span class="pl-k">:</span> DOMUtils.underscoreLoaded
+}</pre></div>
+
+<p><code>DOMUtils.underscoreLoaded</code> is now <strong>dead code</strong>, which means that it so no longer used by our application. You might want to remove or comment this code out.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-c">// underscoreLoaded : function() { </span>
+<span class="pl-c">//     DOMUtils.buildTemplate(</span>
+<span class="pl-c">//         { </span>
+<span class="pl-c">//             employees : [</span>
+<span class="pl-c">//                 { name: "Kurt", title: "Programmer", salary: 1000 },</span>
+<span class="pl-c">//                 { name: "Brian", title: "Programmer", salary: 1500 },</span>
+<span class="pl-c">//                 { name: "Robert", title: "Programmer", salary: 2000 }</span>
+<span class="pl-c">//             ]</span>
+<span class="pl-c">//         },</span>
+<span class="pl-c">//         'employee-template',</span>
+<span class="pl-c">//         'employee-list'</span>
+<span class="pl-c">//     )</span>
+<span class="pl-c">// }</span></pre></div>
+
+<p>We can refactor <code>DOMUTils.buildTemplate</code> to make it work with our custom templating system.</p>
+</li>
+<li>
+<p>Remove the <code>&lt;script type='text/template' id='employee-template'&gt;</code> that you defined in <code>intern.html</code>. The <code>&lt;%= =&gt;</code> is no longer useful to us because it is unique syntax relevant only to underscore. </p>
+
+<div class="highlight highlight-html"><pre><span class="pl-c">&lt;!-- Remove this! --&gt;</span>
+&lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">'</span>text/template<span class="pl-pds">'</span></span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">'</span>employee-template<span class="pl-pds">'</span></span>&gt;
+    &lt;% _.each(employees, function(employee) { %&gt;
+        &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">'</span>person-list-item col-md-12<span class="pl-pds">'</span></span>&gt;
+            &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">'</span>col-md-4<span class="pl-pds">'</span></span>&gt;
+              &lt;<span class="pl-ent">h4</span>&gt;&lt;%= employee.name %&gt;&lt;/<span class="pl-ent">h4</span>&gt;
+            &lt;/<span class="pl-ent">div</span>&gt;
+            &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">'</span>col-md-4<span class="pl-pds">'</span></span>&gt;
+                &lt;<span class="pl-ent">label</span>&gt;Title&lt;/<span class="pl-ent">label</span>&gt;
+                &lt;<span class="pl-ent">p</span>&gt;&lt;%= employee.title %&gt;&lt;/<span class="pl-ent">p</span>&gt;
+            &lt;/<span class="pl-ent">div</span>&gt;
+            &lt;<span class="pl-ent">div</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">'</span>col-md-4<span class="pl-pds">'</span></span>&gt;
+                &lt;<span class="pl-ent">label</span>&gt;Salary&lt;/<span class="pl-ent">label</span>&gt;
+                &lt;<span class="pl-ent">p</span>&gt;&lt;%= employee.salary %&gt; gbh&lt;/<span class="pl-ent">p</span>&gt;
+            &lt;/<span class="pl-ent">div</span>&gt;
+        &lt;/<span class="pl-ent">div</span>&gt;
+    &lt;% }); %&gt;
+&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+</li>
+</ol>
+
+<h3>
+<a id="task-3-build-your-own-templating-system" class="anchor" href="#task-3-build-your-own-templating-system" aria-hidden="true"><span class="octicon octicon-link"></span></a>Task 3: Build your own templating system</h3>
+
+<hr>
+
+<p>The same three things are needed in our own custom templating solution:</p>
+
+<ol>
+<li>
+<p>The <strong>template</strong>: </p>
+
+<p>This time we'll define our template using just pure JavaScript. The structure of our template is basically the same, we just need a <em>string</em> representation of the HTML. We can do this using an array. </p>
+
+<p>Lets use a new design pattern that we haven't used before. Lets create a <em>templates</em> object using the <strong>prototype pattern</strong>. Similar to our <em>object literal</em> <code>DOMUtils</code> module, The prototype pattern allows you to encapsulate some unit of work while gaining the benefit of leveraging JavaScript's native support of prototypal inheritance. The prototypal object (for example <code>Function.prototype</code>) itself is used as a blueprint of each object that the <strong>constructor</strong> creates. Another benefit of this pattern is that defining a function on an object's prototype, all child instances of this object reference a single definition of the function. They don't make copies for each object instance.</p>
+
+<p>Lets create a constructor and a prototype for our new object.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-c">// Constructor</span>
+<span class="pl-k">var</span> <span class="pl-en">Template</span> <span class="pl-k">=</span> <span class="pl-k">function</span>() {};
+
+<span class="pl-c">// Defining a function on Template's prototype object</span>
+<span class="pl-c1">Template</span>.<span class="pl-c1">prototype</span> <span class="pl-k">=</span> {
+    <span class="pl-en">template_0</span> : <span class="pl-k">function</span>(<span class="pl-smi">employee</span>) {
+        <span class="pl-k">return</span> [<span class="pl-s"><span class="pl-pds">'</span>&lt;div class="person-list-item col-md-12"&gt;<span class="pl-pds">'</span></span>,
+                    <span class="pl-s"><span class="pl-pds">'</span>&lt;div class="col-md-4"&gt;<span class="pl-pds">'</span></span>,
+                        <span class="pl-s"><span class="pl-pds">'</span>&lt;h4&gt;<span class="pl-pds">'</span></span><span class="pl-k">+</span>employee.<span class="pl-c1">name</span><span class="pl-k">+</span><span class="pl-s"><span class="pl-pds">'</span>&lt;/h4&gt;<span class="pl-pds">'</span></span>,
+                    <span class="pl-s"><span class="pl-pds">'</span>&lt;/div&gt;<span class="pl-pds">'</span></span>,
+                    <span class="pl-s"><span class="pl-pds">'</span>&lt;div class="col-md-4"&gt;<span class="pl-pds">'</span></span>,
+                        <span class="pl-s"><span class="pl-pds">'</span>&lt;label&gt;Title&lt;/label&gt;<span class="pl-pds">'</span></span>,
+                        <span class="pl-s"><span class="pl-pds">'</span>&lt;p&gt;<span class="pl-pds">'</span></span><span class="pl-k">+</span>employee.<span class="pl-c1">title</span><span class="pl-k">+</span><span class="pl-s"><span class="pl-pds">'</span>&lt;/p&gt;<span class="pl-pds">'</span></span>,
+                    <span class="pl-s"><span class="pl-pds">'</span>&lt;/div&gt;<span class="pl-pds">'</span></span>,
+                    <span class="pl-s"><span class="pl-pds">'</span>&lt;div class="col-md-4"&gt;<span class="pl-pds">'</span></span>,
+                        <span class="pl-s"><span class="pl-pds">'</span>&lt;label&gt;Salary&lt;/label&gt;<span class="pl-pds">'</span></span>,
+                        <span class="pl-s"><span class="pl-pds">'</span>&lt;p&gt;<span class="pl-pds">'</span></span><span class="pl-k">+</span>employee.salary<span class="pl-k">+</span><span class="pl-s"><span class="pl-pds">'</span> gbh&lt;/p&gt;<span class="pl-pds">'</span></span>,
+                    <span class="pl-s"><span class="pl-pds">'</span>&lt;/div&gt;<span class="pl-pds">'</span></span>,
+                <span class="pl-s"><span class="pl-pds">'</span>&lt;/div&gt;<span class="pl-pds">'</span></span>].<span class="pl-c1">join</span>(<span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>);
+    }   
+}
+
+<span class="pl-c">// Usage</span>
+
+<span class="pl-c">// Use `new` on our constructor function object.</span>
+<span class="pl-k">var</span> template <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Template</span>();
+
+<span class="pl-c">// Call the `template_0` function (defined on the object's prototype)</span>
+template.template_0({ name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>kurt<span class="pl-pds">'</span></span>, title<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>programmer<span class="pl-pds">'</span></span>, salary<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>1000<span class="pl-pds">'</span></span>});</pre></div>
+
+<p>Define your Template object outside the scope of <code>DOMUtils</code>.</p>
+</li>
+<li>
+<p>The <strong>data</strong>:</p>
+
+<p>The data has a slightly different (and more simplistic) structure. We can now represent our data as a simple array of objects.</p>
+
+<div class="highlight highlight-js"><pre>[
+    { name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Kurt<span class="pl-pds">"</span></span>, title<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Programmer<span class="pl-pds">"</span></span>, salary<span class="pl-k">:</span> <span class="pl-c1">1000</span> },
+    { name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Brian<span class="pl-pds">"</span></span>, title<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Programmer<span class="pl-pds">"</span></span>, salary<span class="pl-k">:</span> <span class="pl-c1">1500</span> },
+    { name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Robert<span class="pl-pds">"</span></span>, title<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Programmer<span class="pl-pds">"</span></span>, salary<span class="pl-k">:</span> <span class="pl-c1">2000</span> }
+]</pre></div>
+</li>
+<li>
+<p>The <strong>target</strong>:</p>
+
+<p>The target remains the same, we need to insert the HTML generated by our function into the DOM. </p>
+</li>
+</ol>
+
+<hr>
+
+<p><code>DOMUtils.buildTemplate</code> will be our workhorse again. First we need to strip it of its underscore dependency. Lets refactor <code>buildTemplate</code>:</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-en">buildTemplate</span> : <span class="pl-k">function</span>(<span class="pl-smi">dataArray</span>, <span class="pl-smi">templateIndex</span>, <span class="pl-smi">target</span>) {
+    <span class="pl-c">// An empty variable to fill up with HTML.</span>
+    <span class="pl-k">var</span> generatedHTML <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>;
+
+    <span class="pl-c">// Instantiate our template Object.</span>
+    <span class="pl-k">var</span> template <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Template</span>();
+
+    <span class="pl-c">// Loop through each object in the dataArray</span>
+    dataArray.forEach(<span class="pl-k">function</span>(<span class="pl-smi">object</span>) {
+        <span class="pl-c">// Generate HTML for each object in our dataArray</span>
+
+        <span class="pl-c">// += means append and assign. Its the same thing as saying:</span>
+        <span class="pl-c">// generatedHTML = generatedHTML + `new value`. Use the templateIndex</span>
+        <span class="pl-c">// to dynamically fetch the function `template_0` from our template</span>
+        <span class="pl-c">// object using the notation ['template_' + templateIndex]. This is</span>
+        <span class="pl-c">// equivalent to calling template.template_0(object).</span>
+
+        generatedHTML <span class="pl-k">+=</span> template[<span class="pl-s"><span class="pl-pds">'</span>template_<span class="pl-pds">'</span></span><span class="pl-k">+</span>templateIndex](object);
+    });
+    <span class="pl-c1">document</span>.<span class="pl-c1">getElementById</span>(target).innerHTML <span class="pl-k">=</span> generatedHTML;
+}</pre></div>
+
+<p>Place the call to <code>buildTemplate</code> in the <code>jQueryLoaded</code> callback function:</p>
+
+<div class="highlight highlight-js"><pre> DOMUtils.buildTemplate(
+    [
+        { name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Kurt<span class="pl-pds">"</span></span>, title<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Programmer<span class="pl-pds">"</span></span>, salary<span class="pl-k">:</span> <span class="pl-c1">1000</span> },
+        { name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Brian<span class="pl-pds">"</span></span>, title<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Programmer<span class="pl-pds">"</span></span>, salary<span class="pl-k">:</span> <span class="pl-c1">1500</span> },
+        { name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Robert<span class="pl-pds">"</span></span>, title<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Programmer<span class="pl-pds">"</span></span>, salary<span class="pl-k">:</span> <span class="pl-c1">2000</span> }
+    ],
+    <span class="pl-c1">0</span>, <span class="pl-s"><span class="pl-pds">'</span>employee-list<span class="pl-pds">'</span></span>
+);</pre></div>
+
+<p>Refresh your <code>http://127.0.0.1:3000/intern</code> and watch your templating system work. You've just saved yourself another dependency, sped up your application's execution time, and made your client's experience a little better.</p>
       </section>
 
     </div>
