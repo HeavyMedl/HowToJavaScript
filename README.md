@@ -416,3 +416,99 @@ DOMUtils.loadAssets([
 ]);
 ``` 
 Now every time you refresh, you should see your pretty `intern.html` page without having to call `getFile` manually for each asset.
+
+#Module 3: Synchronous vs. Asynchronous
+
+**Asynchronous**: not going at the same rate and exactly together with something else, in particular.
+
+Well, that's ambiguous. Up until now, we've been loading our jQuery synchronously. The following example will demonstrate loading scripts synchronously. We need the Twitter Bootstrap JavaScript that comes with the framework to proceed further, so lets go ahead and pull that asset from a CDN. Our `DOMUtils` module is becoming more useful, right? I need to simply include it in my *array of objects* that is the parameter to our function `loadAssets`.
+
+```js
+DOMUtils.loadAssets([
+    { 
+        source : "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css",
+        type : "css",
+        callback: undefined
+    },
+    {
+        source : "/css/cover.css",
+        type : "css",
+        callback: undefined
+    },
+    {
+        source : "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js",
+        type : "script",
+        callback : DOMUtils.jQueryLoaded
+    },
+    {
+        source : "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js",
+        type : "script",
+        callback : undefined
+    }
+]);
+```
+Cool. So this successfully loads the Twitter Bootstrap script and we now can take advantage of the numerous features that they offer. Lets switch the positions of the objects that represent jQuery and Bootstrap.
+
+```js
+	{
+        source : "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js",
+        type : "script",
+        callback : undefined
+    },
+	{
+        source : "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js",
+        type : "script",
+        callback : DOMUtils.jQueryLoaded
+    }
+```
+Open your Google Dev Tools using `F12` and selecting `open drawer` at the top right of the tools. Now refresh a couple times. Eventually you'll notice a JavaScript error thrown by Bootstrap that says:
+
+`Uncaught Error: Bootstrap's JavaScript requires jQuery`
+
+We have a dependency issue. The easy solution is to keep your files in order starting vendor first. This isn't preferable, however. 
+
+What happens if we want to load *everything* asynchronously? Why would you want to load everything asynchronously? Well if a third party vendor (like Google) goes down or is slow, your page won't be held up trying to load that resource. Loading your scripts asynchronously increases the speed in which your application loads by preventing **resource blocking**. 
+
+The solution is to attach a `async` attribute to the script element that you're dynamically allocating in `getFile`. The inherent problem with this method is that if we have two resources that are being fetched in parallel with no order associated, how do we guarantee that the dependency loads *before* the dependee? Here is one strategy:
+
+###Task 1: Load your assets asynchronously
+---
+1. Revisit `DOMUtils.getFile(source, type, callback)` and for the condition where we're creating a `<script>` element, give the element an async attribute with value `true`.
+	
+	```js
+	element.async = true;
+	```
+2. Run the same `DOMUtils.loadAssets(...)`function a couple times by refreshing the page. This time, the order of the script objects don't matter, as we're running everything in parallel. You should eventually get the same error thrown by Twitter Bootstrap:
+
+	`Uncaught Error: Bootstrap's JavaScript requires jQuery`
+
+	The solution to this problem is to create a sort of synchronous load order of the asynchronous script assets. We need to first load jQuery, test to see if jQuery has indeed loaded, and then load Twitter Bootstrap's JavaScript.
+
+3. Remove the Twitter Bootstrap JavaScript object from your *array of objects* as part of the parameter to `loadAssets`. Modify the `jQueryLoaded` callback in the `DOMUtils` module so that we can test for jQuery's existence before we make a call to get the Twitter Bootstrap JavaScript.
+
+	```js
+	jQueryLoaded : function() {
+		if (typeof jQuery !== 'undefined') {
+			DOMUtils.changeLead("I have my styles now, I'm so comfy and warm");
+			DOMUtils.loadAssets([{
+		        source : "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js",
+		        type : "script",
+		        callback : undefined
+			}]);
+		}
+	}
+	```
+	
+	Notice here that we're making an additional call to `loadAssets` as part of the callback function to the jQuery asset of the initially call to `loadAssets`:
+	```js
+	 {
+        source : "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js",
+        type : "script",
+        callback : DOMUtils.jQueryLoaded
+    }
+	```
+We append the script (which has the asynchronous attribute) and when it loads,  jQuery as a module *exports* a **global variable** called `jQuery` and the short hand version, `$`. The `<script>`'s *event listener* `onload` calls our function, `jQueryLoaded`. We've modified our callback function `jQueryLoaded` to test for the existence of the global variable `jQuery`. If the object, `jQuery` exists, we're safe to load our dependent scripts! Thus we make another call to `loadAssets` to bring in our Twitter Bootstrap JavaScript. You should no longer get any dependency errors stemming from Bootstrap in the console. Our scripts are ready to rock.
+
+A quick note about global variables from w3schools: A variable declared outside a function, becomes GLOBAL. A global variable has global scope: All scripts and functions on a web page can access it.
+
+Be careful of what you define as *global*. Namespace collisions happen when you have too many definitions in the global space. The best practice is to leverage the module pattern we've discussed.
