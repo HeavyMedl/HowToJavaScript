@@ -1,3 +1,18 @@
+###Table of Contents
+#####[Getting Started]()
+#####[Module 0: JavaScript Functions](#module-0)
+#####[Module 1: Get your ass-ets over here](#module-1)
+#####[Module 2: Dependencies and Load Order](#module-2)
+#####[Module 3: Synchronous vs. Asynchronous](#module-3)
+#####[Module 4: The Art of Debugging](#module-4)
+#####[Module 5: Asynchronous JavaScript and XML (AJAX)](#module-5)
+#####[Module 6: Templating 101](#module-6)
+#####[Module 7: Exposing JavaScript Object Notation (JSON)]()
+#####[Module 8: Design Patterns]()
+#####[Module 9: Memory Management]()
+#####[Module 10: Google Maps API]()
+
+<a name='module-0'/>
 #Module 0: Javascript Functions
 
  JavaScript has no relation to Java, it simply piggy backed off the popularity of Java during the 90's. The great thing about JavaScript (and most object oriented languages) is that the language skills you develop while writing code end up transcending language barriers. You can use the object-oriented abstraction and apply it to other languages such as Java, JavaScript, C#, C++, Python, PHP, Ruby and Objective-C for example.
@@ -100,6 +115,7 @@ This is a logical structure for a module that has the functionality of summing a
 
 2. In the Chrome Dev Tools, call your functions using the module that you made.
 
+<a name='module-1'/>
 #Module 1: Get your ass-ets over here.
 
 "A **content delivery network** (**CDN**) is a system of distributed servers (network) that deliver webpages and other Web content to a user based on the geographic locations of the user, the origin of the webpage and a content delivery server." -Google
@@ -260,6 +276,7 @@ I'm one of those weird elitists who likes performance, however, I'll admit that 
 
 4. Create a Object Literal Module to encapsulate your `getFile` and `changeLead` functions. Call the Object `DOMUtils`. Experiment calling your `changeLead` function from the `DOMUtils` module.
 
+<a name='module-2'/>
 #Module 2: Dependencies and Load Order
 
 This module will discuss the importance of loading JavaScript assets in the right order based on their dependencies. A JavaScript dependency means that your script is *dependent* on a particular JavaScript asset to be loaded before running correctly. This is an important thought to keep in your mind while you develop your application as having access to your dependencies is essential.
@@ -417,6 +434,7 @@ DOMUtils.loadAssets([
 ``` 
 Now every time you refresh, you should see your pretty `intern.html` page without having to call `getFile` manually for each asset.
 
+<a name='module-3'/>
 #Module 3: Synchronous vs. Asynchronous
 
 **Asynchronous**: not going at the same rate and exactly together with something else, in particular.
@@ -513,6 +531,7 @@ A quick note about global variables from w3schools: A variable declared outside 
 
 Be careful of what you define as *global*. Namespace collisions happen when you have too many definitions in the global space. The best practice is to leverage the module pattern we've discussed.
 
+<a name='module-4'/>
 #Module 4: The Art of Debugging
 
 "Debugging is a methodical process of finding and reducing the number of bugs, or defects, in a computer program or a piece of electronic hardware, thus making it behave as expected. Debugging tends to be harder when various subsystems are tightly coupled, as changes in one may cause bugs to emerge in another." -Wikipedia
@@ -604,6 +623,7 @@ insertPics : function(arrayOfNames) {
 
 Now that your function is revised with the correct index, refresh the page. Wow, that's an excellent line up.
 
+<a name='module-5'/>
 #Module 5: Asynchronous JavaScript and XML (AJAX)
 
 This module will explain how to use a group of web development techniques called **AJAX**.
@@ -820,6 +840,7 @@ makeActive : function(element) {
 
 Lastly, make a call to `DOMUtils.bindNavigation` in your `DOMUtils.jqueryLoaded` function so that it gets called when the page loads. Now refresh `http://127.0.0.1:3000/intern` and watch your navigation work.
 
+<a name='module-6'/>
 #Module 6: Templating 101
 
 *Templating* is a useful technique for mitigating the amount of static HTML you'll need for your web application. Instead of duplicating a bunch of HTML that has the same fundamental structure, you can create one template with your HTML structure and expose it using a templating framework that consumes the *dynamic* data.
