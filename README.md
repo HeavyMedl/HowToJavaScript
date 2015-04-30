@@ -1,4 +1,4 @@
-###Table of Contents
+#Table of Contents
 #####[Getting Started](#)
 #####[Module 0: JavaScript Functions](#module-0)
 #####[Module 1: Get your ass-ets over here](#module-1)
