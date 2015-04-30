@@ -657,17 +657,17 @@ getNames(<span class="pl-s"><span class="pl-pds">'</span>list<span class="pl-pds
 
 <p>"A point in a program that, when reached, triggers some special behavior useful to the process of debugging; generally, breakpoints are used to either pause program execution, and/or dump the values of some or all of the program variables." -dictionary.com</p>
 
-<p><img src="/imgs/debug-0.png" alt="debug-0"></p>
+<p><img src="http://i.imgur.com/fewHlCL.png" alt="debug-0"></p>
 
 <p>That's exactly what we're about to do. We're going to pause program execution for the purpose of seeing whats going wrong with our function. Refresh the page and observe the program execution <em>breaking</em> on our breakpoint. </p>
 
-<p><img src="/imgs/debug-1.png" alt="debug-1"></p>
+<p><img src="http://i.imgur.com/HNV5uvG.png" alt="debug-1"></p>
 
 <p>Now that the program execution has stopped, we can check out the variables that are in scope during the while the function is being called. In the above picture, I'm hovering over the parameter <code>arrayOfNames</code>. Clearly, we can see Chuck is in the array but his picture isn't being displayed.</p>
 
 <p>Set another breakpoint inside the for loop. For me thats line 66. </p>
 
-<p><img src="/imgs/debug-2.png" alt="debug-2"></p>
+<p><img src="http://i.imgur.com/kAhG5FU.png" alt="debug-2"></p>
 
 <p>In the top right of the debugger you'll see a green "play" button. Clicking it makes the script resume execution. We can assume line 64 is cool because its just a variable holding an empty string, <code>var html = "";</code>. No problem there. Click the "play" button. Now we're inside the for loop. Lets take a peak at what variables are in scope. </p>
 
@@ -680,7 +680,7 @@ getNames(<span class="pl-s"><span class="pl-pds">'</span>list<span class="pl-pds
 
 <p>Cool we found the bug. We need to first disable or remove our breakpoints before revising our function. Do this by right clicking and selecting "Remove All Breakpoints" from the breakpoints pane on the right side of the debugger.</p>
 
-<p><img src="/imgs/debug-3.png" alt="debug-3"></p>
+<p><img src="http://i.imgur.com/aLwRHkX.png" alt="debug-3"></p>
 
 <p>After this, hit the play button one more time to allow the script execution to finish. Man I need to see Chuck. Lets revise that function, NOW!</p>
 
@@ -1098,7 +1098,7 @@ getNames(<span class="pl-s"><span class="pl-pds">'</span>list<span class="pl-pds
 </li>
 </ol>
 
-<p><img src="/imgs/template.png" alt="template.png"></p>
+<p><img src="http://i.imgur.com/c68olJZ.png" alt="template.png"></p>
 
 <p>Play around with inserting different data into your utility function by changing the data object to see different employees.</p>
 
