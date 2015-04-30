@@ -1,5 +1,5 @@
 ###Table of Contents
-#####[Getting Started]()
+#####[Getting Started](#)
 #####[Module 0: JavaScript Functions](#module-0)
 #####[Module 1: Get your ass-ets over here](#module-1)
 #####[Module 2: Dependencies and Load Order](#module-2)
@@ -8,9 +8,9 @@
 #####[Module 5: Asynchronous JavaScript and XML (AJAX)](#module-5)
 #####[Module 6: Templating 101](#module-6)
 #####[Module 7: Exposing JavaScript Object Notation (JSON)]()
-#####[Module 8: Design Patterns]()
-#####[Module 9: Memory Management]()
-#####[Module 10: Google Maps API]()
+#####[Module 8: Design Patterns](#)
+#####[Module 9: Memory Management](#)
+#####[Module 10: Google Maps API](#)
 
 <a name='module-0'/>
 #Module 0: Javascript Functions
