@@ -25,9 +25,13 @@ Because you've created `sum`, which has the type *Function*, you now inherit all
 
 ```js
 sum.length 
-// outputs 2 - The length property specifies the number of arguments expected by the function. Its defined on Function.prototype
+// outputs 2 - The length property specifies the 
+// number of arguments expected by the function. 
+// Its defined on Function.prototype
 sum.hasOwnProperty()
-// outputs false - hasOwnProperty is defined in Object.prototype. You have access to it because sum inherits from Object.prototype
+// outputs false - hasOwnProperty is defined in 
+// Object.prototype. You have access to it because 
+// sum inherits from Object.prototype
 ```
 
 ###Task 1: write a couple functions
