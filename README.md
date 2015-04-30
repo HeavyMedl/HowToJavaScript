@@ -1,5 +1,4 @@
 #Module 0: Javascript Functions
----
 
  JavaScript has no relation to Java, it simply piggy backed off the popularity of Java during the 90's. The great thing about JavaScript (and most object oriented languages) is that the language skills you develop while writing code end up transcending language barriers. You can use the object-oriented abstraction and apply it to other languages such as Java, JavaScript, C#, C++, Python, PHP, Ruby and Objective-C for example.
  
@@ -30,14 +29,13 @@ sum.length
 sum.hasOwnProperty()
 // outputs false - hasOwnProperty is defined in Object.prototype. You have access to it because sum inherits from Object.prototype
 ```
-We won't be dealing with the prototypes because they require some experience to leverage.
 
 ###Task 1: write a couple functions
 ---
 
 1. Open a new tab in your browser and navigate to the URL `http://127.0.0.1:3000/intern`. You should land on the page that says, "Hello, Costco Intern!"
 
-2. Go into the folder structure **CostcoInternshipJS** and find `intern.js` here: `~\Desktop\CostcoInternshipJS\js\intern.js`. Also, find  `intern.html` here: `~\Desktop\CostcoInternshipJS\views\intern.html`. Open these in your favorite text editor. I love *Sublime Text* and *Notepad++*. You can easily google and get one of these editors.
+2. Go into the folder structure **HowToJavaScript** and find `intern.js` here: `~\Desktop\HowToJavaScript\js\intern.js`. Also, find  `intern.html` here: `~\Desktop\HowToJavaScript\views\intern.html`. Open these in your favorite text editor. I love *Sublime Text* and *Notepad++*. You can easily google and get one of these editors.
 
 3.   Below the comments in `intern.js`, define a couple functions that
 	
