@@ -74,7 +74,7 @@
 </h5>
 
 <h5>
-<a id="module-7-exposing-javascript-object-notation-json" class="anchor" href="#module-7-exposing-javascript-object-notation-json" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="#">Module 7: Exposing JavaScript Object Notation (JSON)</a>
+<a id="module-7-exposing-javascript-object-notation-json" class="anchor" href="#module-7-exposing-javascript-object-notation-json" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="#module-7">Module 7: Exposing JavaScript Object Notation (JSON)</a>
 </h5>
 
 <h5>
@@ -1317,6 +1317,183 @@ template.template_0({ name<span class="pl-k">:</span> <span class="pl-s"><span c
 );</pre></div>
 
 <p>Refresh your <code>http://127.0.0.1:3000/intern</code> and watch your templating system work. You've just saved yourself a dependency, sped up your application's execution time, and made your client's experience a little better.</p>
+
+<p><a name="module-7"></a></p>
+
+<h1>
+<a id="module-7-exposing-javascript-object-notation-json-1" class="anchor" href="#module-7-exposing-javascript-object-notation-json-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Module 7: Exposing JavaScript Object Notation (JSON)</h1>
+
+<p>"JSON (JavaScript Object Notation) is a lightweight data-interchange format. It is easy for humans to read and write. It is easy for machines to parse and generate. It is based on a subset of the JavaScript Programming Language, Standard ECMA-262 3rd Edition - December 1999. JSON is a text format that is completely language independent but uses conventions that are familiar to programmers of the C-family of languages, including C, C++, C#, Java, JavaScript, Perl, Python, and many others. These properties make JSON an ideal data-interchange language." -json.org</p>
+
+<p>Many modern web services take advantage of the JSON format when transmitting data. JSON's simple name-value pair structure makes it easy to parse in many different languages. JSON is typically a lighter weight alternative to the attribute-ridden equivalent in XML. Because of this, many services are switching to this implementation. Lets take a look at some JSON:</p>
+
+<div class="highlight highlight-json"><pre>// JSON data representation
+{ 
+    <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>Kurt<span class="pl-pds">"</span></span>,
+    <span class="pl-s"><span class="pl-pds">"</span>siblings<span class="pl-pds">"</span></span> : [<span class="pl-s"><span class="pl-pds">"</span>Brian<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Robert<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Jake<span class="pl-pds">"</span></span>],
+    <span class="pl-s"><span class="pl-pds">"</span>dependencies<span class="pl-pds">"</span></span> : {
+        <span class="pl-s"><span class="pl-pds">"</span>food<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>pizza<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>coffee<span class="pl-pds">"</span></span> : <span class="pl-s"><span class="pl-pds">"</span>pike<span class="pl-pds">"</span></span>
+    } 
+}</pre></div>
+
+<p>Here is the equivalent XML:</p>
+
+<div class="highlight highlight-xml"><pre>&lt;?<span class="pl-ent">xml</span><span class="pl-e"> version</span>=<span class="pl-s"><span class="pl-pds">"</span>1.0<span class="pl-pds">"</span></span><span class="pl-e"> encoding</span>=<span class="pl-s"><span class="pl-pds">"</span>UTF-8<span class="pl-pds">"</span></span>?&gt;
+&lt;<span class="pl-ent">root</span>&gt;
+    &lt;<span class="pl-ent">name</span>&gt;Kurt&lt;/<span class="pl-ent">name</span>&gt;
+    &lt;<span class="pl-ent">siblings</span>&gt;
+        &lt;<span class="pl-ent">element</span>&gt;Brian&lt;/<span class="pl-ent">element</span>&gt;
+        &lt;<span class="pl-ent">element</span>&gt;Robert&lt;/<span class="pl-ent">element</span>&gt;
+        &lt;<span class="pl-ent">element</span>&gt;Jake&lt;/<span class="pl-ent">element</span>&gt;
+    &lt;/<span class="pl-ent">siblings</span>&gt;
+    &lt;<span class="pl-ent">dependencies</span>&gt;
+        &lt;<span class="pl-ent">coffee</span>&gt;pike&lt;/<span class="pl-ent">coffee</span>&gt;
+        &lt;<span class="pl-ent">food</span>&gt;pizza&lt;/<span class="pl-ent">food</span>&gt;
+    &lt;/<span class="pl-ent">dependencies</span>&gt;
+&lt;/<span class="pl-ent">root</span>&gt;</pre></div>
+
+<p>You can see right away that the XML creates a bigger footprint. You need <em>open</em> and <em>close</em> tags (<code>&lt;element&gt;</code> and <code>&lt;/element&gt;</code>) for every element of a collection. Whereas in JSON you simply define a collection using a property name and the array of elements. The implications of using more characters in a data representation means that its less readable and is more expensive to transmit.</p>
+
+<p>JSON basic type information from Wikipedia:</p>
+
+<ul>
+<li><p>Number — a signed decimal number that may contain a fractional part and may use exponential E notation. JSON does not allow non-numbers like NaN, nor does it make any distinction between integer and floating-point. (Even though JavaScript uses a double-precision floating-point format for all its numeric values, other languages implementing JSON may encode numbers differently)</p></li>
+<li><p>String — a sequence of zero or more Unicode characters. Strings are delimited with double-quotation marks and support a backslash escaping syntax.</p></li>
+<li><p>Boolean — either of the values <code>true</code> or <code>false</code></p></li>
+<li><p>Array — an ordered list of zero or more values, each of which may be of any type. Arrays use square bracket notation with elements being comma-separated.</p></li>
+<li><p>Object — an unordered collection of name/value pairs where the names (also called keys) are strings. Since objects are intended to represent associative arrays,[10] it is recommended, though not required,[11] that each key is unique within an object. Objects are delimited with curly brackets and use commas to separate each pair, while within each pair the colon ':' character separates the key or name from its value.</p></li>
+<li><p><code>null</code> — An empty value, using the word <code>null</code></p></li>
+</ul>
+
+<p>Now that we have an understanding of JSON, lets expose some JSON in our own web application. We'll use Reddit's convenient <code>.json</code> option appended to their homepage URL to expose some JSON. If you type this URL: <code>http://www.reddit.com/.json</code> in your browser, Reddit will return a large and unreadable JSON data set. </p>
+
+<div class="highlight highlight-json"><pre>{<span class="pl-s"><span class="pl-pds">"</span>kind<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>Listing<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>data<span class="pl-pds">"</span></span>: {<span class="pl-s"><span class="pl-pds">"</span>modhash<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>71ie62ddu06659ffead1349b4edcf2d8bd8ba2722eba06f52a<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>children<span class="pl-pds">"</span></span>: [{<span class="pl-s"><span class="pl-pds">"</span>kind<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>t3<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>data<span class="pl-pds">"</span></span>: {<span class="pl-s"><span class="pl-pds">"</span>domain<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>imgur.com<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>banned_by<span class="pl-pds">"</span></span>: <span class="pl-c1">null</span>, <span class="pl-s"><span class="pl-pds">"</span>media_embed<span class="pl-pds">"</span></span>: {}, <span class="pl-s"><span class="pl-pds">"</span>subreddit<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>pics<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>selftext_html<span class="pl-pds">"</span></span>: <span class="pl-c1">null</span>, <span class="pl-s"><span class="pl-pds">"</span>selftext<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>likes<span class="pl-pds">"</span></span>: <span class="pl-c1">null</span>, <span class="pl-s"><span class="pl-pds">"</span>suggested_sort<span class="pl-pds">"</span></span>: <span class="pl-c1">null</span>, <span class="pl-s"><span class="pl-pds">"</span>user_reports<span class="pl-pds">"</span></span>: [], <span class="pl-s"><span class="pl-pds">"</span>secure_media<span class="pl-pds">"</span></span>: <span class="pl-c1">null</span>, <span class="pl-s"><span class="pl-pds">"</span>link_flair_text<span class="pl-pds">"</span></span>: <span class="pl-c1">null</span>, <span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>34j58h<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>gilded<span class="pl-pds">"</span></span>: <span class="pl-c1">1</span>, <span class="pl-s"><span class="pl-pds">"</span>archived<span class="pl-pds">"</span></span>: <span class="pl-c1">false</span>, <span class="pl-s"><span class="pl-pds">"</span>clicked<span class="pl-pds">"</span></span>: <span class="pl-c1">false</span>, <span class="pl-s"><span class="pl-pds">"</span>report_reasons<span class="pl-pds">"</span></span>: <span class="pl-c1">null</span>, <span class="pl-s"><span class="pl-pds">"</span>author<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>hamnams<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>media<span class="pl-pds">"</span></span>: <span class="pl-c1">null</span>, <span class="pl-s"><span class="pl-pds">"</span>score<span class="pl-pds">"</span></span>: <span class="pl-c1">5232</span>, <span class="pl-s"><span class="pl-pds">"</span>approved_by<span class="pl-pds">"</span></span>: <span class="pl-c1">null</span>, <span class="pl-s"><span class="pl-pds">"</span>over_18<span class="pl-pds">"</span></span>: <span class="pl-c1">true</span>, <span class="pl-ii">...</span> }</pre></div>
+
+<p>This JSON data represents the dynamic data that you see on <code>http://www.reddit.com</code> for this particular moment in time. It has a one to one relationship with what you're seeing all prettified with HTML and CSS. </p>
+
+<p>Before we can use this JSON in our own application, we need to have a basic understanding of how Reddit has structured this data. Every web service (or site that exposes JSON) will typically have documentation detailing how this JSON is structured so that you may consume it properly. In the case of Reddit, their documentation for this feature is located at <code>https://github.com/reddit/reddit/wiki/JSON</code>. </p>
+
+<p>To use this in our application, we need to <strong>parse</strong> this raw JSON and turn into a JavaScript Object. Luckily parsing JSON is a very common task for developers and we can leverage the native JavaScript parser in the global <code>JSON</code> object. <code>JSON</code> has two useful properties, <code>stringify</code> and <code>parse</code>.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-c">// JSON.parse takes a string representing the JSON </span>
+<span class="pl-c">// and parses it into a usable JavaScript Object</span>
+JSON.<span class="pl-c1">parse</span>(<span class="pl-s"><span class="pl-pds">'</span>{"name":"kurt"}<span class="pl-pds">'</span></span>) <span class="pl-c">// Object {name: "kurt"}</span>
+
+<span class="pl-c">// JSON.stringify takes a JavaScript object and turns</span>
+<span class="pl-c">// it into a string representing the JSON equivalent.</span>
+JSON.stringify({name<span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>kurt<span class="pl-pds">"</span></span>}) <span class="pl-c">// "{"name":"kurt"}"</span></pre></div>
+
+<h3>
+<a id="task-1-retrieve-some-json-from-reddit" class="anchor" href="#task-1-retrieve-some-json-from-reddit" aria-hidden="true"><span class="octicon octicon-link"></span></a>Task 1: Retrieve some JSON from Reddit</h3>
+
+<hr>
+
+<ol>
+<li>
+<p>We need to create a function that fetches the Reddit JSON. We'll make an AJAX request to do this. Define <code>getRedditJSON</code> on <code>DOMUtils</code> and give it the same fundamental body as our <code>getPartial</code> function with a slight modification.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-en">getRedditJSON</span> : <span class="pl-k">function</span>(<span class="pl-smi">url</span>) {
+    DOMUtils.ajaxRequest(<span class="pl-s"><span class="pl-pds">'</span>GET<span class="pl-pds">'</span></span>, url, <span class="pl-k">function</span>(<span class="pl-smi">event</span>) {
+        <span class="pl-k">if</span> (<span class="pl-v">this</span>.<span class="pl-c1">status</span> <span class="pl-k">&gt;=</span> <span class="pl-c1">200</span> <span class="pl-k">&amp;&amp;</span> <span class="pl-v">this</span>.<span class="pl-c1">status</span> <span class="pl-k">&lt;</span> <span class="pl-c1">400</span>) {
+
+            <span class="pl-c">// Here we use JSON.parse to parse the</span>
+            <span class="pl-c">// responseText from Reddit.</span>
+
+            <span class="pl-k">var</span> redditObject <span class="pl-k">=</span> JSON.<span class="pl-c1">parse</span>(<span class="pl-v">this</span>.<span class="pl-c1">responseText</span>);
+            <span class="pl-en">console</span><span class="pl-c1">.log</span>(redditObject);
+        } <span class="pl-k">else</span> {
+            <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">'</span>Error retrieving JSON<span class="pl-pds">'</span></span>);
+        }
+    });
+}</pre></div>
+
+<p>If you call this function in your console with </p>
+
+<div class="highlight highlight-js"><pre>DOMUtils.getRedditJSON(<span class="pl-s"><span class="pl-pds">'</span>http://www.reddit.com/.json<span class="pl-pds">'</span></span>);</pre></div>
+
+<p>You should end up with a data structure (JavaScript Object) that looks like this:</p>
+
+<p><img src="http://i.imgur.com/Jmyz6EO.png" alt="reddit-json"></p>
+
+<p>If you click on the dropdowns contained in this Object, you can look the name-value pairs associated with your specific request to <code>http://www.reddit.com/.json</code>. Notice that specific properties of this Object correlate with the descriptions listed on the Reddit documentation. </p>
+
+<p>For example, this Object has a <code>kind</code> equal to <code>Listing</code>. According to the documentation, a <code>kind</code> is 
+"a String identifier that denotes the object's type. Some examples: Listing, more, t1, t2, ..". The <code>Listing</code> <em>kind</em> is "Used to paginate content that is too long to display in one go."</p>
+
+<p>If you expand the <code>data</code> Object you'll see a property called <code>children</code> which is an array of Objects representing a collection of <code>t3</code> Objects, which are the threads. Expand the <code>data</code> Object nested in the thread Object to see the text displayed on Reddit's front page.</p>
+
+<p>Lets make use of this data.</p>
+</li>
+</ol>
+
+<h3>
+<a id="task-2-make-a-template-for-your-application-that-exposes-reddits-front-page-json" class="anchor" href="#task-2-make-a-template-for-your-application-that-exposes-reddits-front-page-json" aria-hidden="true"><span class="octicon octicon-link"></span></a>Task 2: Make a template for your application that exposes Reddit's front page JSON</h3>
+
+<hr>
+
+<p>Lets create a new template that is Reddit specific. This template will display a list of thread titles with their authors.</p>
+
+<ol>
+<li>
+<p>Create the template function on our <code>Template.prototype</code> Object:</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-en">template_1</span> : <span class="pl-k">function</span>(<span class="pl-smi">threadObj</span>) {
+    <span class="pl-k">return</span> [<span class="pl-s"><span class="pl-pds">'</span>&lt;div class="reddit-item col-md-12"&gt;<span class="pl-pds">'</span></span>,
+                <span class="pl-s"><span class="pl-pds">'</span>&lt;div class="col-md-3"&gt;<span class="pl-pds">'</span></span>,
+                    <span class="pl-s"><span class="pl-pds">'</span>&lt;h4&gt;<span class="pl-pds">'</span></span><span class="pl-k">+</span>threadObj.author<span class="pl-k">+</span><span class="pl-s"><span class="pl-pds">'</span>&lt;/h4&gt;<span class="pl-pds">'</span></span>,
+                <span class="pl-s"><span class="pl-pds">'</span>&lt;/div&gt;<span class="pl-pds">'</span></span>,
+                <span class="pl-s"><span class="pl-pds">'</span>&lt;div class="col-md-9"&gt;<span class="pl-pds">'</span></span>,
+                    <span class="pl-s"><span class="pl-pds">'</span>&lt;label&gt;Thread Title&lt;/label&gt;<span class="pl-pds">'</span></span>,
+                    <span class="pl-s"><span class="pl-pds">'</span>&lt;p&gt;<span class="pl-pds">'</span></span><span class="pl-k">+</span>threadObj.<span class="pl-c1">title</span><span class="pl-k">+</span><span class="pl-s"><span class="pl-pds">'</span>&lt;/p&gt;<span class="pl-pds">'</span></span>,
+                <span class="pl-s"><span class="pl-pds">'</span>&lt;/div&gt;<span class="pl-pds">'</span></span>,
+            <span class="pl-s"><span class="pl-pds">'</span>&lt;/div&gt;<span class="pl-pds">'</span></span>].<span class="pl-c1">join</span>(<span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>);
+}</pre></div>
+</li>
+<li>
+<p>Modify <code>getRedditJSON</code> so that we can leverage the exposed Reddit JSON.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-en">getRedditJSON</span> : <span class="pl-k">function</span>(<span class="pl-smi">url</span>) {
+    DOMUtils.ajaxRequest(<span class="pl-s"><span class="pl-pds">'</span>GET<span class="pl-pds">'</span></span>, url, <span class="pl-k">function</span>(<span class="pl-smi">event</span>) {
+        <span class="pl-k">if</span> (<span class="pl-v">this</span>.<span class="pl-c1">status</span> <span class="pl-k">&gt;=</span> <span class="pl-c1">200</span> <span class="pl-k">&amp;&amp;</span> <span class="pl-v">this</span>.<span class="pl-c1">status</span> <span class="pl-k">&lt;</span> <span class="pl-c1">400</span>) {
+            <span class="pl-k">var</span> redditObject <span class="pl-k">=</span> JSON.<span class="pl-c1">parse</span>(<span class="pl-v">this</span>.<span class="pl-c1">responseText</span>);
+
+            <span class="pl-c">// Transform the Reddit data into a structure</span>
+            <span class="pl-c">// we can use to build our template</span>
+            <span class="pl-k">var</span> convertedData <span class="pl-k">=</span> [];
+
+            <span class="pl-c">// To access the relevant data, we need to</span>
+            <span class="pl-c">// find the nested `children` array. Because</span>
+            <span class="pl-c">// children is an array, we can use the forEach</span>
+            <span class="pl-c">// helper function.</span>
+            redditObject.<span class="pl-c1">data</span>.children.forEach(<span class="pl-k">function</span>(<span class="pl-smi">threadObj</span>, <span class="pl-smi">index</span>) {
+                <span class="pl-k">if</span> (index <span class="pl-k">&lt;</span> <span class="pl-c1">10</span>) {
+                    <span class="pl-k">var</span> obj <span class="pl-k">=</span> {};
+
+                    <span class="pl-c">// Expose the necessary properties from the threadObj</span>
+                    <span class="pl-c">// and add them to our convertedData array.</span>
+                    obj.author <span class="pl-k">=</span> threadObj.<span class="pl-c1">data</span>.author;
+                    obj.<span class="pl-c1">title</span> <span class="pl-k">=</span> threadObj.<span class="pl-c1">data</span>.<span class="pl-c1">title</span>;
+                    convertedData.<span class="pl-c1">push</span>(obj);
+                }
+            });
+
+            <span class="pl-c">// Use our `buildTemplate` function to override the</span>
+            <span class="pl-c">// employee-list with our newly built template</span>
+            DOMUtils.buildTemplate(convertedData, <span class="pl-c1">1</span>, <span class="pl-s"><span class="pl-pds">'</span>employee-list<span class="pl-pds">'</span></span>);
+        } <span class="pl-k">else</span> {
+            <span class="pl-en">console</span><span class="pl-c1">.log</span>(<span class="pl-s"><span class="pl-pds">'</span>Error retrieving JSON<span class="pl-pds">'</span></span>);
+        }
+    });
+}</pre></div>
+</li>
+</ol>
+
+<p>Lastly, comment out the <code>buildTemplate</code> function in <code>jQueryLoaded</code> and replace it with your <code>getRedditJSON</code> function. </p>
+
+<div class="highlight highlight-js"><pre>DOMUtils.getRedditJSON(<span class="pl-s"><span class="pl-pds">'</span>http://www.reddit.com/.json<span class="pl-pds">'</span></span>);</pre></div>
+
+<p>Refresh the page to see the top five threads on the Reddit front page on your application. You've successfully exposed Reddit's JSON API!</p>
       </section>
 
     </div>
