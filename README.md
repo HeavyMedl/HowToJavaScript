@@ -1329,7 +1329,7 @@ JSON.stringify({name:"kurt"}) // "{"name":"kurt"}"
 
 	![reddit-json](http://i.imgur.com/Jmyz6EO.png)
 
-	If you click on the dropdowns contained in this Object, you can look the name-value pairs associated with your specific request to `http://www.reddit.com/.json`. Notice that specific properties of this Object correlate with the descriptions listed on the Reddit documentation. 
+	If you click on the dropdowns contained in this Object, you can look at the name-value pairs associated with your specific request to `http://www.reddit.com/.json`. Notice that specific properties of this Object correlate with the descriptions listed on the Reddit documentation. 
 
 	For example, this Object has a `kind` equal to `Listing`. According to the documentation, a `kind` is 
 	"a String identifier that denotes the object's type. Some examples: Listing, more, t1, t2, ..". The `Listing` *kind* is "Used to paginate content that is too long to display in one go."
