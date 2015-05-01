@@ -1403,5 +1403,5 @@ Lastly, comment out the `buildTemplate` function in `jQueryLoaded` and replace i
 DOMUtils.getRedditJSON('http://www.reddit.com/.json');
 ```
 
-Refresh the page to see the top five threads on the Reddit front page on your application. You've successfully exposed Reddit's JSON API!
+Refresh the page to see the top five threads from the Reddit front page on your application. You've successfully exposed Reddit's JSON API!
 
