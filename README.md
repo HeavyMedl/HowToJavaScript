@@ -9,8 +9,7 @@
 #####[Module 6: Templating 101](#module-6)
 #####[Module 7: Exposing JavaScript Object Notation (JSON)](#module-7)
 #####[Module 8: Design Patterns](#)
-#####[Module 9: Memory Management](#)
-#####[Module 10: Google Maps API](#)
+#####[Module 9: Google Maps API](#)
 
 <a name='getting-started'/>
 #Getting Started
