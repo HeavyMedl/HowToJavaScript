@@ -21,7 +21,7 @@ Hello! **How To JavaScript** is a free tutorial for aspiring web developers. Thi
 
 Before you start, you'll need some tools. Throughout this tutorial I use Google Chrome's Developer Tools. If you don't already use [Chrome](https://www.google.com/chrome/browser/desktop/), pick it up. You'll need a **text editor** for writing code. I recommend [Notepad++](http://notepad-plus-plus.org/download/v6.7.7.html), [Sublime Text](http://www.sublimetext.com/2), or the Chrome-extendable [Zed Editor](http://zedapp.org/download/). We'll be using a **web server** to generate a workspace in which you can write and test your code. Please download and install [Nodejs](https://nodejs.org/) for this.
 
-Once you have all of these tools, follow these steps to setup your workspace to begin:
+Once you have all of these tools, follow these steps to setup your workspace and begin:
 
 1. Download and unpack the [project's zip file](https://github.com/kurtlocker/HowToJavaScript/zipball/master) which contains the HTML, CSS, JavaScript, and web server you'll need to complete this tutorial.
 
