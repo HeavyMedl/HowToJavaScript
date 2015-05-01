@@ -1,5 +1,5 @@
 #Table of Contents
-#####[Getting Started](#)
+#####[Getting Started](#getting-started)
 #####[Module 0: JavaScript Functions](#module-0)
 #####[Module 1: Get your ass-ets over here](#module-1)
 #####[Module 2: Dependencies and Load Order](#module-2)
@@ -11,6 +11,31 @@
 #####[Module 8: Design Patterns](#)
 #####[Module 9: Memory Management](#)
 #####[Module 10: Google Maps API](#)
+
+<a name='getting-started'/>
+#Getting Started
+
+Hello! **How To JavaScript** is a free tutorial for aspiring web developers. This tutorial covers some fundamental techniques and best practices for modern web development. I've organized this tutorial into a series of modules that build on one another. Code that you write in earlier modules is utilized in later modules to simulate developing an evolving application.
+
+ This tutorial assumes you have little to no experience writing JavaScript. I originally wrote this tutorial for Costco's incoming e-commerce interns but figured its usefulness could extend to anyone.
+
+Before you start, you'll need some tools. Throughout this tutorial I use Google Chrome's Developer Tools. If you don't already use [Chrome](https://www.google.com/chrome/browser/desktop/), pick it up. You'll need a **text editor** for writing code. I recommend [Notepad++](http://notepad-plus-plus.org/download/v6.7.7.html), [Sublime Text](http://www.sublimetext.com/2), or the Chrome-extendable [Zed Editor](http://zedapp.org/download/). We'll be using a **web server** to generate a workspace in which you can write and test your code. Please download and install [Nodejs](https://nodejs.org/) for this.
+
+Once you have all of these tools, follow these steps to setup your workspace to begin:
+
+1. Download and unpack the [project's zip file](https://github.com/kurtlocker/HowToJavaScript/zipball/master) which contains the HTML, CSS, JavaScript, and web server you'll need to complete this tutorial.
+
+2. Using the terminal (Mac, Linux) or command prompt (Window), navigate to the location of the unpacked directory. In my own workspace, this is located at `/Users/kurt/Desktop/HowToJavaScript`. Using a Windows machine, it might be `C:\Users\Kurt\Desktop\HowToJavaScript`. Use `cd` (change directory) to navigate directly to that absolute path.
+
+3. Once inside the `HowToJavaScript` directory, use the `node` command to start the web server. Type: `node server.js` to start the server. You should see this text: 
+
+	`HowToJavaScript server listening at http://127.0.0.1:3000`
+
+	`http://127.0.0.1` represents your local computer. `3000` represents the port that our web server will listen to for requests. If you use Chrome to hit this URL, you'll request the HowToJavaScript home page, which is just this tutorial. Your workspace follows the route `/intern`.
+
+4. Using your text editor, open the files `intern.html` and `intern.js`. This is where you'll do your work (`intern.js`) and see it reflected (`intern.html`).
+
+Now that you have your web server running, your browser pointed at `http://127.0.0.1:3000/intern`, and your files `intern.js` and `intern.html` opened in your text editor, let's begin.  
 
 <a name='module-0'/>
 #Module 0: JavaScript Functions
