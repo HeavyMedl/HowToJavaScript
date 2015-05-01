@@ -1397,5 +1397,11 @@ Lets create a new template that is Reddit specific. This template will display a
     }
 	```
 	
-Lastly, comment out the `buildTemplate` function in `jQueryLoaded` and call your new `getRedditJSON` function. Refresh the page to see the top five threads on the Reddit front page on your application. You've successfully exposed Reddit's JSON API!
+Lastly, comment out the `buildTemplate` function in `jQueryLoaded` and replace it with your `getRedditJSON` function. 
+
+```js
+DOMUtils.getRedditJSON('http://www.reddit.com/.json');
+```
+
+Refresh the page to see the top five threads on the Reddit front page on your application. You've successfully exposed Reddit's JSON API!
 
