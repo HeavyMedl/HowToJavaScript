@@ -7,7 +7,7 @@
 #####[Module 4: The Art of Debugging](#module-4)
 #####[Module 5: Asynchronous JavaScript and XML (AJAX)](#module-5)
 #####[Module 6: Templating 101](#module-6)
-#####[Module 7: Exposing JavaScript Object Notation (JSON)](#)
+#####[Module 7: Exposing JavaScript Object Notation (JSON)](#module-7)
 #####[Module 8: Design Patterns](#)
 #####[Module 9: Memory Management](#)
 #####[Module 10: Google Maps API](#)
@@ -1227,3 +1227,175 @@ Place the call to `buildTemplate` in the `jQueryLoaded` callback function:
 );
 ```
  Refresh your `http://127.0.0.1:3000/intern` and watch your templating system work. You've just saved yourself a dependency, sped up your application's execution time, and made your client's experience a little better.
+ 
+<a name='module-7'/>
+#Module 7: Exposing JavaScript Object Notation (JSON)
+
+"JSON (JavaScript Object Notation) is a lightweight data-interchange format. It is easy for humans to read and write. It is easy for machines to parse and generate. It is based on a subset of the JavaScript Programming Language, Standard ECMA-262 3rd Edition - December 1999. JSON is a text format that is completely language independent but uses conventions that are familiar to programmers of the C-family of languages, including C, C++, C#, Java, JavaScript, Perl, Python, and many others. These properties make JSON an ideal data-interchange language." -json.org
+
+Many modern web services take advantage of the JSON format when transmitting data. JSON's simple name-value pair structure makes it easy to parse in many different languages. JSON is typically a lighter weight alternative to the attribute-ridden equivalent in XML. Because of this, many services are switching to this implementation. Lets take a look at some JSON:
+
+```json
+// JSON data representation
+{ 
+	"name" : "Kurt",
+	"siblings" : ["Brian", "Robert", "Jake"],
+	"dependencies" : {
+		"food" : "pizza",
+		"coffee" : "pike"
+	} 
+}
+```
+Here is the equivalent XML:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<name>Kurt</name>
+	<siblings>
+		<element>Brian</element>
+		<element>Robert</element>
+		<element>Jake</element>
+	</siblings>
+	<dependencies>
+		<coffee>pike</coffee>
+		<food>pizza</food>
+	</dependencies>
+</root>
+```
+You can see right away that the XML creates a bigger footprint. You need *open* and *close* tags (`<element>` and `</element>`) for every element of a collection. Whereas in JSON you simply define a collection using a property name and the array of elements. The implications of using more characters in a data representation means that its less readable and is more expensive to transmit.
+
+JSON basic type information from Wikipedia:
+
+- Number — a signed decimal number that may contain a fractional part and may use exponential E notation. JSON does not allow non-numbers like NaN, nor does it make any distinction between integer and floating-point. (Even though JavaScript uses a double-precision floating-point format for all its numeric values, other languages implementing JSON may encode numbers differently)
+
+- String — a sequence of zero or more Unicode characters. Strings are delimited with double-quotation marks and support a backslash escaping syntax.
+
+- Boolean — either of the values `true` or `false`
+
+- Array — an ordered list of zero or more values, each of which may be of any type. Arrays use square bracket notation with elements being comma-separated.
+
+- Object — an unordered collection of name/value pairs where the names (also called keys) are strings. Since objects are intended to represent associative arrays,[10] it is recommended, though not required,[11] that each key is unique within an object. Objects are delimited with curly brackets and use commas to separate each pair, while within each pair the colon ':' character separates the key or name from its value.
+
+- `null` — An empty value, using the word `null`
+
+Now that we have an understanding of JSON, lets expose some JSON in our own web application. We'll use Reddit's convenient `.json` option appended to their homepage URL to expose some JSON. If you type this URL: `http://www.reddit.com/.json` in your browser, Reddit will return a large and unreadable JSON data set. 
+
+```json
+{"kind": "Listing", "data": {"modhash": "71ie62ddu06659ffead1349b4edcf2d8bd8ba2722eba06f52a", "children": [{"kind": "t3", "data": {"domain": "imgur.com", "banned_by": null, "media_embed": {}, "subreddit": "pics", "selftext_html": null, "selftext": "", "likes": null, "suggested_sort": null, "user_reports": [], "secure_media": null, "link_flair_text": null, "id": "34j58h", "gilded": 1, "archived": false, "clicked": false, "report_reasons": null, "author": "hamnams", "media": null, "score": 5232, "approved_by": null, "over_18": true, ... }
+```
+
+This JSON data represents the dynamic data that you see on `http://www.reddit.com` for this particular moment in time. It has a one to one relationship with what you're seeing all prettified with HTML and CSS. 
+
+Before we can use this JSON in our own application, we need to have a basic understanding of how Reddit has structured this data. Every web service (or site that exposes JSON) will typically have documentation detailing how this JSON is structured so that you may consume it properly. In the case of Reddit, their documentation for this feature is located at `https://github.com/reddit/reddit/wiki/JSON`. 
+
+To use this in our application, we need to **parse** this raw JSON and turn into a JavaScript Object. Luckily parsing JSON is a very common task for developers and we can leverage the native JavaScript parser in the global `JSON` object. `JSON` has two useful properties, `stringify` and `parse`.
+
+```js
+// JSON.parse takes a string representing the JSON 
+// and parses it into a usable JavaScript Object
+JSON.parse('{"name":"kurt"}') // Object {name: "kurt"}
+
+// JSON.stringify takes a JavaScript object and turns
+// it into a string representing the JSON equivalent.
+JSON.stringify({name:"kurt"}) // "{"name":"kurt"}"
+```
+###Task 1: Retrieve some JSON from Reddit
+---
+1. We need to create a function that fetches the Reddit JSON. We'll make an AJAX request to do this. Define `getRedditJSON` on `DOMUtils` and give it the same fundamental body as our `getPartial` function with a slight modification.
+
+	```js
+	getRedditJSON : function(url) {
+    	DOMUtils.ajaxRequest('GET', url, function(event) {
+			if (this.status >= 200 && this.status < 400) {
+				
+				// Here we use JSON.parse to parse the
+				// responseText from Reddit.
+				
+				var redditObject = JSON.parse(this.responseText);
+				console.log(redditObject);
+			} else {
+				console.log('Error retrieving JSON');
+			}
+		});
+    }
+	```
+	If you call this function in your console with 
+	
+	```js
+	DOMUtils.getRedditJSON('http://www.reddit.com/.json');
+	```
+	You should end up with a data structure (JavaScript Object) that looks like this:
+
+	![reddit-json](http://i.imgur.com/Jmyz6EO.png)
+
+	If you click on the dropdowns contained in this Object, you can look the name-value pairs associated with your specific request to `http://www.reddit.com/.json`. Notice that specific properties of this Object correlate with the descriptions listed on the Reddit documentation. 
+
+	For example, this Object has a `kind` equal to `Listing`. According to the documentation, a `kind` is 
+	"a String identifier that denotes the object's type. Some examples: Listing, more, t1, t2, ..". The `Listing` *kind* is "Used to paginate content that is too long to display in one go."
+
+	If you expand the `data` Object you'll see a property called `children` which is an array of Objects representing a collection of `t3` Objects, which are the threads. Expand the `data` Object nested in the thread Object to see the text displayed on Reddit's front page.
+
+	Lets make use of this data.
+
+###Task 2: Make a template for your application that exposes Reddit's front page JSON
+---
+
+Lets create a new template that is Reddit specific. This template will display a list of thread titles with their authors.
+
+1. Create the template function on our `Template.prototype` Object:
+
+	```js
+	template_1 : function(threadObj) {
+		return ['<div class="reddit-item col-md-12">',
+					'<div class="col-md-3">',
+						'<h4>'+threadObj.author+'</h4>',
+					'</div>',
+			        '<div class="col-md-9">',
+				        '<label>Thread Title</label>',
+				        '<p>'+threadObj.title+'</p>',
+				    '</div>',
+				'</div>'].join('');
+	}
+	```
+	
+2. Modify `getRedditJSON` so that we can leverage the exposed Reddit JSON.
+
+	```js
+	getRedditJSON : function(url) {
+    	DOMUtils.ajaxRequest('GET', url, function(event) {
+			if (this.status >= 200 && this.status < 400) {
+				var redditObject = JSON.parse(this.responseText);
+				
+				// Transform the Reddit data into a structure
+				// we can use to build our template
+				var convertedData = [];
+
+				// To access the relevant data, we need to
+				// find the nested `children` array. Because
+				// children is an array, we can use the forEach
+				// helper function.
+				redditObject.data.children.forEach(function(threadObj, index) {
+					if (index < 10) {
+						var obj = {};
+					
+						// Expose the necessary properties from the threadObj
+						// and add them to our convertedData array.
+						obj.author = threadObj.data.author;
+						obj.title = threadObj.data.title;
+						convertedData.push(obj);
+					}
+				});
+
+				// Use our `buildTemplate` function to override the
+				// employee-list with our newly built template
+				DOMUtils.buildTemplate(convertedData, 1, 'employee-list');
+			} else {
+				console.log('Error retrieving JSON');
+			}
+		});
+    }
+	```
+	
+Lastly, comment out the `buildTemplate` function in `jQueryLoaded` and call your new `getRedditJSON` function. Refresh the page to see the top five threads on the Reddit front page on your application. You've successfully exposed Reddit's JSON API!
+
