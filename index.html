@@ -90,7 +90,7 @@
 <h1>
 <a id="getting-started-1" class="anchor" href="#getting-started-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting Started</h1>
 
-<p>Hello! <strong>How To JavaScript</strong> is a free tutorial for aspiring web developers. This tutorial covers some fundamental techniques and best practices for modern web development. I've organized this tutorial into a series of modules that build on one another. Code that you write in earlier modules is utilized in later modules to simulate developing an evolving application.</p>
+<p>Hello! <strong>How To JavaScript</strong> is a free tutorial for aspiring web developers. This tutorial covers some fundamental techniques and best practices for modern web development. I've organized this tutorial into a series of modules that build on one another. Code that you write for earlier modules is utilized in later modules to simulate developing an evolving application.</p>
 
 <p>This tutorial assumes you have little to no experience writing JavaScript. I originally wrote this tutorial for Costco's incoming e-commerce interns but figured its usefulness could extend to anyone.</p>
 
@@ -1321,7 +1321,7 @@ template.template_0({ name<span class="pl-k">:</span> <span class="pl-s"><span c
 
 <p>"JSON (JavaScript Object Notation) is a lightweight data-interchange format. It is easy for humans to read and write. It is easy for machines to parse and generate. It is based on a subset of the JavaScript Programming Language, Standard ECMA-262 3rd Edition - December 1999. JSON is a text format that is completely language independent but uses conventions that are familiar to programmers of the C-family of languages, including C, C++, C#, Java, JavaScript, Perl, Python, and many others. These properties make JSON an ideal data-interchange language." -json.org</p>
 
-<p>Many modern web services take advantage of the JSON format when transmitting data. JSON's simple name-value pair structure makes it easy to parse in many different languages. JSON is typically a lighter weight alternative to the attribute-ridden equivalent in XML. Because of this, many services are switching to this implementation. Lets take a look at some JSON:</p>
+<p>Many modern web services take advantage of the JSON format when transmitting data. JSON's simple name-value pair structure make it easy to parse in many different languages. JSON is typically a lighter weight alternative to the attribute-ridden equivalent in XML. Because of this, many services are switching to this implementation. Lets take a look at some JSON:</p>
 
 <div class="highlight highlight-json"><pre>// JSON data representation
 { 
@@ -1349,7 +1349,7 @@ template.template_0({ name<span class="pl-k">:</span> <span class="pl-s"><span c
     &lt;/<span class="pl-ent">dependencies</span>&gt;
 &lt;/<span class="pl-ent">root</span>&gt;</pre></div>
 
-<p>You can see right away that the XML creates a bigger footprint. You need <em>open</em> and <em>close</em> tags (<code>&lt;element&gt;</code> and <code>&lt;/element&gt;</code>) for every element of a collection. Whereas in JSON you simply define a collection using a property name and the array of elements. The implications of using more characters in a data representation means that its less readable and is more expensive to transmit.</p>
+<p>You can see right away that the XML creates a bigger footprint. You need <em>open</em> and <em>close</em> tags (<code>&lt;element&gt;</code> and <code>&lt;/element&gt;</code>) for every element of a collection. Whereas in JSON you simply define a collection using a property name and the array of elements. The negative implications of a larger data structure are that readability suffers and data transfer is more expensive.</p>
 
 <p>JSON basic type information from Wikipedia:</p>
 
@@ -1412,10 +1412,9 @@ JSON.stringify({name<span class="pl-k">:</span><span class="pl-s"><span class="p
 
 <p><img src="http://i.imgur.com/Jmyz6EO.png" alt="reddit-json"></p>
 
-<p>If you click on the dropdowns contained in this Object, you can look at the name-value pairs associated with your specific request to <code>http://www.reddit.com/.json</code>. Notice that specific properties of this Object correlate with the descriptions listed on the Reddit documentation. </p>
+<p>If you expand the nested properties of the Object returned from <code>http://www.reddit.com/.json</code>, you'll notice they correlate with the descriptions listed on the Reddit documentation page.</p>
 
-<p>For example, this Object has a <code>kind</code> equal to <code>Listing</code>. According to the documentation, a <code>kind</code> is 
-"a String identifier that denotes the object's type. Some examples: Listing, more, t1, t2, ..". The <code>Listing</code> <em>kind</em> is "Used to paginate content that is too long to display in one go."</p>
+<p>For example, this Object has a <code>kind</code> equal to <code>Listing</code>. According to the documentation, a <code>kind</code> is "a String identifier that denotes the object's type. Some examples: Listing, more, t1, t2, ..". The <code>Listing</code> <em>kind</em> is "Used to paginate content that is too long to display in one go."</p>
 
 <p>If you expand the <code>data</code> Object you'll see a property called <code>children</code> which is an array of Objects representing a collection of <code>t3</code> Objects, which are the threads. Expand the <code>data</code> Object nested in the thread Object to see the text displayed on Reddit's front page.</p>
 
