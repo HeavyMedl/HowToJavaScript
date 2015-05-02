@@ -14,7 +14,7 @@
 <a name='getting-started'/>
 #Getting Started
 
-Hello! **How To JavaScript** is a free tutorial for aspiring web developers. This tutorial covers some fundamental techniques and best practices for modern web development. I've organized this tutorial into a series of modules that build on one another. Code that you write in earlier modules is utilized in later modules to simulate developing an evolving application.
+Hello! **How To JavaScript** is a free tutorial for aspiring web developers. This tutorial covers some fundamental techniques and best practices for modern web development. I've organized this tutorial into a series of modules that build on one another. Code that you write for earlier modules is utilized in later modules to simulate developing an evolving application.
 
  This tutorial assumes you have little to no experience writing JavaScript. I originally wrote this tutorial for Costco's incoming e-commerce interns but figured its usefulness could extend to anyone.
 
@@ -1232,7 +1232,7 @@ Place the call to `buildTemplate` in the `jQueryLoaded` callback function:
 
 "JSON (JavaScript Object Notation) is a lightweight data-interchange format. It is easy for humans to read and write. It is easy for machines to parse and generate. It is based on a subset of the JavaScript Programming Language, Standard ECMA-262 3rd Edition - December 1999. JSON is a text format that is completely language independent but uses conventions that are familiar to programmers of the C-family of languages, including C, C++, C#, Java, JavaScript, Perl, Python, and many others. These properties make JSON an ideal data-interchange language." -json.org
 
-Many modern web services take advantage of the JSON format when transmitting data. JSON's simple name-value pair structure makes it easy to parse in many different languages. JSON is typically a lighter weight alternative to the attribute-ridden equivalent in XML. Because of this, many services are switching to this implementation. Lets take a look at some JSON:
+Many modern web services take advantage of the JSON format when transmitting data. JSON's simple name-value pair structure make it easy to parse in many different languages. JSON is typically a lighter weight alternative to the attribute-ridden equivalent in XML. Because of this, many services are switching to this implementation. Lets take a look at some JSON:
 
 ```json
 // JSON data representation
@@ -1262,7 +1262,7 @@ Here is the equivalent XML:
 	</dependencies>
 </root>
 ```
-You can see right away that the XML creates a bigger footprint. You need *open* and *close* tags (`<element>` and `</element>`) for every element of a collection. Whereas in JSON you simply define a collection using a property name and the array of elements. The implications of using more characters in a data representation means that its less readable and is more expensive to transmit.
+You can see right away that the XML creates a bigger footprint. You need *open* and *close* tags (`<element>` and `</element>`) for every element of a collection. Whereas in JSON you simply define a collection using a property name and the array of elements. The negative implications of a larger data structure are that readability suffers and data transfer is more expensive.
 
 JSON basic type information from Wikipedia:
 
@@ -1328,10 +1328,9 @@ JSON.stringify({name:"kurt"}) // "{"name":"kurt"}"
 
 	![reddit-json](http://i.imgur.com/Jmyz6EO.png)
 
-	If you click on the dropdowns contained in this Object, you can look at the name-value pairs associated with your specific request to `http://www.reddit.com/.json`. Notice that specific properties of this Object correlate with the descriptions listed on the Reddit documentation. 
+	If you expand the nested properties of the Object returned from `http://www.reddit.com/.json`, you'll notice they correlate with the descriptions listed on the Reddit documentation page.
 
-	For example, this Object has a `kind` equal to `Listing`. According to the documentation, a `kind` is 
-	"a String identifier that denotes the object's type. Some examples: Listing, more, t1, t2, ..". The `Listing` *kind* is "Used to paginate content that is too long to display in one go."
+	For example, this Object has a `kind` equal to `Listing`. According to the documentation, a `kind` is "a String identifier that denotes the object's type. Some examples: Listing, more, t1, t2, ..". The `Listing` *kind* is "Used to paginate content that is too long to display in one go."
 
 	If you expand the `data` Object you'll see a property called `children` which is an array of Objects representing a collection of `t3` Objects, which are the threads. Expand the `data` Object nested in the thread Object to see the text displayed on Reddit's front page.
 
@@ -1403,4 +1402,5 @@ DOMUtils.getRedditJSON('http://www.reddit.com/.json');
 ```
 
 Refresh the page to see the top five threads from the Reddit front page on your application. You've successfully exposed Reddit's JSON API!
+
 
