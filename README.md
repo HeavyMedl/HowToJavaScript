@@ -1,18 +1,18 @@
-#Table of Contents
-#####[Getting Started](#getting-started)
-#####[Module 0: JavaScript Functions](#module-0)
-#####[Module 1: Get your ass-ets over here](#module-1)
-#####[Module 2: Dependencies and Load Order](#module-2)
-#####[Module 3: Synchronous vs. Asynchronous](#module-3)
-#####[Module 4: The Art of Debugging](#module-4)
-#####[Module 5: Asynchronous JavaScript and XML (AJAX)](#module-5)
-#####[Module 6: Templating 101](#module-6)
-#####[Module 7: Exposing JavaScript Object Notation (JSON)](#module-7)
-#####[Module 8: Design Patterns](#)
-#####[Module 9: Google Maps API](#)
+# Table of Contents
+##### [Getting Started](#getting-started)
+##### [Module 0: JavaScript Functions](#module-0)
+##### [Module 1: Get your ass-ets over here](#module-1)
+##### [Module 2: Dependencies and Load Order](#module-2)
+##### [Module 3: Synchronous vs. Asynchronous](#module-3)
+##### [Module 4: The Art of Debugging](#module-4)
+##### [Module 5: Asynchronous JavaScript and XML (AJAX)](#module-5)
+##### [Module 6: Templating 101](#module-6)
+##### [Module 7: Exposing JavaScript Object Notation (JSON)](#module-7)
+##### [Module 8: Design Patterns](#)
+##### [Module 9: Google Maps API](#)
 
 <a name='getting-started'/>
-#Getting Started
+# Getting Started
 
 Hello! **How To JavaScript** is a free tutorial for aspiring web developers. This tutorial covers some fundamental techniques and best practices for modern web development. I've organized this tutorial into a series of modules that build on one another. Code that you write for earlier modules is utilized in later modules to simulate developing an evolving application.
 
@@ -37,7 +37,7 @@ Once you have all of these tools, follow these steps to setup your workspace and
 Now that you have your web server running, your browser pointed at `http://127.0.0.1:3000/intern`, and your files `intern.js` and `intern.html` opened in your text editor, let's begin.  
 
 <a name='module-0'/>
-#Module 0: JavaScript Functions
+# Module 0: JavaScript Functions
 
  JavaScript has no relation to Java, it simply piggy backed off the popularity of Java during the 90's. One of great things about learning JavaScript (and similar object-oriented languages) is that the language skills you develop while writing code end up transcending language barriers. You can use the object-oriented abstraction and apply it to Java, C#, C++, Python, PHP, Ruby and Objective-C albeit a few language specific differences.
  
@@ -73,7 +73,7 @@ sum.hasOwnProperty()
 // sum inherits from Object.prototype
 ```
 
-###Task 1: Write some functions
+### Task 1: Write some functions
 ---
 
 1. Open a new tab in your browser and navigate to the URL `http://127.0.0.1:3000/intern`. You should land on the page that says, "Hello, Costco Intern!"
@@ -98,7 +98,7 @@ sum.hasOwnProperty()
 	kurtsSum(5) // = 15
 	```
 	
-###Task 2: Move your functions into their own namespace
+### Task 2: Move your functions into their own namespace
 ---
 
 A namespace collision happens when the script interpreter has duplicate variable assignments defined by one or more scripts contained within your application.
@@ -142,7 +142,7 @@ This is a logical structure for a module that has the functionality of summing a
 2. In the Chrome Dev Tools, call your functions using the module that you made.
 
 <a name='module-1'/>
-#Module 1: Get your ass-ets over here.
+# Module 1: Get your ass-ets over here.
 
 "A **content delivery network** (**CDN**) is a system of distributed servers (network) that deliver webpages and other Web content to a user based on the geographic locations of the user, the origin of the webpage and a content delivery server." -Google
  
@@ -164,7 +164,7 @@ Similarly, when you click on this link, maxcdn returns you the CSS file you requ
 
 What happens when you can't reach a remote file like the above two? Well, its good practice to keep a local copy that your own web server can serve to the user in case Google's URL breaks.  Typically a static file's relative path will look something like this: `HowToJavaScript/js/intern.js`. `/js/` designates the JavaScript directory that we keep all of our JavaScript organized in.
 
-###Task 1: Dynamically retrieving CSS from a CDN using JavaScript.
+### Task 1: Dynamically retrieving CSS from a CDN using JavaScript.
 ---
 
 So our `intern.html` page looks pretty ugly, right? We need to fetch the styles sheet (CSS) to support the front end framework we're leveraging named *Twitter Bootstrap*. Twitter Bootstrap was developed by.. Twitter Bootstrap offers a beautiful user interface (UI) for stylistically challenged developers like me. We have the proper Bootstrap specific class attributes in our HTML, we just need the CSS and JavaScript. First the CSS, though.
@@ -231,7 +231,7 @@ This bootstrap template requires some more CSS not located in the CDN resource. 
 	```
 Wow, that's pretty.
 
-###Task 2: Dynamically retrieving JavaScript from a CDN using JavaScript.
+### Task 2: Dynamically retrieving JavaScript from a CDN using JavaScript.
 ---
 
 Now that we have a pattern for retrieving CSS using our `getFile` function, lets reuse the same function to retrieve some JavaScript from a CDN.  Let's just go ahead and get jQuery. jQuery is a framework for *querying* the DOM using less characters in our code. For example:
@@ -304,7 +304,7 @@ I'm one of those elitists who likes performance. However, I'll admit that learni
 4. Create a Object Literal Module to encapsulate your `getFile` and `changeLead` functions. Call the Object `DOMUtils`. Experiment calling your `changeLead` function from the `DOMUtils` module.
 
 <a name='module-2'/>
-#Module 2: Dependencies and Load Order
+# Module 2: Dependencies and Load Order
 
 This module will discuss the importance of loading JavaScript assets in the right order based on their dependencies. A JavaScript dependency means that your script is *dependent* on a particular JavaScript asset to be loaded before running correctly. This is an important thought to keep in your mind while you develop your application as having access to your dependencies is essential.
 
@@ -352,7 +352,7 @@ var DOMUtils = {
 
 Can you spot the dependency? Because the `changeLead` function leverages jQuery, it is *dependent* on jQuery being loaded to your page before it can be executed. So what do we do? The simple answer is to *not* use jQuery but maybe that isn't a suitable solution based on your developmental needs. Maybe you just joined a team that does leverage jQuery. Lets make a small loader function that can load all of our assets in the proper order.
 
-###Task 1: Create a loader for loading our dependencies
+### Task 1: Create a loader for loading our dependencies
 ---
 An **Array** in JavaScript is a data structure that can hold a series of multi-valued elements. We can make arrays in a couple of different ways.
 ```js
@@ -465,7 +465,7 @@ DOMUtils.loadAssets([
 Now every time you refresh, you should see your pretty `intern.html` page without having to call `getFile` manually for each asset.
 
 <a name='module-3'/>
-#Module 3: Synchronous vs. Asynchronous
+# Module 3: Synchronous vs. Asynchronous
 
 **Asynchronous**: not going at the same rate and exactly together with something else, in particular.
 
@@ -519,7 +519,7 @@ What happens if we want to load *everything* asynchronously? Why would you want 
 
 The solution is to attach a `async` attribute to the script element that you're dynamically allocating in `getFile`. The inherent problem with this method is that if we have two resources that are being fetched in parallel with no order associated, how do we guarantee that the dependency loads *before* the dependee? Here is one strategy:
 
-###Task 1: Load your assets asynchronously
+### Task 1: Load your assets asynchronously
 ---
 1. Revisit `DOMUtils.getFile(source, type, callback)` and for the condition where we're creating a `<script>` element, give the element an async attribute with value `true`.
 	
@@ -562,7 +562,7 @@ A quick note about global variables from w3schools: A variable declared outside 
 Be careful of what you define as *global*. Namespace collisions happen when you have too many definitions in the global space. The best practice is to leverage the module pattern we've discussed.
 
 <a name='module-4'/>
-#Module 4: The Art of Debugging
+# Module 4: The Art of Debugging
 
 "Debugging is a methodical process of finding and reducing the number of bugs, or defects, in a computer program or a piece of electronic hardware, thus making it behave as expected. Debugging tends to be harder when various subsystems are tightly coupled, as changes in one may cause bugs to emerge in another." -Wikipedia
 
@@ -654,7 +654,7 @@ insertPics : function(arrayOfNames) {
 Now that your function is revised with the correct index, refresh the page. Wow, that's an excellent line up.
 
 <a name='module-5'/>
-#Module 5: Asynchronous JavaScript and XML (AJAX)
+# Module 5: Asynchronous JavaScript and XML (AJAX)
 
 This module will explain how to use a group of web development techniques called **AJAX**.
 
@@ -769,7 +769,7 @@ We need to **create** a XMLHttpRequest object. We need to **open** (or initializ
 	
 Thats it! This will send a request to our server asking it to grab `/views/partials/features.html`. Now lets actually implement this:
 
-###Task 1: Use AJAX to replace the HTML inside `intern.html` with the partial `features.html`.
+### Task 1: Use AJAX to replace the HTML inside `intern.html` with the partial `features.html`.
 ---
 We could simply create a function that encapsulated the entire process of making a AJAX request in addition to calling our unique callback function to replace the meat of the HTML with our partial like so:
 
@@ -841,7 +841,7 @@ This is considerably more efficient than simply defining an almost duplicate HTM
 
 Whats left is to attach an event to our `Home`, `Features` and `Contact` tabs in `intern.html` to give the user a visual indicator as to what he/she is looking at.
 
-###Task 2: Interactive Tabs
+### Task 2: Interactive Tabs
 ---
 Lets define a function that leverages our `getPartial` function when the user clicks `Home`, `Features` or `Contact` on the `DOMUtils` module.
 
@@ -872,7 +872,7 @@ makeActive : function(element) {
 Lastly, make a call to `DOMUtils.bindNavigation` in your `DOMUtils.jqueryLoaded` function so that it gets called when the page loads. Now refresh `http://127.0.0.1:3000/intern` and watch your navigation work.
 
 <a name='module-6'/>
-#Module 6: Templating 101
+# Module 6: Templating 101
 
 *Templating* is a useful technique for mitigating the amount of static HTML you may need for your web application. Instead of duplicating a bunch of HTML that has the same fundamental structure, you can create one HTML template and expose it using a templating framework that consumes the *dynamic* data.
 
@@ -942,7 +942,7 @@ There are three things we need to define to make use of this
 	
 3. The **target**: The place where you want to insert the HTML generated by underscore.
 
-###Task 1: Using `underscore.js`, build a template that can take an array of objects and insert them into the DOM.
+### Task 1: Using `underscore.js`, build a template that can take an array of objects and insert them into the DOM.
 ---
 
 We'll need to include underscore in our application. Find a CDN and add it to our `loadAssets` function. In `intern.js`, `loadAssets` should look like this:
@@ -1064,7 +1064,7 @@ DOMUtils.buildTemplate(
 )
 ```
 
-###Task 2: Ditch `underscore.js`
+### Task 2: Ditch `underscore.js`
 ---
 
 While underscore is powerful tool set, we don't need it to accomplish what we want. Underscore includes a lot of other stuff we might not ever use, so naively including it is sort of a bad idea. By writing our own JavaScript templating function, we can eliminate the overhead (dependency and bandwidth) of including it.
@@ -1123,7 +1123,7 @@ First we need to do some code cleanup.
     </script>
 	```
 	
-###Task 3: Build your own templating system
+### Task 3: Build your own templating system
 ---
 
 The same three things are needed in our own custom templating solution:
@@ -1228,7 +1228,7 @@ Place the call to `buildTemplate` in the `jQueryLoaded` callback function:
  Refresh your `http://127.0.0.1:3000/intern` and watch your templating system work. You've just saved yourself a dependency, sped up your application's execution time, and made your client's experience a little better.
  
 <a name='module-7'/>
-#Module 7: Exposing JavaScript Object Notation (JSON)
+# Module 7: Exposing JavaScript Object Notation (JSON)
 
 "JSON (JavaScript Object Notation) is a lightweight data-interchange format. It is easy for humans to read and write. It is easy for machines to parse and generate. It is based on a subset of the JavaScript Programming Language, Standard ECMA-262 3rd Edition - December 1999. JSON is a text format that is completely language independent but uses conventions that are familiar to programmers of the C-family of languages, including C, C++, C#, Java, JavaScript, Perl, Python, and many others. These properties make JSON an ideal data-interchange language." -json.org
 
@@ -1299,7 +1299,7 @@ JSON.parse('{"name":"kurt"}') // Object {name: "kurt"}
 // it into a string representing the JSON equivalent.
 JSON.stringify({name:"kurt"}) // "{"name":"kurt"}"
 ```
-###Task 1: Retrieve some JSON from Reddit
+### Task 1: Retrieve some JSON from Reddit
 ---
 1. We need to create a function that fetches the Reddit JSON. We'll make an AJAX request to do this. Define `getRedditJSON` on `DOMUtils` and give it the same fundamental body as our `getPartial` function with a slight modification.
 
@@ -1336,7 +1336,7 @@ JSON.stringify({name:"kurt"}) // "{"name":"kurt"}"
 
 	Lets make use of this data.
 
-###Task 2: Make a template for your application that exposes Reddit's front page JSON
+### Task 2: Make a template for your application that exposes Reddit's front page JSON
 ---
 
 Lets create a new template that is Reddit specific. This template will display a list of thread titles with their authors.
@@ -1402,5 +1402,4 @@ DOMUtils.getRedditJSON('http://www.reddit.com/.json');
 ```
 
 Refresh the page to see the top five threads from the Reddit front page on your application. You've successfully exposed Reddit's JSON API!
-
 
